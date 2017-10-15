@@ -17,7 +17,7 @@
             
         },
         mounted() {
-            
+            const self = this;
         },
         computed: {
             
