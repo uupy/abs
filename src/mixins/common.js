@@ -151,12 +151,9 @@ export default {
             'url',
             'exptime',
             'clientSt',
-            'intervaltime',
-            'errorCount',
+            // 'intervaltime',
+            // 'errorCount',
             'isTimeOut',
-            'clusterid',
-            'clusteruuid',
-            'clustername',
             'username',
             'token',
             'isroot',
@@ -164,7 +161,7 @@ export default {
             'onLoading',
             'innerLoading',
             'socket',
-            'isKickedOut'
+            'user_role'
         ])
     },
     destroyed(){

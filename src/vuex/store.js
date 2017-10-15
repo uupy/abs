@@ -12,26 +12,23 @@ const state = {
     innerLoading: false,
     onLoading: false,
     isTimeOut: false,
-    dialogOperate: false,
-    dialogLicense: false,
     isKickedOut:false,
-    inactivated:(sessionStorage.getItem('inactivated') == undefined ? false : JSON.parse(sessionStorage.getItem('inactivated'))),
-    username: sessionStorage.getItem('username'),
+    // inactivated:(sessionStorage.getItem('inactivated') == undefined ? false : JSON.parse(sessionStorage.getItem('inactivated'))),
+    username: localStorage.getItem('username') || '',
     token: sessionStorage.getItem('token'),
-    clustername: sessionStorage.getItem('clustername'),
-    clusteruuid: sessionStorage.getItem('clusteruuid'),
-    clusterid: parseInt(sessionStorage.getItem('clusterid')),
-    isroot: (parseInt(sessionStorage.getItem('isRoot')) == 1 ? true : false),
+    // isroot: (parseInt(sessionStorage.getItem('isRoot')) == 1 ? true : false),
     exptime:parseInt(sessionStorage.getItem('exptime')),
     clientSt:parseInt(sessionStorage.getItem('clientSt')),
-    intervaltime: 2000,
     errorCount:0,
     socket:null,
     styles:'min-height:'+(window.innerHeight-84)+'px',
-    volumename:sessionStorage.getItem('volumename') || '',
-    poolname:sessionStorage.getItem('poolname') || '',
-    strategyname:sessionStorage.getItem('strategyname') || '',
-    namespace:sessionStorage.getItem('namespace') || ''
+    // volumename:sessionStorage.getItem('volumename') || '',
+    // poolname:sessionStorage.getItem('poolname') || '',
+    // strategyname:sessionStorage.getItem('strategyname') || '',
+    // namespace:sessionStorage.getItem('namespace') || ''
+
+    //用户角色 1>核心企业 2>项目公司 3>供应商 4>保理商 5>资金方
+    user_role:parseInt(localStorage.getItem('user_role'))
 }
 // 定义所需的 mutations   可以在其他组件修改变量
 const mutations = {
@@ -39,9 +36,6 @@ const mutations = {
     updateCluster(state) {
         state.username = sessionStorage.getItem('username');
         state.token = sessionStorage.getItem('token');
-        state.clustername = sessionStorage.getItem('clustername');
-        state.clusteruuid = sessionStorage.getItem('clusteruuid');
-        state.clusterid = parseInt(sessionStorage.getItem('clusterid'));
         state.isroot = (parseInt(sessionStorage.getItem('isRoot')) == 1 ? true : false);
         state.exptime = parseInt(sessionStorage.getItem('exptime'));
         state.clientSt = parseInt(sessionStorage.getItem('clientSt'));

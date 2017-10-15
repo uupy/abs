@@ -81,10 +81,10 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // debugger
     if (to.path == '/login') {
-        sessionStorage.removeItem('username');
-        sessionStorage.clear();
+        localStorage.removeItem('username');
+        localStorage.clear();
     }
-    let user = sessionStorage.getItem('username');
+    let user = localStorage.getItem('username');
     if (!user && to.path != '/login') {
         next({
             path: '/login'

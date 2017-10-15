@@ -25,7 +25,7 @@
                 <el-table-column prop="principal" label="负责人"></el-table-column>
                 <el-table-column prop="position" label="负责人职位"></el-table-column>
                 <el-table-column prop="status" label="企业状态">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
                     </template>
                 </el-table-column>
