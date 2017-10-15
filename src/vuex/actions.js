@@ -2,6 +2,10 @@
 export const updateCluster = ({commit}) => {
     commit('updateCluster')
 }
+//updateBaseInfo
+export const updateBaseInfo = ({commit}) => {
+    commit('updateBaseInfo')
+}
 //createSocket
 export const createSocket = ({commit}) => {
     commit('createSocket')

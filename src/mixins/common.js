@@ -139,6 +139,7 @@ export default {
         },
         ...mapActions([
             'setState',
+            'updateBaseInfo',
             'updateCluster',
             'updateCount',
             'createSocket',

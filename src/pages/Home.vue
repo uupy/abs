@@ -22,10 +22,10 @@
 			<aside class="panel-aside">
 				<div id="panel-aside" class="optiscroll">
 					<el-menu :default-active="$route.path" class="el-menu-vertical-demo" :unique-opened="false" router>
-						<template v-for="(item,index) in $router.options.routes" v-if="isroot ? (!item.hidden&&!item.isuser) : (!item.hidden&&!item.isroot)">
+						<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 							<el-submenu :index="index+''" v-if="!item.leaf">
 								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-								<el-menu-item v-for="(child,idx) in item.children" :index="child.path" v-if="isroot ? !child.hidden : (!child.hidden && !child.isroot)" :key="idx">{{child.name}}</el-menu-item>
+								<el-menu-item v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[user_role]">{{child.name}}</el-menu-item>
 							</el-submenu>
 							<el-menu-item v-if="item.leaf && item.children.length > 0" :index="item.children[0].path">
 								<i :class="item.iconCls"></i>{{item.children[0].name}}
@@ -269,6 +269,8 @@
 		mounted() {
 			const self = this;
 			// self.getSocket();
+			console.log(this.$router.options.routes);
+			console.log(this.user_role);
 			self.$nextTick(()=>{
 				setTimeout(function(){
 					const oSide = document.querySelector('#panel-aside');

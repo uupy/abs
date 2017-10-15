@@ -13,19 +13,19 @@ const state = {
     onLoading: false,
     isTimeOut: false,
     isKickedOut:false,
-    // inactivated:(sessionStorage.getItem('inactivated') == undefined ? false : JSON.parse(sessionStorage.getItem('inactivated'))),
+    // inactivated:(localStorage.getItem('inactivated') == undefined ? false : JSON.parse(localStorage.getItem('inactivated'))),
     username: localStorage.getItem('username') || '',
-    token: sessionStorage.getItem('token'),
-    // isroot: (parseInt(sessionStorage.getItem('isRoot')) == 1 ? true : false),
-    exptime:parseInt(sessionStorage.getItem('exptime')),
-    clientSt:parseInt(sessionStorage.getItem('clientSt')),
+    token: localStorage.getItem('token'),
+    // isroot: (parseInt(localStorage.getItem('isRoot')) == 1 ? true : false),
+    exptime:parseInt(localStorage.getItem('exptime')),
+    clientSt:parseInt(localStorage.getItem('clientSt')),
     errorCount:0,
     socket:null,
     styles:'min-height:'+(window.innerHeight-84)+'px',
-    // volumename:sessionStorage.getItem('volumename') || '',
-    // poolname:sessionStorage.getItem('poolname') || '',
-    // strategyname:sessionStorage.getItem('strategyname') || '',
-    // namespace:sessionStorage.getItem('namespace') || ''
+    // volumename:localStorage.getItem('volumename') || '',
+    // poolname:localStorage.getItem('poolname') || '',
+    // strategyname:localStorage.getItem('strategyname') || '',
+    // namespace:localStorage.getItem('namespace') || ''
 
     //用户角色 1>核心企业 2>项目公司 3>供应商 4>保理商 5>资金方
     user_role:parseInt(localStorage.getItem('user_role'))
@@ -34,11 +34,18 @@ const state = {
 const mutations = {
     //更新集群信息
     updateCluster(state) {
-        state.username = sessionStorage.getItem('username');
-        state.token = sessionStorage.getItem('token');
-        state.isroot = (parseInt(sessionStorage.getItem('isRoot')) == 1 ? true : false);
-        state.exptime = parseInt(sessionStorage.getItem('exptime'));
-        state.clientSt = parseInt(sessionStorage.getItem('clientSt'));
+        state.username = localStorage.getItem('username');
+        state.token = localStorage.getItem('token');
+        state.isroot = (parseInt(localStorage.getItem('isRoot')) == 1 ? true : false);
+        state.exptime = parseInt(localStorage.getItem('exptime'));
+        state.clientSt = parseInt(localStorage.getItem('clientSt'));
+    },
+    updateBaseInfo(state) {
+        state.username = localStorage.getItem('username');
+        state.token = localStorage.getItem('token');
+        state.user_role = parseInt(localStorage.getItem('user_role'));
+        state.exptime = parseInt(localStorage.getItem('exptime'));
+        state.clientSt = parseInt(localStorage.getItem('clientSt'));
     },
     updateCount(state,status){
         if(status){

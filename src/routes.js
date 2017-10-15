@@ -6,7 +6,8 @@ const Home = resolve => require(['./pages/Home.vue'], resolve)
 //企业管理
 const EnterpriseViews = resolve => require(['./pages/enterprise/views.vue'],resolve)
 const EnterpriseList = resolve => require(['./pages/enterprise/list.vue'],resolve)
-const Service = resolve => require(['./pages/enterprise/Service.vue'],resolve)
+const EnterpriseSupplier = resolve => require(['./pages/enterprise/supplier.vue'],resolve)
+const EnterpriseCapital = resolve => require(['./pages/enterprise/capital.vue'],resolve)
 
 //协议管理
 const ProtocolList = resolve => require(['./pages/protocol/list.vue'],resolve)
@@ -25,12 +26,14 @@ let routes = [
         path: '/login',
         component: Login,
         name: '',
+        leaf:true,
         hidden: true
     },
     {
         path: '/404',
         component: NotFound,
         name: '',
+        leaf:true,
         hidden: true
     },
     // {
@@ -67,19 +70,51 @@ let routes = [
             {
                 path: '/pages/enterprise',
                 component: EnterpriseList,
-                name: '客户列表'
+                name: '项目公司',
+                show:{
+                    1:true,
+                    2:false,
+                    3:false,
+                    4:true,
+                    5:false,
+                }
+            },
+            {
+                path: '/pages/enterprise/supplier',
+                component: EnterpriseSupplier,
+                name: '供应商',
+                show:{
+                    1:true,
+                    2:false,
+                    3:false,
+                    4:true,
+                    5:false,
+                }
+            },
+            {
+                path: '/pages/enterprise/capital',
+                component: EnterpriseCapital,
+                name: '资金方',
+                show:{
+                    1:false,
+                    2:false,
+                    3:false,
+                    4:true,
+                    5:false,
+                }
             },
             {
                 path: '/pages/enterprise/views',
                 component: EnterpriseViews,
                 name: '企业信息',
-                hidden:true
+                show:{
+                    1:false,
+                    2:true,
+                    3:true,
+                    4:false,
+                    5:true,
+                }
             },
-            {
-                path: '/pages/service',
-                component: Service,
-                name: '服务方案'
-            }
         ]
     },
     {
@@ -91,12 +126,26 @@ let routes = [
             {
                 path: '/pages/protocol/list',
                 component: ProtocolList,
-                name: '协议清单'
+                name: '协议清单',
+                show:{
+                    1:true,
+                    2:true,
+                    3:true,
+                    4:true,
+                    5:true,
+                }
             },
             {
                 path: '/pages/protocol/stamped',
                 component: ProtocolStamped,
-                name: '已盖章协议'
+                name: '已盖章协议',
+                show:{
+                    1:true,
+                    2:true,
+                    3:true,
+                    4:true,
+                    5:true,
+                }
             }
         ]
     },
@@ -109,17 +158,32 @@ let routes = [
             {
                 path: '/pages/assets/list',
                 component: AssetsList,
-                name: '资产列表'
+                name: '资产列表',
+                show:{
+                    1:true,
+                    2:true,
+                    3:true,
+                    4:true,
+                    5:true,
+                }
             },
             {
                 path: '/pages/assets/statistics',
                 component: AssetsStatistics,
-                name: '数据统计'
+                name: '数据统计',
+                show:{
+                    1:true,
+                    2:true,
+                    3:true,
+                    4:true,
+                    5:true,
+                }
             }
         ]
     },
     {
         path: '*',
+        leaf:true,
         hidden: true,
         redirect: {
             path: '/404'

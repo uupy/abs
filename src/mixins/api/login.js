@@ -30,20 +30,24 @@ export default{
 
 	            //模拟登录
 	            const users = {
-	            	admin:{password:'admin',role:1},
-	            	user1:{password:'user1',role:2},
-	            	user2:{password:'user2',role:3},
-	            	user3:{password:'user3',role:4},
-	            	user4:{password:'user4',role:5},
+	            	user1:{password:'user1',role:1},
+	            	user2:{password:'user2',role:2},
+	            	user3:{password:'user3',role:3},
+	            	admin:{password:'admin',role:4},
+	            	user5:{password:'user5',role:5},
 	            };
 	            let login_status = false;
 	            let login_role = 1;
 	            if(users[self.loginForm.account]){
 	            	if(self.loginForm.password === users[self.loginForm.account].password){
-	            		console.log(users[self.loginForm.account].role)
 	            		localStorage.setItem('username',self.loginForm.account);
 	            		localStorage.setItem('user_role',users[self.loginForm.account].role);
-	            		self.$router.push({ path: '/pages/enterprise' });
+	            		self.updateBaseInfo();
+	            		if(users[self.loginForm.account].role === 1 || users[self.loginForm.account].role === 4){
+	            			self.$router.push({ path: '/pages/enterprise' });
+	            		}else{	
+	            			self.$router.push({ path: '/pages/enterprise/views' });
+	            		}
 	            	}else{
 	            		self.$message({
 	            		    message: '密码有误！',

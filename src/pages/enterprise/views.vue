@@ -1,5 +1,8 @@
 <template>
     <section class="panel-main" :style="styles">
+        <el-row class="toolbar">
+            <span class="title" style="font-size:16px;">{{enterprise_name}}</span>
+        </el-row>
         <el-tabs v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="联系方式" name="contact_information">
                 <el-row>
@@ -25,14 +28,6 @@
                             <span>{{contact_form.address}}</span>
                         </p>
                         <p>
-                            <label>项目公司：</label>
-                            <span>{{contact_form.company}}</span>
-                        </p>
-                        <p>
-                            <label>项目名称：</label>
-                            <span>{{contact_form.project}}</span>
-                        </p>
-                        <p>
                             <label>所属区域：</label>
                             <span>{{contact_form.area}}</span>
                         </p>
@@ -47,17 +42,20 @@
                         <el-table :data="contact_persons" class="table-list">
                             <el-table-column prop="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="name" label="联系人姓名"></el-table-column>
-                            <el-table-column prop="role" label="个人角色"></el-table-column>
+                            <el-table-column prop="role" label="签约角色"></el-table-column>
+                            <el-table-column prop="authority" label="操作权限"></el-table-column>
                             <el-table-column prop="position" label="职位"></el-table-column>
                             <el-table-column prop="tel" label="联系电话"></el-table-column>
+                            <el-table-column prop="weixin" label="微信号"></el-table-column>
                             <el-table-column prop="qq" label="QQ号"></el-table-column>
                             <el-table-column prop="email" label="邮箱"></el-table-column>
-                            <el-table-column prop="address" label="联系地址"></el-table-column>
+                            <el-table-column prop="status" label="认证状态" width="100">
+                                <template slot-scope="scope">
+                                    <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '未认证' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
+                                </template>
+                            </el-table-column>
                             <el-table-column inline-template :context="_self" label="操作" width="200">
                                 <span>
-                                    <!-- <button :class="['vs-btn','vs-btn-del']" @click.stop="handleDelContact(row)">
-                                        <i class="im-icon-del danger"></i>
-                                    </button> -->
                                     <span class="table-btn health">个人认证</span>
                                     <span class="table-btn health">授权书</span>
                                     <span class="table-btn danger" @click.stop="handleDelContact(row)">删除</span>
@@ -67,7 +65,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="基本信息" name="base_information">
+            <el-tab-pane label="基本信息" name="base_information" v-if="user_role === 4">
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">工商信息</span>
@@ -201,7 +199,11 @@
                                 <el-table-column prop="name" label="资料名称"></el-table-column>
                                 <el-table-column prop="range" label="收集范围"></el-table-column>
                                 <el-table-column prop="modus" label="提交形式"></el-table-column>
-                                <el-table-column prop="remark" label="功能键设置备注"></el-table-column>
+                                <el-table-column prop="status" label="状态" width="100">
+                                    <template slot-scope="scope">
+                                        <el-tag :type="scope.row.status == '已上传' ? 'success' : (scope.row.status == '未上传' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
+                                    </template>
+                                </el-table-column>
                                 <el-table-column inline-template :context="_self" label="操作" width="160">
                                     <span>
                                         <button :class="['vs-btn','vs-btn-del']">
@@ -232,12 +234,6 @@
                 <el-form-item label="办公地址" prop="address">
                     <el-input type="textarea" v-model="contact_form.address" placeholder="请输入办公地址"></el-input>
                 </el-form-item>
-                <el-form-item label="项目公司" prop="company">
-                    <el-input v-model="contact_form.company" placeholder="请输入项目公司"></el-input>
-                </el-form-item>
-                <el-form-item label="项目名称" prop="project">
-                    <el-input v-model="contact_form.project" placeholder="请输入项目名称"></el-input>
-                </el-form-item>
                 <el-form-item label="所属区域" prop="area">
                     <el-input type="textarea" v-model="contact_form.area" placeholder="请输入所属区域"></el-input>
                 </el-form-item>
@@ -251,9 +247,14 @@
         <!-- 对话框 -->
         <el-dialog size="tiny" title="新增联系人" v-model="dialog_add_contact" @close="cancelAddContact('addForm')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
-                <el-form-item label="个人角色" prop="role">
-                    <el-select v-model="addForm.role" placeholder="请选择个人角色">
+                <el-form-item label="签约角色" prop="role">
+                    <el-select v-model="addForm.role" placeholder="请选择签约角色">
                         <el-option v-for="(item,index) in roles" :label="item.label" :value="item.value" :key="index"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="操作权限" prop="authority">
+                    <el-select v-model="addForm.authority" placeholder="请选择操作权限">
+                        <el-option v-for="(item,index) in authorities" :label="item.label" :value="item.value" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="职位" prop="position">
@@ -271,9 +272,6 @@
                 <el-form-item label="邮箱" prop="email">
                     <el-input v-model="addForm.email" placeholder="请输入邮箱"></el-input>
                 </el-form-item>
-                <el-form-item label="联系地址" prop="address">
-                    <el-input type="textarea" v-model="addForm.address" placeholder="请输入联系地址"></el-input>
-                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="confirmAddContact('addForm')">确 定</el-button>
@@ -289,6 +287,7 @@
     export default {
         data() {
             return {
+                enterprise_name:'碧桂园控股有限公司',
                 filter_name:'',
                 active_name:'contact_information',
                 roles:[
@@ -296,6 +295,10 @@
                     {label:'代理人1',value:'agent1'},
                     {label:'代理人2',value:'agent2'},
                     {label:'对接人',value:'docking'}
+                ],
+                authorities:[
+                    {label:'经办',value:1},
+                    {label:'复核',value:2}
                 ],
                 data_pagenum:1,
                 data_pagesize:10,
@@ -306,28 +309,28 @@
                         name:'企业法人营业执照',
                         range:'',
                         modus:'原件拍照/扫描',
-                        remark:'可上传主要图片格式与PDF格式'
+                        status:'已上传'
                     },
                     {
                         index:2,
                         name:'公司章程及修正案',
                         range:'',
                         modus:'原件拍照/扫描',
-                        remark:'可上传主要图片格式与PDF格式'
+                        status:'未上传'
                     },
                     {
                         index:3,
                         name:'身份证',
                         range:'法定代表人',
                         modus:'原件拍照/扫描',
-                        remark:'可上传主要图片格式与PDF格式'
+                        status:'已上传'
                     },
                     {
                         index:4,
                         name:'与买方合同协议',
                         range:'包含所有与买方签署的协议及其附件',
                         modus:'原件拍照/扫描',
-                        remark:'可上传主要图片格式与PDF格式'
+                        status:'未上传'
                     }
                 ],
                 contact_pagenum:1,
@@ -340,9 +343,11 @@
                         role:'企业法人',
                         position:'CEO',
                         tel:'18812345678',
+                        weixin:'weixin',
                         qq:'66666',
                         email:'66666@qq.com',
-                        address:'beijing'
+                        status:'已认证',
+                        authority:'经办'
                     },
                     {
                         index:2,
@@ -350,9 +355,11 @@
                         role:'代理人1',
                         position:'CEO',
                         tel:'18812345678',
+                        weixin:'weixin',
                         qq:'66666',
                         email:'66666@qq.com',
-                        address:'beijing'
+                        status:'已认证',
+                        authority:'复核'
                     },
                     {
                         index:3,
@@ -360,9 +367,11 @@
                         role:'代理人2',
                         position:'CEO',
                         tel:'18812345678',
+                        weixin:'weixin',
                         qq:'66666',
                         email:'66666@qq.com',
-                        address:'beijing'
+                        status:'未认证',
+                        authority:'经办'
                     }
                 ],
                 dialog_add_contact:false,
@@ -374,15 +383,13 @@
                     weixin:'',
                     qq:'',
                     email:'',
-                    address:'',
+                    authority:1,
                 },
                 contact_form:{
                     tel:'666666',
                     email:'123456@qq.com',
                     links:'https://www.baidu.com/',
                     address:'深圳市福田区',
-                    company:'碧桂园控股有限公司',
-                    project:'123',
                     area:'深圳市福田区',
                 },
                 edit_rules:{
