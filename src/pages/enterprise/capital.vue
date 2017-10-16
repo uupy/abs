@@ -6,6 +6,10 @@
                 <el-select size="small" v-model="enterprise_status" placeholder="请选择">
                     <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>
+                <label style="padding-left:10px;">企业角色：</label>
+                <el-select size="small" v-model="enterprise_role" placeholder="请选择">
+                    <el-option v-for="(item,value) in enterprise_roles" :label="item" :value="value" :key="index"></el-option>
+                </el-select>
             </div>
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
@@ -18,7 +22,11 @@
                 <el-table-column prop="index" label="序号" width="90"></el-table-column>
                 <el-table-column prop="id" label="企业编号"></el-table-column>
                 <el-table-column prop="name" label="企业名称"></el-table-column>
-                <el-table-column prop="role" label="企业角色"></el-table-column>
+                <el-table-column prop="role" label="企业角色">
+                    <template slot-scope="scope">
+                        <span>{{enterprise_roles[scope.row.role]}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="principal" label="负责人"></el-table-column>
                 <el-table-column prop="position" label="负责人职位"></el-table-column>
                 <el-table-column prop="area" label="所属区域"></el-table-column>
@@ -39,6 +47,11 @@
         <!-- 对话框 -->
         <el-dialog size="tiny" title="新增资金方" v-model="dialog_add_client" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
+                <el-form-item label="企业角色" prop="role">
+                    <el-select v-model="add_form.role" placeholder="请选择企业角色">
+                        <el-option v-for="(item,value) in enterprise_roles" :label="item" :value="value" :key="index" v-if="value !== '0'"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="企业名称" prop="name">
                     <el-input v-model="add_form.name" placeholder="请输入企业名称"></el-input>
                 </el-form-item>
@@ -71,13 +84,13 @@
                     {label:'已认证',value:1},
                     {label:'创建中',value:2},
                 ],
-                enterprise_role:0,
-                enterprise_roles:[
-                    {label:'全部',value:0},
-                    {label:'核心企业',value:1},
-                    {label:'集团子公司',value:2},
-                    {label:'项目公司',value:3},
-                ],
+                enterprise_role:'0',
+                enterprise_roles:{
+                    0:'全部',
+                    1:'银行',
+                    2:'保理公司',
+                    3:'SPV公司'
+                },
                 clients_pagenum:10,
                 clients_pagesize:10,
                 clients_total:10,
@@ -86,7 +99,7 @@
                         index:1,
                         id:'01',
                         name:'资金方1',
-                        role:'资金方',
+                        role:1,
                         principal:'张三',
                         position:'总经理',
                         area:'深圳市福田区',
@@ -96,7 +109,7 @@
                         index:2,
                         id:'02',
                         name:'资金方2',
-                        role:'资金方',
+                        role:1,
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -106,7 +119,7 @@
                         index:3,
                         id:'01',
                         name:'资金方3',
-                        role:'资金方',
+                        role:2,
                         principal:'张三',
                         position:'总经理',
                         area:'深圳市福田区',
@@ -116,7 +129,7 @@
                         index:4,
                         id:'02',
                         name:'资金方4',
-                        role:'资金方',
+                        role:1,
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -126,7 +139,7 @@
                         index:5,
                         id:'01',
                         name:'资金方5',
-                        role:'资金方',
+                        role:2,
                         principal:'张三',
                         position:'总经理',
                         area:'深圳市福田区',
@@ -136,7 +149,7 @@
                         index:6,
                         id:'02',
                         name:'资金方6',
-                        role:'资金方',
+                        role:3,
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -146,7 +159,7 @@
                         index:7,
                         id:'01',
                         name:'资金方7',
-                        role:'资金方',
+                        role:2,
                         principal:'张三',
                         position:'总经理',
                         area:'深圳市福田区',
@@ -156,7 +169,7 @@
                         index:8,
                         id:'02',
                         name:'资金方8',
-                        role:'资金方',
+                        role:3,
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -166,7 +179,7 @@
                         index:9,
                         id:'01',
                         name:'资金方9',
-                        role:'资金方',
+                        role:3,
                         principal:'张三',
                         position:'总经理',
                         area:'深圳市福田区',
@@ -176,7 +189,7 @@
                         index:10,
                         id:'02',
                         name:'资金方10',
-                        role:'资金方',
+                        role:2,
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -186,7 +199,7 @@
                 dialog_add_client:false,
                 add_form:{
                     name:'',
-                    role:1,
+                    role:'1',
                     principal:'',
                     position:''
                 },

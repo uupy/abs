@@ -36,14 +36,22 @@
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">联系人列表</span>
-                        <span class="subtxt" @click="dialog_add_contact = true"><i class="im-icon-addbtn"></i>新增联系人</span>
+                        <span class="subtxt" @click="dialog_add_contact = true" v-if="user_role === 1 || user_role === 4"><i class="im-icon-addbtn"></i>新增联系人</span>
                     </el-col>
                     <el-col :span="24">
                         <el-table :data="contact_persons" class="table-list">
                             <el-table-column prop="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="name" label="联系人姓名"></el-table-column>
-                            <el-table-column prop="role" label="签约角色"></el-table-column>
-                            <el-table-column prop="authority" label="操作权限"></el-table-column>
+                            <el-table-column prop="role" label="签约角色">
+                                <template slot-scope="scope">
+                                    <span>{{contact_roles[scope.row.role]}}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="authority" label="操作权限">
+                                <template slot-scope="scope">
+                                    <span>{{authorities[scope.row.authority]}}</span>
+                                </template>
+                            </el-table-column>
                             <el-table-column prop="position" label="职位"></el-table-column>
                             <el-table-column prop="tel" label="联系电话"></el-table-column>
                             <el-table-column prop="weixin" label="微信号"></el-table-column>
@@ -54,11 +62,11 @@
                                     <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '未认证' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
                                 </template>
                             </el-table-column>
-                            <el-table-column inline-template :context="_self" label="操作" width="200">
+                            <el-table-column inline-template :context="_self" label="操作" width="120">
                                 <span>
-                                    <span class="table-btn health">个人认证</span>
-                                    <span class="table-btn health">授权书</span>
+                                    <!-- <span class="table-btn health">个人认证</span> -->
                                     <span class="table-btn danger" @click.stop="handleDelContact(row)">删除</span>
+                                    <span class="table-btn health" v-if="row.role === 2 || row.role === 3">授权</span>
                                 </span>
                             </el-table-column>
                         </el-table>
@@ -192,6 +200,10 @@
                     <el-row>
                         <el-col class="toolbar toolbar-top">
                             <span class="title">标准资料清单</span>
+                            <!-- <span class="subtxt" @click="dialog_add_contact = true" v-if="user_role === 1 || user_role === 4"><i class="im-icon-addbtn"></i>新增资料</span> -->
+                            <div class="f-right" v-if="user_role === 1 || user_role === 4">
+                                <el-button size="small" type="primary" @click="dialog_add_data = true"><i class="el-icon-plus"></i>新增资料</el-button>
+                            </div>
                         </el-col>
                         <el-col :span="24">
                             <el-table :data="data_list" class="table-list">
@@ -206,10 +218,8 @@
                                 </el-table-column>
                                 <el-table-column inline-template :context="_self" label="操作" width="160">
                                     <span>
-                                        <button :class="['vs-btn','vs-btn-del']">
-                                            <el-button size="small">上传</el-button>
-                                            <el-button size="small">下载</el-button>
-                                        </button>
+                                        <el-button size="small" v-if="user_role === 1 || user_role === 4">上传</el-button>
+                                        <el-button size="small">下载</el-button>
                                     </span>
                                 </el-table-column>
                             </el-table>
@@ -249,28 +259,29 @@
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
                 <el-form-item label="签约角色" prop="role">
                     <el-select v-model="addForm.role" placeholder="请选择签约角色">
-                        <el-option v-for="(item,index) in roles" :label="item.label" :value="item.value" :key="index"></el-option>
+                        <el-option v-for="(item,value) in contact_roles" :label="item" :value="value" :key="value"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="操作权限" prop="authority">
-                    <el-select v-model="addForm.authority" placeholder="请选择操作权限">
-                        <el-option v-for="(item,index) in authorities" :label="item.label" :value="item.value" :key="index"></el-option>
-                    </el-select>
+                    <el-radio v-for="(item,value) in authorities" class="radio" v-model="addForm.authority" :label="value" :key="value">{{item}}</el-radio>
+                </el-form-item>
+                <el-form-item label="姓名" prop="name">
+                    <el-input v-model="addForm.name" placeholder="请输入联系人姓名"></el-input>
                 </el-form-item>
                 <el-form-item label="职位" prop="position">
-                    <el-input v-model="addForm.position" placeholder="请输入职位"></el-input>
+                    <el-input v-model="addForm.position" placeholder="请输入联系人职位"></el-input>
                 </el-form-item>
                 <el-form-item label="联系电话" prop="tel">
-                    <el-input v-model="addForm.tel" placeholder="请输入联系电话"></el-input>
+                    <el-input v-model="addForm.tel" placeholder="请输入联系人电话"></el-input>
                 </el-form-item>
                 <el-form-item label="微信号" prop="weixin">
-                    <el-input v-model="addForm.weixin" placeholder="请输入微信号"></el-input>
+                    <el-input v-model="addForm.weixin" placeholder="请输入联系人微信号"></el-input>
                 </el-form-item>
                 <el-form-item label="QQ号" prop="qq">
-                    <el-input v-model="addForm.qq" placeholder="请输入QQ号"></el-input>
+                    <el-input v-model="addForm.qq" placeholder="请输入联系人QQ号"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="addForm.email" placeholder="请输入邮箱"></el-input>
+                    <el-input v-model="addForm.email" placeholder="请输入联系人邮箱"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -290,16 +301,43 @@
                 enterprise_name:'碧桂园控股有限公司',
                 filter_name:'',
                 active_name:'contact_information',
-                roles:[
-                    {label:'企业法人',value:'corporate'},
-                    {label:'代理人1',value:'agent1'},
-                    {label:'代理人2',value:'agent2'},
-                    {label:'对接人',value:'docking'}
-                ],
-                authorities:[
-                    {label:'经办',value:1},
-                    {label:'复核',value:2}
-                ],
+                contact_roles:{
+                    1:'企业法人',
+                    2:'代理人1',
+                    3:'代理人2',
+                    4:'对接人'
+                },
+                authorities:{
+                    0:'无',
+                    1:'经办',
+                    2:'复核'
+                },
+                dialog_add_contact:false,
+                dialog_edit_contact:false,
+                dialog_add_data:false,
+                addForm:{
+                    name:'',
+                    role:'1',
+                    authority:'0',
+                    position:'',
+                    tel:'',
+                    weixin:'',
+                    qq:'',
+                    email:'',
+                },
+                contact_form:{
+                    tel:'666666',
+                    email:'123456@qq.com',
+                    links:'https://www.baidu.com/',
+                    address:'深圳市福田区',
+                    area:'深圳市福田区',
+                },
+                edit_rules:{
+
+                },
+                rules:{
+                    
+                },
                 data_pagenum:1,
                 data_pagesize:10,
                 data_total:10,
@@ -340,64 +378,52 @@
                     {
                         index:1,
                         name:'张三',
-                        role:'企业法人',
+                        role:1,
+                        authority:0,
                         position:'CEO',
                         tel:'18812345678',
                         weixin:'weixin',
                         qq:'66666',
                         email:'66666@qq.com',
                         status:'已认证',
-                        authority:'经办'
                     },
                     {
                         index:2,
                         name:'李四',
-                        role:'代理人1',
+                        role:2,
+                        authority:1,
                         position:'CEO',
                         tel:'18812345678',
                         weixin:'weixin',
                         qq:'66666',
                         email:'66666@qq.com',
-                        status:'已认证',
-                        authority:'复核'
+                        status:'已认证'
                     },
                     {
                         index:3,
                         name:'王五',
-                        role:'代理人2',
+                        role:3,
+                        authority:2,
                         position:'CEO',
                         tel:'18812345678',
                         weixin:'weixin',
                         qq:'66666',
                         email:'66666@qq.com',
-                        status:'未认证',
-                        authority:'经办'
+                        status:'未认证'
+                    },
+                    {
+                        index:4,
+                        name:'赵六',
+                        role:4,
+                        authority:2,
+                        position:'CEO',
+                        tel:'18812345678',
+                        weixin:'weixin',
+                        qq:'66666',
+                        email:'66666@qq.com',
+                        status:'未认证'
                     }
                 ],
-                dialog_add_contact:false,
-                dialog_edit_contact:false,
-                addForm:{
-                    role:'corporate',
-                    position:'',
-                    tel:'',
-                    weixin:'',
-                    qq:'',
-                    email:'',
-                    authority:1,
-                },
-                contact_form:{
-                    tel:'666666',
-                    email:'123456@qq.com',
-                    links:'https://www.baidu.com/',
-                    address:'深圳市福田区',
-                    area:'深圳市福田区',
-                },
-                edit_rules:{
-
-                },
-                rules:{
-                    
-                },
                 business_infos:[
                     {
                         label1:'统一社会信用代码',
