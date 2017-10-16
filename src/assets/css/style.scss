@@ -7,7 +7,7 @@ $boxSizes: 60px 160px;
 $grapSizes: 5px 10px 20px;
 $fontSizes: 12px 14px 16px 18px 36px;
 $fontColors: #6ac09f #222 #666 #ea566d #999 #ff0000 #eb6100;
-$bgColors: #fff #333542;
+$bgColors: #6ac09f #333542;
 $tableBg:#f2f9fc;
 @mixin baseFront {
 	font-size: nth($fontSizes, 2);

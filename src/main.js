@@ -2,7 +2,7 @@ import babelpolyfill from 'babel-polyfill'
 import Vue from 'vue'
 import App from './App'
 // import ElementUI from 'element-ui'
-import {Row,Col,Card,Button,Radio,RadioGroup,Checkbox,CheckboxGroup,Input,Select,Option,Switch,Form,FormItem,Table,TableColumn,Tag,Pagination,Message,MessageBox,Menu,Submenu,MenuItem,Tabs,TabPane,Breadcrumb,BreadcrumbItem,DatePicker,Dropdown,DropdownMenu,DropdownItem,Dialog,Tooltip} from 'element-ui'
+import {Row,Col,Upload,Card,Button,Radio,RadioGroup,Checkbox,CheckboxGroup,Input,Select,Option,Switch,Form,FormItem,Table,TableColumn,Tag,Pagination,Message,MessageBox,Menu,Submenu,MenuItem,Tabs,TabPane,Breadcrumb,BreadcrumbItem,DatePicker,Dropdown,DropdownMenu,DropdownItem,Dialog,Tooltip} from 'element-ui'
 // import 'element-ui/lib/theme-default/index.css'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
@@ -29,6 +29,7 @@ Vue.use(Toast)
 
 //ElementUI
 Vue.use(Row)
+Vue.use(Upload)
 Vue.use(Col)
 Vue.use(Card)
 Vue.use(Button)
