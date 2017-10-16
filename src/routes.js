@@ -11,6 +11,7 @@ const EnterpriseCapital = resolve => require(['./pages/enterprise/capital.vue'],
 
 //协议管理
 const ProtocolList = resolve => require(['./pages/protocol/list.vue'],resolve)
+const ProtocolDetail = resolve => require(['./pages/protocol/protocol-detail.vue'],resolve)
 const ProtocolStamped = resolve => require(['./pages/protocol/stamped.vue'],resolve)
 
 //资产管理
@@ -127,6 +128,19 @@ let routes = [
                 path: '/pages/protocol/list',
                 component: ProtocolList,
                 name: '协议清单',
+                show:{
+                    1:true,
+                    2:true,
+                    3:true,
+                    4:true,
+                    5:true,
+                }
+            },
+            {
+                path: '/pages/protocol/list/:protocolId',
+                component: ProtocolDetail,
+                name: '协议详情',
+                hidden: true,
                 show:{
                     1:true,
                     2:true,
