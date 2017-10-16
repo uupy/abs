@@ -249,7 +249,7 @@
             },
             checkView(row){
                 const self = this;
-                self.$router.push({path:'/pages/protocol/list/'+row.id})
+                self.$router.push({path:'/pages/protocol/list/'+row.id,params:{'protocolId':row.id}})
             },
             clearFilter(type){
                 const self = this;

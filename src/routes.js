@@ -71,7 +71,7 @@ let routes = [
             {
                 path: '/pages/enterprise',
                 component: EnterpriseList,
-                name: '项目公司',
+                name: '核心企业',
                 show:{
                     1:true,
                     2:false,
@@ -95,7 +95,7 @@ let routes = [
             {
                 path: '/pages/enterprise/capital',
                 component: EnterpriseCapital,
-                name: '资金方',
+                name: '合作方',
                 show:{
                     1:false,
                     2:false,
