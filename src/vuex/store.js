@@ -28,7 +28,8 @@ const state = {
     // namespace:localStorage.getItem('namespace') || ''
 
     //用户角色 1>核心企业 2>项目公司 3>供应商 4>保理商 5>资金方
-    user_role:parseInt(localStorage.getItem('user_role'))
+    user_role:parseInt(localStorage.getItem('user_role')),
+    enterprise_menu_type:0
 }
 // 定义所需的 mutations   可以在其他组件修改变量
 const mutations = {

@@ -10,6 +10,7 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
+                <el-button size="small" type="primary" @click="dialog_add_client = true" v-if="user_role === 4"><i class="el-icon-plus"></i>新增</el-button>
             </div>
         </el-row>
         <el-row :span="24">
@@ -29,11 +30,31 @@
                 <el-table-column inline-template :context="_self" label="操作" width="140">
                     <span>
                         <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
+                        <span class="table-btn danger" v-if="user_role === 4">删除</span>
                     </span>
                 </el-table-column>
             </el-table>
             <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
         </el-row>
+        <!-- 对话框 -->
+        <el-dialog size="tiny" title="新增供应商" v-model="dialog_add_client" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
+            <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
+                <el-form-item label="企业名称" prop="name">
+                    <el-input v-model="add_form.name" placeholder="请输入企业名称"></el-input>
+                </el-form-item>
+                <el-form-item label="负责人" prop="principal">
+                    <el-input v-model="add_form.principal" placeholder="请输入负责人"></el-input>
+                </el-form-item>
+                <el-form-item label="负责人职位" prop="position">
+                    <el-input v-model="add_form.position" placeholder="请输入负责人职位"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary">确 认</el-button>
+                <el-button @click="cancelAddClient('add_form')">取 消</el-button>
+            </div>
+            <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
+        </el-dialog>
     </section>
 </template>
 <script>
@@ -153,7 +174,15 @@
                         area:'深圳市福田区',
                         status:'创建中'
                     }
-                ]
+                ],
+                dialog_add_client:false,
+                add_form:{
+                    name:'',
+                    role:'1',
+                    principal:'',
+                    position:''
+                },
+                rules:{}
             } 
         },
         mixins:[Common,Clients],
@@ -173,7 +202,14 @@
                 
             },
             checkView(row){
+                this.setState({
+                    attr:'enterprise_menu_type',
+                    val:2
+                });
                 this.$router.push({ path: '/pages/enterprise/views' });
+            },
+            cancelAddClient(){
+                this.dialog_add_client = false;
             },
             enterKeyup(e){
                 const self = this;

@@ -84,8 +84,8 @@
                 enterprise_roles:[
                     {label:'全部',value:0},
                     {label:'核心企业',value:1},
-                    {label:'集团子公司',value:2},
-                    {label:'项目公司',value:3},
+                    // {label:'核心企业',value:2},
+                    {label:'项目公司',value:2},
                 ],
                 clients_pagenum:10,
                 clients_pagesize:10,
@@ -104,8 +104,8 @@
                     {
                         index:2,
                         id:'02',
-                        name:'集团子公司A',
-                        role:'集团子公司',
+                        name:'核心企业A',
+                        role:'核心企业',
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -144,8 +144,8 @@
                     {
                         index:6,
                         id:'02',
-                        name:'集团子公司A',
-                        role:'集团子公司',
+                        name:'核心企业A',
+                        role:'核心企业',
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -164,8 +164,8 @@
                     {
                         index:8,
                         id:'02',
-                        name:'集团子公司A',
-                        role:'集团子公司',
+                        name:'核心企业A',
+                        role:'核心企业',
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -184,8 +184,8 @@
                     {
                         index:10,
                         id:'02',
-                        name:'集团子公司A',
-                        role:'集团子公司',
+                        name:'核心企业A',
+                        role:'核心企业',
                         principal:'李四',
                         position:'财务总监',
                         area:'深圳市福田区',
@@ -219,6 +219,10 @@
                 
             },
             checkView(row){
+                this.setState({
+                    attr:'enterprise_menu_type',
+                    val:1
+                });
                 this.$router.push({ path: '/pages/enterprise/views' });
             },
             cancelAddClient(){

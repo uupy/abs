@@ -162,6 +162,7 @@ export default {
             'onLoading',
             'innerLoading',
             'socket',
+            'enterprise_menu_type',
             'user_role'
         ])
     },

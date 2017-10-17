@@ -8,7 +8,7 @@
                 </el-select>
                 <label style="padding-left:10px;">企业角色：</label>
                 <el-select size="small" v-model="enterprise_role" placeholder="请选择">
-                    <el-option v-for="(item,value) in enterprise_roles" :label="item" :value="value" :key="index"></el-option>
+                    <el-option v-for="(item,value) in enterprise_roles" :label="item" :value="value" :key="value"></el-option>
                 </el-select>
             </div>
             <div class="f-right">
@@ -49,7 +49,7 @@
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
                 <el-form-item label="企业角色" prop="role">
                     <el-select v-model="add_form.role" placeholder="请选择企业角色">
-                        <el-option v-for="(item,value) in enterprise_roles" :label="item" :value="value" :key="index" v-if="value !== '0'"></el-option>
+                        <el-option v-for="(item,value) in enterprise_roles" :label="item" :value="value" :key="value" v-if="value !== '0'"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="企业名称" prop="name">
@@ -223,6 +223,10 @@
                 
             },
             checkView(row){
+                this.setState({
+                    attr:'enterprise_menu_type',
+                    val:3
+                });
                 this.$router.push({ path: '/pages/enterprise/views' });
             },
             cancelAddClient(){

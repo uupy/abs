@@ -8,7 +8,7 @@
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">企业联系方式</span>
-                        <span class="subtxt" @click="dialog_edit_contact = true"><i class="im-icon-edit health"></i>编辑</span>
+                        <span class="subtxt" @click="dialog_edit_contact = true" v-if="operate_authority"><i class="im-icon-edit health"></i>编辑</span>
                     </el-col>
                     <el-col class="info-box" style="margin-top:-8px;">
                         <p>
@@ -36,7 +36,7 @@
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">联系人列表</span>
-                        <span class="subtxt" @click="dialog_add_contact = true" v-if="user_role === 1 || user_role === 4"><i class="im-icon-addbtn"></i>新增联系人</span>
+                        <span class="subtxt" @click="dialog_add_contact = true" v-if="operate_authority"><i class="im-icon-addbtn"></i>新增联系人</span>
                     </el-col>
                     <el-col :span="24">
                         <el-table :data="contact_persons" class="table-list">
@@ -62,11 +62,12 @@
                                     <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '未认证' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
                                 </template>
                             </el-table-column>
-                            <el-table-column inline-template :context="_self" label="操作" width="120">
+                            <el-table-column inline-template :context="_self" label="操作" width="120" align='center' v-if="operate_authority">
                                 <span>
                                     <!-- <span class="table-btn health">个人认证</span> -->
-                                    <span class="table-btn danger" @click.stop="handleDelContact(row)">删除</span>
                                     <span class="table-btn health" v-if="row.role === 2 || row.role === 3">授权</span>
+                                    <span class="table-btn health" v-else></span>
+                                    <span class="table-btn danger" @click.stop="handleDelContact(row)">删除</span>
                                 </span>
                             </el-table-column>
                         </el-table>
@@ -200,8 +201,7 @@
                     <el-row>
                         <el-col class="toolbar toolbar-top">
                             <span class="title">标准资料清单</span>
-                            <!-- <span class="subtxt" @click="dialog_add_contact = true" v-if="user_role === 1 || user_role === 4"><i class="im-icon-addbtn"></i>新增资料</span> -->
-                            <div class="f-right" v-if="user_role === 1 || user_role === 4">
+                            <div class="f-right" v-if="operate_authority">
                                 <el-button size="small" type="primary" @click="dialog_add_data = true"><i class="el-icon-plus"></i>新增资料</el-button>
                             </div>
                         </el-col>
@@ -218,7 +218,7 @@
                                 </el-table-column>
                                 <el-table-column inline-template :context="_self" label="操作" width="160">
                                     <span>
-                                        <el-button size="small" v-if="user_role === 1 || user_role === 4">上传</el-button>
+                                        <el-button size="small" v-if="operate_authority">上传</el-button>
                                         <el-button size="small">下载</el-button>
                                     </span>
                                 </el-table-column>
@@ -227,6 +227,113 @@
                         </el-col>
                     </el-row>
                 </el-col>
+            </el-tab-pane>
+            <el-tab-pane label="签约信息" name="signed_information" v-if="user_role === 3 || user_role === 4">
+                <el-row>
+                    <el-col class="toolbar toolbar-top">
+                        <span class="title">签约基本信息</span>
+                    </el-col>
+                    <el-col :span="18">
+                        <table class="table-info">
+                            <tbody>
+                                <tr v-for="(item,index) in signed_infos" :key="index">
+                                    <template v-if="item.colspan">
+                                        <td class="label" width="18%">{{item.label}}</td> 
+                                        <td class="value" colspan="3">{{item.value}}</td>
+                                    </template>
+                                    <template v-else>
+                                        <td class="label" width="18%">{{item.label1}}</td> 
+                                        <td class="value">{{item.value1}}</td>
+                                        <td class="label" width="18%">{{item.label2}}</td> 
+                                        <td class="value">{{item.value2}}</td>  
+                                    </template>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </el-col>
+                </el-row>
+                <el-row style="padding-top:15px;">
+                    <el-col class="toolbar toolbar-top">
+                        <span class="title">确权信息</span>
+                    </el-col>
+                    <el-col :span="18">
+                        <table class="table-info">
+                            <tbody>
+                                <tr v-for="(item,index) in right_infos" :key="index">
+                                    <template v-if="item.colspan">
+                                        <td class="label" width="18%">{{item.label}}</td> 
+                                        <td class="value" colspan="3">{{item.value}}</td>
+                                    </template>
+                                    <template v-else>
+                                        <td class="label" width="18%">{{item.label1}}</td> 
+                                        <td class="value">{{item.value1}}</td>
+                                        <td class="label" width="18%">{{item.label2}}</td> 
+                                        <td class="value">{{item.value2}}</td>  
+                                    </template>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </el-col>
+                </el-row>
+                <el-row style="padding-top:15px;">
+                    <el-col class="toolbar toolbar-top">
+                        <span class="title">买方确权联系人</span>
+                    </el-col>
+                    <el-col :span="18">
+                        <el-table :data="right_persons" border>
+                            <el-table-column prop="index" label="序号"></el-table-column>
+                            <el-table-column prop="name" label="联系人名称"></el-table-column>
+                            <el-table-column prop="tel" label="联系电话"></el-table-column>
+                            <el-table-column prop="address" label="联系地址"></el-table-column>
+                        </el-table>
+                    </el-col>
+                </el-row>
+                <el-row style="padding-top:15px;">
+                    <el-col class="toolbar toolbar-top">
+                        <span class="title">放款账户信息</span>
+                    </el-col>
+                    <el-col :span="18">
+                        <table class="table-info">
+                            <tbody>
+                                <tr v-for="(item,index) in loan_account_infos" :key="index">
+                                    <template v-if="item.colspan">
+                                        <td class="label" width="18%">{{item.label}}</td> 
+                                        <td class="value" colspan="3">{{item.value}}</td>
+                                    </template>
+                                    <template v-else>
+                                        <td class="label" width="18%">{{item.label1}}</td> 
+                                        <td class="value">{{item.value1}}</td>
+                                        <td class="label" width="18%">{{item.label2}}</td> 
+                                        <td class="value">{{item.value2}}</td>  
+                                    </template>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </el-col>
+                </el-row>
+                <el-row style="padding-top:15px;">
+                    <el-col class="toolbar toolbar-top">
+                        <span class="title">结算账户信息</span>
+                    </el-col>
+                    <el-col :span="18">
+                        <table class="table-info">
+                            <tbody>
+                                <tr v-for="(item,index) in settle_account_infos" :key="index">
+                                    <template v-if="item.colspan">
+                                        <td class="label" width="18%">{{item.label}}</td> 
+                                        <td class="value" colspan="3">{{item.value}}</td>
+                                    </template>
+                                    <template v-else>
+                                        <td class="label" width="18%">{{item.label1}}</td> 
+                                        <td class="value">{{item.value1}}</td>
+                                        <td class="label" width="18%">{{item.label2}}</td> 
+                                        <td class="value">{{item.value2}}</td>  
+                                    </template>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </el-col>
+                </el-row>
             </el-tab-pane>
         </el-tabs>
         <!-- 对话框 -->
@@ -298,11 +405,12 @@
     export default {
         data() {
             return {
+                operate_authority:true,
                 enterprise_name:'碧桂园控股有限公司',
                 filter_name:'',
                 active_name:'contact_information',
                 contact_roles:{
-                    1:'企业法人',
+                    1:'法人代表',
                     2:'代理人1',
                     3:'代理人2',
                     4:'对接人'
@@ -612,6 +720,40 @@
                         rtime:'2010-09-10',
                         etime:'2010-09-10'
                     },
+                ],
+                signed_infos:[
+                    {label:'企业名称',value:'碧桂园控股有限公司',colspan:true},
+                    {label:'注册地址',value:'深圳市福田区',colspan:true},
+                    {label:'法人代表',value:'张三',colspan:true},
+                    {label:'业务模式',value:'无追索权/保理融资合作',colspan:true},
+                ],
+                right_infos:[
+                    {label:'确权方式',value:'债权转让通知函买方盖章',colspan:true},
+                    {label:'确权规则',value:'逐笔确权',colspan:true}
+                ],
+                right_persons:[
+                    {
+                        index:1,
+                        name:'李四',
+                        tel:'13265656555',
+                        address:'深圳市福田区'
+                    },
+                    {
+                        index:2,
+                        name:'王五',
+                        tel:'13265656555',
+                        address:'深圳市福田区'
+                    }
+                ],
+                loan_account_infos:[
+                    {label:'户名',value:'张三',colspan:true},
+                    {label:'开户行',value:'中国工商银行',colspan:true},
+                    {label:'账号',value:'8888888888',colspan:true},
+                ],
+                settle_account_infos:[
+                    {label:'户名',value:'张三',colspan:true},
+                    {label:'开户行',value:'中国工商银行',colspan:true},
+                    {label:'账号',value:'8888888888',colspan:true},
                 ]
             } 
         },
@@ -625,13 +767,13 @@
             loadEnterpriseContent(tname){
                 switch(tname){
                     case 'base_information':
-                        console.log('base_information')
+                        // console.log('base_information')
                     break;
                     case 'data_management':
-                        console.log('data_management')
+                        // console.log('data_management')
                     break;
                     case 'contact_information':
-                        console.log('contact_information')
+                        // console.log('contact_information')
                     break;
                 }
             },
@@ -664,6 +806,16 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
+                self.operate_authority = self.enterprise_menu_type !== 1 || (self.enterprise_menu_type === 1 && (self.user_role === 1 || self.user_role === 4));
+                if(self.enterprise_menu_type === 1){
+                    self.operate_authority = true;
+                }else{
+                    if(self.user_role !== 1){
+                        self.operate_authority = true;
+                    }else{
+                        self.operate_authority = false;
+                    }
+                }
                 document.addEventListener("keyup", self.enterKeyup, false);
                 if(sessionStorage.getItem('enterprise_tname')){
                     self.active_name = sessionStorage.getItem('enterprise_tname');
@@ -677,6 +829,10 @@
         destroyed() {
             document.removeEventListener("keyup", self.enterKeyup, false);
             sessionStorage.removeItem('enterprise_tname');
+            this.setState({
+                attr:'enterprise_menu_type',
+                val:0
+            });
         }
     }
 </script>

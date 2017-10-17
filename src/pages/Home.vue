@@ -269,8 +269,8 @@
 		mounted() {
 			const self = this;
 			// self.getSocket();
-			console.log(this.$router.options.routes);
-			console.log(this.user_role);
+			// console.log(this.$router.options.routes);
+			// console.log(this.user_role);
 			self.$nextTick(()=>{
 				setTimeout(function(){
 					const oSide = document.querySelector('#panel-aside');

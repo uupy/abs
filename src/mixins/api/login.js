@@ -30,6 +30,7 @@ export default{
 
 	            //模拟登录
 	            const users = {
+	            	//用户角色 1>核心企业 2>项目公司 3>供应商 4>保理商 5>资金方
 	            	user1:{password:'user1',role:1},
 	            	user2:{password:'user2',role:2},
 	            	user3:{password:'user3',role:3},

@@ -20,7 +20,7 @@
         <div class="panel-protocol">
             <el-row :span="24">
                 <el-table :data="list" class="table-list">
-                    <el-table-column prop="index" label="协议编号" width="90"></el-table-column>
+                    <el-table-column prop="index" label="序号" width="90"></el-table-column>
                     <el-table-column prop="id" label="资产编号"></el-table-column>
                     <el-table-column prop="type" label="协议类型"></el-table-column>
                     <el-table-column prop="name" label="协议名称"></el-table-column>
