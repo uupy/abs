@@ -17,3 +17,16 @@ const WEBNAME = {
 		5:'资金方',
 	}
 }
+
+const STATUS = {
+	protocolStatus:{
+		1:'已签约',
+		2:'签约中',
+		3:'未签约'
+	},
+	propertyStatus:{
+		1:'未融资',
+		2:'已融资',
+		3:'未知'
+	}
+}
