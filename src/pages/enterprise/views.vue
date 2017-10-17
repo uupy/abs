@@ -228,7 +228,7 @@
                     </el-row>
                 </el-col>
             </el-tab-pane>
-            <el-tab-pane label="签约信息" name="signed_information" v-if="user_role === 3 || user_role === 4">
+            <el-tab-pane label="签约信息" name="signed_information" v-if="user_role === 3 || enterprise_menu_type === 2">
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">签约基本信息</span>

@@ -4,7 +4,7 @@
             <div class="f-left">
                 <label>协议状态：</label>
                 <el-select size="small" v-model="currentStatus" placeholder="请选择">
-                    <el-option v-for="(item,index) in protocolStatus" :label="item.label" :value="item.value" :key="index"></el-option>
+                    <el-option v-for="(item,value) in protocolStatus" :label="item" :value="value" :key="value"></el-option>
                 </el-select>
                 <label style="padding-left:10px;">协议类型：</label>
                 <el-select size="small" v-model="currentType" placeholder="请选择">
@@ -267,6 +267,7 @@
         mounted() {
             const self = this;
             self.protocolStatus = STATUS.protocolStatus;
+            console.log(self.protocolStatus)
         },
         computed: {
             
