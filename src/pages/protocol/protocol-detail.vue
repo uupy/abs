@@ -23,6 +23,15 @@
                 <el-form-item label='项目名称'>{{businessInfo.projectName}}</el-form-item>
                 <el-form-item label='商务合同名称'>{{businessInfo.contractName}}</el-form-item>
                 <el-form-item label='商务合同编号'>{{businessInfo.contractNo}}</el-form-item>
+                <el-form-item label='附件'>
+                    <el-upload
+                      class="upload-demo"
+                      action="https://jsonplaceholder.typicode.com/posts/"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                    </el-upload>                    
+                </el-form-item>
             </el-form>
         </el-row>
         <el-row>
@@ -34,6 +43,7 @@
                 <el-table-column prop="sum" label="应收账款金额" align='center'></el-table-column>         
                 <el-table-column prop="sum1" label="保理融资金额" align='center'></el-table-column>         
                 <el-table-column prop="submitDate" label="提交数据日期" align='center'></el-table-column>         
+                <el-table-column prop="fangkuanri" label="放款日" align='center'></el-table-column>         
                 <el-table-column prop="deadline" label="应收账款到期日" align='center'></el-table-column>         
                 <el-table-column prop="kuanxian" label="宽限期到期日" align='center'></el-table-column>         
                 <el-table-column prop="huaikuanri" label="还款日" align='center'></el-table-column>         
@@ -43,11 +53,10 @@
 
         <el-row>
             <span class="title" style="font-size:16px;">单据信息</span>
-             <el-form label-width='180px' class='item-list'>
+            <!-- <el-form label-width='180px' class='item-list'>
                 <el-form-item label='单据编号' class='item-inner'>
                     <div class="float-left info">{{billsInfo.id}}</div>
                     <div class="float-left">
-                        <!-- <el-button type='primary' size='small'>查看</el-button> -->
                         <el-upload
                           class="upload-demo"
                           action="https://jsonplaceholder.typicode.com/posts/"
@@ -60,7 +69,6 @@
                 <el-form-item label='单据号' class='item-inner'>
                     <div class="float-left info">{{billsInfo.no}}</div>
                     <div class="float-left">
-                        <!-- <el-button type='primary' size='small'>查看</el-button> -->
                         <el-upload
                           class="upload-demo"
                           action="https://jsonplaceholder.typicode.com/posts/"
@@ -73,7 +81,6 @@
                 <el-form-item label='ERP审批表/支付申请书' class='item-inner'>
                     <div class="float-left info">{{billsInfo.no}}</div>
                     <div class="float-left">
-                        <!-- <el-button type='primary' size='small'>查看</el-button> -->
                         <el-upload
                           class="upload-demo"
                           action="https://jsonplaceholder.typicode.com/posts/"
@@ -83,7 +90,38 @@
                         </el-upload>
                     </div>
                 </el-form-item>
-            </el-form>
+            </el-form> -->
+            <el-table :data="billsTable" border>
+                <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
+                <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
+                <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         
+                <el-table-column label="单据附件" align='center'>
+                    <template slot-scope='scope'>
+                        <el-button size='small' v-if='scope.row.fujian!=""&&scope.row.fujian'>查看</el-button>
+                        <el-upload v-else
+                            class="upload-demo"
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :on-preview="handlePreview"
+                            :on-remove="handleRemove">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </template>                        
+                </el-table-column>         
+                <el-table-column label="附件上传" align='center'>
+                    <template slot-scope='scope'>
+                        <el-upload
+                            class="upload-demo"
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :on-preview="handlePreview"
+                            :on-remove="handleRemove">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </template>
+                </el-table-column>         
+                <el-table-column prop="fangkuanri" label="单据号" align='center'></el-table-column>         
+                <el-table-column prop="book" label="ERP审批表/支付申请书" align='center'></el-table-column>        
+            </el-table>
+
         </el-row>
 
         <el-row>
@@ -117,6 +155,32 @@
                     </div>
                 </el-form-item>
 
+                <el-form-item label='付款确认书（项目公司）' class='item-inner'>
+                    <div class="float-left info">{{billsInfo.no}}</div>
+                    <div class="float-left">
+                        <!-- <el-button type='primary' size='small'>查看</el-button> -->
+                        <el-upload
+                          class="upload-demo"
+                          action="https://jsonplaceholder.typicode.com/posts/"
+                          :on-preview="handlePreview"
+                          :on-remove="handleRemove">
+                          <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </div>
+                </el-form-item>
+                <el-form-item label='付款确认书（总部）' class='item-inner'>
+                    <div class="float-left info">{{billsInfo.no}}</div>
+                    <div class="float-left">
+                        <!-- <el-button type='primary' size='small'>查看</el-button> -->
+                        <el-upload
+                          class="upload-demo"
+                          action="https://jsonplaceholder.typicode.com/posts/"
+                          :on-preview="handlePreview"
+                          :on-remove="handleRemove">
+                          <el-button size="small" type="primary">点击上传</el-button>
+                        </el-upload>
+                    </div>
+                </el-form-item>
                 <el-form-item label='资产转让合同（专项计划）' class='item-inner'>
                     <div class="float-left info">{{billsInfo.no}}</div>
                     <div class="float-left">
@@ -132,6 +196,10 @@
                 </el-form-item>
             </el-form>
         </el-row>
+       <!--  <el-row style='text-align:center;border-top: 1px solid #ddd;margin-top: 30px;padding-top: 30px;'>
+            <el-button type='primary'>保存</el-button>
+            <el-button type='default'>返回</el-button>
+        </el-row> -->
     </section>
 </template>
 <script>
@@ -141,8 +209,7 @@
         data() {
             return {
                 protocolId:'',
-                protocol:
-                {
+                protocol:{
                     index:'1',
                     id:'pt1001',
                     type:'主合同',
@@ -174,6 +241,7 @@
                         deadline:'2018-11-16',
                         kuanxian:'2018-11-26',
                         huaikuanri:'2018-11-30',
+                        fangkuanri:'2018-11-16',
                         days:'60天'
                     },
                      {
@@ -187,6 +255,7 @@
                         deadline:'2018-11-16',
                         kuanxian:'2018-11-26',
                         huaikuanri:'2018-11-30',
+                        fangkuanri:'2018-11-16',
                         days:'60天'
                     }, 
                     {
@@ -200,13 +269,24 @@
                         deadline:'2018-11-16',
                         kuanxian:'2018-11-26',
                         huaikuanri:'2018-11-30',
+                        fangkuanri:'2018-11-16',
                         days:'60天'
                     }
                 ],
                 billsInfo:{
                     id:'001',
                     no:'billsx101'
-                }        
+                },
+                billsTable:[
+                    {
+                        id:'1',
+                        sum:'8555.00',
+                        date:'2017-10-11',
+                        fujian:'ss',
+                        danjuhao:'101',
+                        book:''
+                    }
+                ]     
             }
         },
         methods: {

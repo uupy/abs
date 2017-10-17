@@ -134,7 +134,7 @@ let routes = [
                     3:true,
                     4:true,
                     5:true,
-                }
+                },
             },
             {
                 path: '/pages/protocol/list/:protocolId',

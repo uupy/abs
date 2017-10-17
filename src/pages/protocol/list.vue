@@ -26,7 +26,11 @@
                     <el-table-column prop="name" label="协议名称"></el-table-column>
                     <el-table-column prop="signatory" label="协议签署方"></el-table-column>
                     <el-table-column prop="sum" label="资产金额"></el-table-column>
-                    <el-table-column prop="status" label="签约状态"></el-table-column>
+                    <el-table-column label="签约状态">
+                        <template slot-scope='scope'>
+                            <el-tag :type="scope.row.status == '1' ? 'success' : (scope.row.status == '2' ? 'warning':'default')" close-transition>{{protocolStatus[scope.row.status]}}</el-tag>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="signDate" label="签约日期"></el-table-column>
                     <el-table-column prop="deadline" label="合同到期日"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
@@ -90,6 +94,7 @@
                 currentType:'',
                 filter_name:'',
                 signDate:'',
+                protocolStatus:{},
                 deadline:'',
                 dialog_add_client:false,
                 list:[
@@ -100,7 +105,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'1',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -111,7 +116,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'1',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -122,7 +127,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'2',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -133,7 +138,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'3',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -144,7 +149,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'2',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -155,7 +160,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'1',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -166,7 +171,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'3',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -177,7 +182,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'1',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -188,7 +193,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'2',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -199,7 +204,7 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'3',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
@@ -210,16 +215,10 @@
                         name:'协议名称',
                         signatory:'深圳xx公司',
                         sum:'1000万',
-                        status:'签约中',   
+                        status:'1',   
                         signDate:'2017-10-16',
                         deadline:'2027-10-16'
                     },
-                ],
-                protocolStatus:[
-                    {label:'全部',value:0},
-                    {label:'签约中',value:1},
-                    {label:'已签约',value:2},
-                    {label:'未签约',value:3},
                 ],
                 protocolType:[
                     {label:'全部',value:0},
@@ -267,6 +266,7 @@
         mixins:[Common,Clients],
         mounted() {
             const self = this;
+            self.protocolStatus = STATUS.protocolStatus;
         },
         computed: {
             
