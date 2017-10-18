@@ -25,7 +25,7 @@
 						<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 							<el-submenu :index="index+''" v-if="!item.leaf">
 								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-								<el-menu-item v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[user_role] && !child.hidden">{{child.name}}</el-menu-item>
+								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[user_role] && !child.hidden">{{child.name}}</el-menu-item>
 							</el-submenu>
 							<el-menu-item v-if="item.leaf && item.children.length > 0" :index="item.children[0].path">
 								<i :class="item.iconCls"></i>{{item.children[0].name}}
@@ -95,8 +95,7 @@
 				version:'',
 				tipstimer:null,
 				panelSideScroll:null,
-				panelCenterScroll:null,
-				wsCount:0
+				panelCenterScroll:null
 			}
 		},
 		mixins:[Common,TestPassword],
@@ -105,9 +104,7 @@
 			logout () {
 				const self = this;
 				self.$confirm('确认退出吗?', '提示').then(() => {
-					sessionStorage.clear();
-					self.handlerCloseWs = true;
-					self.closeSocket();
+					localStorage.clear();
 					self.$router.push('/login');
 				}).catch(() => {});
 			},
@@ -166,98 +163,6 @@
 				self.$refs[formName].resetFields();
 				self.dialogFormVisible = false;
 			},
-			// 获取websocket连接
-			getSocket(){
-				const self = this;
-				//获得消息事件
-				if(typeof(WebSocket) == "undefined") {
-					self.$alert('您使用的浏览器版不支持WebSocket，请更新您的浏览器，以免影响部分功能的使用！（建议使用谷歌或者火狐浏览器浏览）', '提示', {
-	                    confirmButtonText: '确定',
-	                    type:'info',
-	                    callback: action => {}
-	                });
-				}else{
-					self.createSocket();
-					//打开事件
-					self.socket.onopen = function() {
-						self.socket.send(JSON.stringify({token:self.token}));
-					}
-					self.socketMessage();
-					self.socket.onerror = function(){
-						self.$message({
-							message: 'websocket error',
-							type: 'error'
-						});
-					}
-					self.socket.onclose = function(){
-						self.updateCluster();
-						if(!self.handlerCloseWs && !self.isTimeOut && !self.isKickedOut && self.wsCount < 10000){
-							self.wsCount ++;
-							self.getSocket();
-						}
-						console.log('websocket close');
-					}
-				}
-			},
-			// websocket通信处理
-			socketMessage(){
-				const self = this;
-				self.socket.onmessage = function(msg) {
-					const res = JSON.parse(msg.data);
-					if (res.ecode == 0) {
-						const type = res.type;
-						const data = res.data;
-						//type==1为登录，type==2为告警消息推送 type==3重复登录
-						if(type == 2){
-							let info = '发生{0}节点：{1}，描述：{2}'.format((data.Type == 1 ? '故障' : '事件'),data.Addr,data.Description);
-							let level = data.Level == 1 ? 'emergency' : (data.Level == 2 ? 'significance' : (data.Level == 3 ? 'secondary' : (data.Level == 4 ? 'prompt' : 'prompt')));
-							self.$toast(info,{
-								title:data.Name || '',
-								level:level,
-								callback:function(){
-									self.$router.push({ path: '/pages/logs'});
-								}
-							});
-						}else if(type == 3){
-							sessionStorage.clear();
-							self.setState({
-								attr:'isKickedOut',
-								val:true
-							});
-							self.closeSocket();
-							self.$confirm('该账号已在其他地方登录！','提示',{
-							    confirmButtonText: '确定',
-							    closeOnClickModal:false,
-							    showCancelButton:false,
-							    type: 'warning',
-							    callback:function(){
-							    	self.setState({
-							    		attr:'isKickedOut',
-							    		val:false
-							    	});
-							        self.$router.push('/login');
-							    }
-							});
-						}else if(type == 5){
-							self.$message({
-								message: 'Master切换，3s后自动刷新页面',
-								type: 'warning'
-							});
-							self.tipstimer = setTimeout(function(){
-								clearInterval(self.tipstimer);
-								window.location.reload();
-							},3000);
-						}
-					}else if(res.ecode == 9401 || res.ecode == 9402){
-						self.closeSocket();
-					} else {
-						self.$message({
-							message: res.message,
-							type: 'error'
-						});
-					}
-				}
-			},
 			enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
@@ -268,9 +173,6 @@
 		},
 		mounted() {
 			const self = this;
-			// self.getSocket();
-			// console.log(this.$router.options.routes);
-			// console.log(this.user_role);
 			self.$nextTick(()=>{
 				setTimeout(function(){
 					const oSide = document.querySelector('#panel-aside');
@@ -284,7 +186,6 @@
 		destroyed() {
             const self = this;
             document.removeEventListener("keyup", self.enterKeyup, false);
-            self.wsCount = 0;
             self.setState({
             	attr:'socket',
             	val:null

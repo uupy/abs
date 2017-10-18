@@ -2,10 +2,6 @@
     <section class="panel-main">
         <el-row class="toolbar toolbar-top">
             <div class="f-left">
-                <label>协议状态：</label>
-                <el-select size="small" v-model="currentStatus" placeholder="请选择">
-                    <el-option v-for="(item,value) in protocolStatus" :label="item" :value="value" :key="value"></el-option>
-                </el-select>
                 <label style="padding-left:10px;">协议类型：</label>
                 <el-select size="small" v-model="currentType" placeholder="请选择">
                     <el-option v-for="(item,index) in protocolType" :label="item.label" :value="item.value" :key="index"></el-option>
@@ -14,7 +10,6 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type="primary" @click="dialog_add_client = true"><i class="el-icon-plus"></i> 新增</el-button>
             </div>
         </el-row>
         <div class="panel-protocol">
@@ -26,11 +21,6 @@
                     <el-table-column prop="name" label="协议名称"></el-table-column>
                     <el-table-column prop="signatory" label="协议签署方"></el-table-column>
                     <el-table-column prop="sum" label="资产金额"></el-table-column>
-                    <el-table-column label="签约状态">
-                        <template slot-scope='scope'>
-                            <el-tag :type="scope.row.status == '1' ? 'success' : (scope.row.status == '2' ? 'warning':'default')" close-transition>{{protocolStatus[scope.row.status]}}</el-tag>
-                        </template>
-                    </el-table-column>
                     <el-table-column prop="signDate" label="签约日期"></el-table-column>
                     <el-table-column prop="deadline" label="合同到期日"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
@@ -91,7 +81,7 @@
                 currentStatus:'',
                 clients_pagesize:10,
                 clients_total:100,
-                currentType:'',
+                currentType:0,
                 filter_name:'',
                 signDate:'',
                 protocolStatus:{},
@@ -248,7 +238,7 @@
             },
             checkView(row){
                 const self = this;
-                self.$router.push({path:'/pages/protocol/list/'+row.id,params:{'protocolId':row.id}})
+                self.$router.push({path:'/pages/protocol_notsigned/views'});
             },
             clearFilter(type){
                 const self = this;

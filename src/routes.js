@@ -4,15 +4,15 @@ const NotFound = resolve => require(['./pages/404.vue'], resolve)
 const Home = resolve => require(['./pages/Home.vue'], resolve)
 
 //企业管理
+const CoreList = resolve => require(['./pages/enterprise/core.vue'],resolve)
+const SupplierList = resolve => require(['./pages/enterprise/supplier.vue'],resolve)
+const CapitalList = resolve => require(['./pages/enterprise/capital.vue'],resolve)
 const EnterpriseViews = resolve => require(['./pages/enterprise/views.vue'],resolve)
-const EnterpriseList = resolve => require(['./pages/enterprise/list.vue'],resolve)
-const EnterpriseSupplier = resolve => require(['./pages/enterprise/supplier.vue'],resolve)
-const EnterpriseCapital = resolve => require(['./pages/enterprise/capital.vue'],resolve)
 
 //协议管理
-const ProtocolList = resolve => require(['./pages/protocol/list.vue'],resolve)
-const ProtocolDetail = resolve => require(['./pages/protocol/protocol-detail.vue'],resolve)
-const ProtocolStamped = resolve => require(['./pages/protocol/stamped.vue'],resolve)
+const ProtocolNotSignedList = resolve => require(['./pages/protocol/protocol_notsigned.vue'],resolve)
+const ProtocolSignedList = resolve => require(['./pages/protocol/protocol_signed.vue'],resolve)
+const ProtocolDetail = resolve => require(['./pages/protocol/protocol_detail.vue'],resolve)
 
 //资产管理
 const AssetsList = resolve => require(['./pages/assets/list.vue'],resolve)
@@ -42,31 +42,6 @@ let routes = [
         leaf:true,
         hidden: true
     },
-    // {
-    //     path: '/',
-    //     component: Home,
-    //     name: '首页',
-    //     iconCls: 'im-icon-analysis',
-    //     leaf: true,
-    //     children: [{
-    //         path: '/pages/cluster',
-    //         component: Cluster,
-    //         name: '集群概览'
-    //     }]
-    // },
-    // {
-    //     path: '/',
-    //     component: Home,
-    //     name: '集群',
-    //     iconCls: 'im-icon-list', 
-    //     leaf: true,
-    //     children: [{
-    //         path: '/pages/userclusters',
-    //         component: Clusters,
-    //         name: '集群设置 '
-    //     }],
-    //     isuser: true
-    // },
     {
         path: '/',
         component: Home,
@@ -74,8 +49,8 @@ let routes = [
         iconCls: 'im-icon-management',
         children: [
             {
-                path: '/pages/enterprise',
-                component: EnterpriseList,
+                path: '/pages/core',
+                component: {template:'<router-view></router-view>'},
                 name: '核心企业',
                 show:{
                     1:true,
@@ -83,11 +58,24 @@ let routes = [
                     3:false,
                     4:true,
                     5:false,
-                }
+                },
+                children:[
+                    {
+                        path: '/pages/core',
+                        component: CoreList,
+                        name: '核心企业列表',
+                    },
+                    {
+                        path: '/pages/core/views',
+                        component: EnterpriseViews,
+                        name: '核心企业详情',
+                        hidden: true
+                    },
+                ]
             },
             {
-                path: '/pages/enterprise/supplier',
-                component: EnterpriseSupplier,
+                path: '/pages/supplier',
+                component: {template:'<router-view></router-view>'},
                 name: '供应商',
                 show:{
                     1:true,
@@ -95,11 +83,24 @@ let routes = [
                     3:false,
                     4:true,
                     5:false,
-                }
+                },
+                children:[
+                    {
+                        path: '/pages/supplier',
+                        component: SupplierList,
+                        name: '供应商列表',
+                    },
+                    {
+                        path: '/pages/supplier/views',
+                        component: EnterpriseViews,
+                        name: '供应商详情',
+                        hidden: true
+                    },
+                ]
             },
             {
-                path: '/pages/enterprise/capital',
-                component: EnterpriseCapital,
+                path: '/pages/capital',
+                component: {template:'<router-view></router-view>'},
                 name: '合作方',
                 show:{
                     1:false,
@@ -107,7 +108,20 @@ let routes = [
                     3:false,
                     4:true,
                     5:false,
-                }
+                },
+                children:[
+                    {
+                        path: '/pages/capital',
+                        component: CapitalList,
+                        name: '合作方列表',
+                    },
+                    {
+                        path: '/pages/capital/views',
+                        component: EnterpriseViews,
+                        name: '合作方详情',
+                        hidden: true
+                    },
+                ]
             },
             {
                 path: '/pages/enterprise/views',
@@ -130,9 +144,9 @@ let routes = [
         iconCls: 'im-icon-management',
         children: [
             {
-                path: '/pages/protocol/list',
-                component: ProtocolList,
-                name: '协议清单',
+                path: '/pages/protocol_notsigned',
+                component: {template:'<router-view></router-view>'},
+                name: '未签约协议',
                 show:{
                     1:true,
                     2:true,
@@ -140,31 +154,44 @@ let routes = [
                     4:true,
                     5:true,
                 },
+                children:[
+                    {
+                        path: '/pages/protocol_notsigned',
+                        component: ProtocolNotSignedList,
+                        name: '未签约协议列表',
+                    },
+                    {
+                        path: '/pages/protocol_notsigned/views',
+                        component: ProtocolDetail,
+                        name: '未签约协议详情',
+                        hidden: true
+                    },
+                ]
             },
             {
-                path: '/pages/protocol/list/:protocolId',
-                component: ProtocolDetail,
-                name: '协议详情',
-                hidden: true,
+                path: '/pages/protocol_signed',
+                component: {template:'<router-view></router-view>'},
+                name: '已签约协议',
                 show:{
                     1:true,
                     2:true,
                     3:true,
                     4:true,
                     5:true,
-                }
-            },
-            {
-                path: '/pages/protocol/stamped',
-                component: ProtocolStamped,
-                name: '已盖章协议',
-                show:{
-                    1:true,
-                    2:true,
-                    3:true,
-                    4:true,
-                    5:true,
-                }
+                },
+                children:[
+                    {
+                        path: '/pages/protocol_signed',
+                        component: ProtocolSignedList,
+                        name: '已签约协议列表',
+                    },
+                    {
+                        path: '/pages/protocol_signed/views',
+                        component: ProtocolDetail,
+                        name: '已签约协议详情',
+                        hidden: true
+                    },
+                ]
             }
         ]
     },
@@ -181,7 +208,7 @@ let routes = [
                 show:{
                     1:false,
                     2:false,
-                    3:true,
+                    3:false,
                     4:false,
                     5:false,
                 }
@@ -191,7 +218,7 @@ let routes = [
                 component: PropertyToBeConfirm,
                 name: '待确认资产',
                 show:{
-                    1:true,
+                    1:false,
                     2:false,
                     3:false,
                     4:false,
@@ -207,7 +234,7 @@ let routes = [
                     1:false,
                     2:false,
                     3:false,
-                    4:true,
+                    4:false,
                     5:false,
                 }
             },
@@ -219,7 +246,7 @@ let routes = [
                     1:false,
                     2:false,
                     3:false,
-                    4:true,
+                    4:false,
                     5:false,
                 }
             },
@@ -231,7 +258,7 @@ let routes = [
                     1:false,
                     2:false,
                     3:false,
-                    4:true,
+                    4:false,
                     5:false,
                 }
             },           

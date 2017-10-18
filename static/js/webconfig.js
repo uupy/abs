@@ -1,13 +1,7 @@
-const VSConfig = {
-	dev:true,
-	ip:'192.168.14.9',
-	port:'10001',
-	host:window.location.host,
-	isHttps:(window.location.protocol.indexOf('https') !== -1 ? true : false)
+const WEBConfig = {
+	name:'ABS系统'
 }
-const WEBSTATUS = {
 
-}
 const WEBNAME = {
 	user_role:{
 		1:'核心企业',

@@ -4,10 +4,6 @@ export default{
 			loginForm: {
 			    account: '',
 			    password: ''
-			},
-			addClusterForm: {
-			    name: '',
-			    address: ''
 			}
 		}
 	},
@@ -27,7 +23,6 @@ export default{
 	                username: self.loginForm.account,
 	                password: MD5(self.loginForm.password)
 	            };
-
 	            //模拟登录
 	            const users = {
 	            	//用户角色 1>核心企业 2>项目公司 3>供应商 4>保理商 5>资金方
@@ -45,7 +40,7 @@ export default{
 	            		localStorage.setItem('user_role',users[self.loginForm.account].role);
 	            		self.updateBaseInfo();
 	            		if(users[self.loginForm.account].role === 1 || users[self.loginForm.account].role === 4){
-	            			self.$router.push({ path: '/pages/enterprise' });
+	            			self.$router.push({ path: '/pages/core' });
 	            		}else{	
 	            			self.$router.push({ path: '/pages/enterprise/views' });
 	            		}
@@ -81,13 +76,13 @@ export default{
 	                const res = response.data;
 	                if (res.ecode == 0) {
 	                    const data = res.data;
-	                    let tokenJson = JSON.parse(Base64.decode(data.token.split('.')[1]));
+	                    // let tokenJson = JSON.parse(Base64.decode(data.token.split('.')[1]));
                         //保存用户登录信息
                         sessionStorage.setItem('username', data.username);
                         sessionStorage.setItem('token', data.token);
-                        sessionStorage.setItem('isRoot', JSON.stringify(data.isroot));
-                        sessionStorage.setItem('exptime', JSON.stringify(tokenJson.exp - tokenJson.iat));
-                        sessionStorage.setItem('clientSt', JSON.stringify(Date.parse(new Date())/1000));
+                        // sessionStorage.setItem('isRoot', JSON.stringify(data.isroot));
+                        // sessionStorage.setItem('exptime', JSON.stringify(tokenJson.exp - tokenJson.iat));
+                        // sessionStorage.setItem('clientSt', JSON.stringify(Date.parse(new Date())/1000));
 	                } else {
                 	    self.$nprogress.done();
                 		self.setState({

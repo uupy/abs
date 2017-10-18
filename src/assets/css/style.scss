@@ -5,7 +5,7 @@
 
 $boxSizes: 60px 160px;
 $grapSizes: 5px 10px 20px;
-$fontSizes: 12px 14px 16px 18px 36px;
+$fontSizes: 12px 13px 14px 16px 18px 36px;
 $fontColors: #6ac09f #222 #666 #ea566d #999 #ff0000 #eb6100;
 $bgColors: #fff #333542;
 $tableBg:#f2f9fc;
@@ -24,6 +24,7 @@ body{
 	margin: 0px;
 	padding: 0px;
 	@include baseFront;
+
 	color:nth($fontColors, 2);
 	-webkit-font-smoothing: antialiased;
 }
@@ -421,7 +422,7 @@ i[class*=" im-icon-"]:after {
 				@include borderSign(top);
 				@include borderSign(bottom);
 				color: nth($fontColors, 1);
-				background:#fff;
+				background:nth($bgColors, 1);
 				transition: 0s;
 				-webkit-transition: 0s;
 				&:before{
@@ -450,7 +451,7 @@ i[class*=" im-icon-"]:after {
 			background:transparent;
 		}
 		.el-menu-item.is-active:hover{
-			background:#fff;
+			background:nth($bgColors, 1);
 		}
 	}
 	.dropdown-icon{
@@ -551,6 +552,7 @@ i[class*=" im-icon-"]:after {
 		}
 	}
 	.el-table{
+		font-size: 13px;
 		&.table-list{
 			border:0;
 			.is-leaf{
@@ -665,6 +667,7 @@ i[class*=" im-icon-"]:after {
 	.el-submenu{
 		.el-menu-item{
 			font-size: 13px;
+			min-width:auto;
 		}
 	}
 }

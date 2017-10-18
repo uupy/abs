@@ -20,13 +20,11 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
+                <el-button size="small" type='primary'>确认放款</el-button>
             </div>       
         </el-row>
 
         <el-row>
-            <div class="f-right" style="margin-bottom: 10px;">
-                <el-button type='primary'>确认</el-button>
-            </div>
             <el-table
                 ref="multipleTable"
                 :data="propertyList"
@@ -35,9 +33,6 @@
                 @selection-change="handleSelectionChange">
 
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column label='序号' width='65' align='center' >
-                    <template slot-scope='scope'>{{scope.row.$index}}</template>
-                </el-table-column>
                 <el-table-column prop='pno'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='hxqy'  align='center' label='核心企业'></el-table-column>
                 <el-table-column prop='gysmc' align='center' label='供应商名称'></el-table-column>

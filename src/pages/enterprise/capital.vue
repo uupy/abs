@@ -227,7 +227,7 @@
                     attr:'enterprise_menu_type',
                     val:3
                 });
-                this.$router.push({ path: '/pages/enterprise/views' });
+                this.$router.push({ path: '/pages/capital/views' });
             },
             cancelAddClient(){
                 this.dialog_add_client = false;

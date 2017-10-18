@@ -93,7 +93,7 @@ router.beforeEach((to, from, next) => {
     } else {
         if (to.path == '/' || to.path == '') {
             next({
-                path: '/pages/enterprise'
+                path: '/pages/core'
             })
         } else {
             next()
