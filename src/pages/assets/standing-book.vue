@@ -1,7 +1,25 @@
 <template>
-    <section class="panel-main property-to-confirm">        
+    <section class="panel-main property-to-confirm"> 
+        <el-row class="toolbar toolbar-top"> 
+            <div class="f-left">
+                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" ><i class="el-icon-search"></i> 搜索</el-button>
+            </div>  
+        </el-row>      
         <el-row class="toolbar toolbar-top">            
             <div class="f-left">
+                <label style="padding-left:10px;">资产状态：</label>
+                <el-select size="small" v-model="currentStatus" placeholder="请选择">
+                    <el-option v-for="(item,index) in propertyStatus" :label="item" :value="index" :key="index"></el-option>
+                </el-select>
+                <label style="padding-left:10px;">放款日期：</label>
+                <el-date-picker class='date-picker'
+                    v-model="dateRange3"
+                    type="daterange"
+                    range-separator=' 至 '
+                    placeholder="选择日期范围">
+                </el-date-picker>
+
                 <label style="padding-left:10px;">应收账款到期日：</label>
                 <el-date-picker class='date-picker'
                     v-model="dateRange"
@@ -16,10 +34,6 @@
                     range-separator=' 至 '
                     placeholder="选择日期范围">
                 </el-date-picker>
-            </div>  
-            <div class="f-right">
-                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
             </div>       
         </el-row>
 
@@ -70,6 +84,8 @@
             return {
                 dateRange:'',
                 dateRange2:'',
+                dateRange3:'',
+                currentStatus:'',
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:100,
@@ -220,5 +236,5 @@
 </script>
 <style>
     /*.property-to-confirm .date-picker input{width: 400px;font-size: 13px;color: #666;}*/
-    .property-to-confirm .toolbar-top .el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}
+    .property-to-confirm .toolbar-top .date-picker.el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}
 </style>
