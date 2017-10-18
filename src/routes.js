@@ -17,6 +17,11 @@ const ProtocolStamped = resolve => require(['./pages/protocol/stamped.vue'],reso
 //资产管理
 const AssetsList = resolve => require(['./pages/assets/list.vue'],resolve)
 const AssetsStatistics = resolve => require(['./pages/assets/statistics.vue'],resolve)
+const StandingBook = resolve => require(['./pages/assets/standing-book.vue'],resolve)
+const PropertyToBeConfirm = resolve => require(['./pages/assets/property-to-confirm.vue'],resolve)
+const PropertyToBeVerify = resolve => require(['./pages/assets/property-to-verify.vue'],resolve)
+const PropertyToBeDist = resolve => require(['./pages/assets/property-to-dist.vue'],resolve)
+const PropertyToBeLoan = resolve => require(['./pages/assets/property-to-loan.vue'],resolve)
 
 
 //结算管理
@@ -172,7 +177,69 @@ let routes = [
             {
                 path: '/pages/assets/list',
                 component: AssetsList,
-                name: '资产列表',
+                name: '应付数据',
+                show:{
+                    1:false,
+                    2:false,
+                    3:true,
+                    4:false,
+                    5:false,
+                }
+            },
+            {
+                path: '/pages/assets/property-to-confirm',
+                component: PropertyToBeConfirm,
+                name: '待确认资产',
+                show:{
+                    1:true,
+                    2:false,
+                    3:false,
+                    4:false,
+                    5:false,
+                }
+            },
+
+            {
+                path: '/pages/assets/property-to-verify',
+                component: PropertyToBeVerify,
+                name: '待审核资产',
+                show:{
+                    1:false,
+                    2:false,
+                    3:false,
+                    4:true,
+                    5:false,
+                }
+            },
+            {
+                path: '/pages/assets/property-to-dist',
+                component: PropertyToBeDist,
+                name: '待分配资产',
+                show:{
+                    1:false,
+                    2:false,
+                    3:false,
+                    4:true,
+                    5:false,
+                }
+            },
+            {
+                path: '/pages/assets/property-to-loan',
+                component: PropertyToBeLoan,
+                name: '待放款资产',
+                show:{
+                    1:false,
+                    2:false,
+                    3:false,
+                    4:true,
+                    5:false,
+                }
+            },           
+
+            {
+                path: '/pages/assets/standing-book',
+                component: StandingBook,
+                name: '台账管理',
                 show:{
                     1:true,
                     2:true,
@@ -181,18 +248,7 @@ let routes = [
                     5:true,
                 }
             },
-            {
-                path: '/pages/assets/statistics',
-                component: AssetsStatistics,
-                name: '数据统计',
-                show:{
-                    1:true,
-                    2:true,
-                    3:true,
-                    4:true,
-                    5:true,
-                }
-            }
+            
         ]
     },
     {
