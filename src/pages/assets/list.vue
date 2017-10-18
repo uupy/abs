@@ -97,12 +97,7 @@
                                 {{scope.$index+1}}
                             </template>
                         </el-table-column>
-                        <el-table-column prop='status' label="状态"  align='center'>
-                            <template slot-scope='scope'>
-                                <el-tag :type="scope.row.status == '1' ? 'success' : (scope.row.status == '2' ? 'warning':'default')" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
-                            </template>
-                            
-                        </el-table-column>
+                        
                         <el-table-column prop="company" label="项目公司" align='center'></el-table-column>
                         <el-table-column prop="supplier" label="供应商" align='center'></el-table-column>         
                         <el-table-column prop="fpno" label="发票号" align='center'></el-table-column>         
@@ -144,7 +139,12 @@
                                   <el-button size="small" type="primary">点击上传</el-button>
                                 </el-upload> 
                             </template>
-                        </el-table-column>         
+                        </el-table-column>  
+                        <el-table-column prop='status' label="状态"  align='center'>
+                            <template slot-scope='scope'>
+                                <el-tag :type="scope.row.status == '1' ? 'success' : (scope.row.status == '2' ? 'warning':'default')" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
+                            </template>                            
+                        </el-table-column>       
                         <el-table-column label="审批附件" align='center'>
                             <template slot-scope='scope'>
                                 <el-button v-if='scope.row.erpfujian&&scope.row.erpfujian!=""' size='small'>查看</el-button>
