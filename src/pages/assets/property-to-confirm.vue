@@ -2,15 +2,16 @@
     <section class="panel-main property-to-confirm">        
         <el-row class="toolbar toolbar-top">            
             <div class="f-left">
+
                 <label style="padding-left:10px;">应收账款到期日：</label>
-                <el-date-picker class='date-picker'
+                <el-date-picker size="small" class='date-picker'
                     v-model="dateRange"
                     type="daterange"
                     range-separator=' 至 '
                     placeholder="选择日期范围">
                 </el-date-picker>
                 <label style="padding-left:10px;">宽限期限到期日：</label>
-                <el-date-picker class='date-picker'
+                <el-date-picker size="small" class='date-picker'
                     v-model="dateRange2"
                     type="daterange"
                     range-separator=' 至 '
@@ -215,5 +216,5 @@
 </script>
 <style>
     /*.property-to-confirm .date-picker input{width: 400px;font-size: 13px;color: #666;}*/
-    .property-to-confirm .toolbar-top .el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}
+    .property-to-confirm .toolbar-top .date-picker.el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}
 </style>

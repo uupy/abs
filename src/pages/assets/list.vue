@@ -15,11 +15,7 @@
                 </el-row>
                 <el-row>
                     <el-table :data="propertyList"  class='table-list'>
-                        <el-table-column label="序号"  align='center'>
-                            <template slot-scope='scope'>
-                                {{scope.$index+1}}
-                            </template>
-                        </el-table-column>
+                        <el-table-column type="selection" width="55"></el-table-column>
                         <el-table-column prop="company" label="项目公司" align='center'></el-table-column>
                         <el-table-column prop="supplier" label="供应商" align='center'></el-table-column>         
                         <el-table-column prop="fpno" label="发票号" align='center'></el-table-column>         
@@ -78,7 +74,7 @@
                     <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="应付数据" name="second">
+            <el-tab-pane label="已融资数据" name="second">
                 <el-row class="toolbar toolbar-top">
                     <div class="f-left">
                         <label>项目公司：</label>
@@ -91,18 +87,13 @@
                     </div>
                 </el-row>
                 <el-row>
-                    <el-table :data="propertyList"  class='table-list'>
+                    <el-table :data="propertyDoneList"  class='table-list'>
                         <el-table-column label="序号"  align='center'>
                             <template slot-scope='scope'>
                                 {{scope.$index+1}}
                             </template>
                         </el-table-column>
-                        <el-table-column prop='status' label="状态"  align='center'>
-                            <template slot-scope='scope'>
-                                <el-tag :type="scope.row.status == '1' ? 'success' : (scope.row.status == '2' ? 'warning':'default')" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
-                            </template>
-                            
-                        </el-table-column>
+                        
                         <el-table-column prop="company" label="项目公司" align='center'></el-table-column>
                         <el-table-column prop="supplier" label="供应商" align='center'></el-table-column>         
                         <el-table-column prop="fpno" label="发票号" align='center'></el-table-column>         
@@ -110,51 +101,28 @@
                         <el-table-column prop="fpdate" label="发票日期" align='center'></el-table-column>         
                         <el-table-column label="发票附件" align='center'>
                             <template slot-scope='scope'>
-                                <el-button v-if='scope.row.fpfujian&&scope.row.fpfujian!=""' size='small'>查看</el-button>
-                                <el-upload v-else
-                                  class="upload-demo"
-                                  action="https://jsonplaceholder.typicode.com/posts/"
-                                  :on-preview="handlePreview"
-                                  :on-remove="handleRemove">
-                                  <el-button size="small" type="primary">点击上传</el-button>
-                                </el-upload> 
+                                <el-button size='small'>查看</el-button>
                             </template>
                         </el-table-column>         
                         <el-table-column prop="danjuhao" label="单据号" align='center'></el-table-column>         
                         <el-table-column label="单据附件" align='center'>
                             <template slot-scope='scope'>
-                                <el-button v-if='scope.row.danjufujian&&scope.row.danjufujian!=""' size='small'>查看</el-button>
-                                <el-upload v-else
-                                  class="upload-demo"
-                                  action="https://jsonplaceholder.typicode.com/posts/"
-                                  :on-preview="handlePreview"
-                                  :on-remove="handleRemove">
-                                  <el-button size="small" type="primary">点击上传</el-button>
-                                </el-upload> 
+                                <el-button size='small'>查看</el-button>
                             </template>
                         </el-table-column>         
                         <el-table-column label="ERP审批表" align='center'>
                             <template slot-scope='scope'>
-                                <el-button v-if='scope.row.erp&&scope.row.erp!=""' size='small'>查看</el-button>
-                                <el-upload v-else
-                                  class="upload-demo"
-                                  action="https://jsonplaceholder.typicode.com/posts/"
-                                  :on-preview="handlePreview"
-                                  :on-remove="handleRemove">
-                                  <el-button size="small" type="primary">点击上传</el-button>
-                                </el-upload> 
+                                <el-button size='small'>查看</el-button>
                             </template>
-                        </el-table-column>         
+                        </el-table-column>  
+                        <el-table-column prop='status' label="状态"  align='center'>
+                            <template slot-scope='scope'>
+                                <el-tag :type="scope.row.status == '1' ? 'success' : (scope.row.status == '2' ? 'warning':'default')" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
+                            </template>                            
+                        </el-table-column>       
                         <el-table-column label="审批附件" align='center'>
                             <template slot-scope='scope'>
-                                <el-button v-if='scope.row.erpfujian&&scope.row.erpfujian!=""' size='small'>查看</el-button>
-                                <el-upload v-else
-                                  class="upload-demo"
-                                  action="https://jsonplaceholder.typicode.com/posts/"
-                                  :on-preview="handlePreview"
-                                  :on-remove="handleRemove">
-                                  <el-button size="small" type="primary">点击上传</el-button>
-                                </el-upload> 
+                                <el-button size='small'>查看</el-button>
                             </template>
                         </el-table-column>         
                     </el-table>
@@ -298,6 +266,125 @@
                         erp:'',
                         erpfujian:'',
                         status:'3'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                ],
+                propertyDoneList:[
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'123',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
+                    },
+                    {
+                        company:'深圳宝宝公司',
+                        supplier:'大疆集团',
+                        fpno:'fp001',
+                        fpsum:'4000.00',
+                        fpdate:'2017-10-17',
+                        fpfujian:'',
+                        danjuhao:'dj1451',
+                        danjufujian:'',
+                        erp:'',
+                        erpfujian:'',
+                        status:'1'
                     },
                     {
                         company:'深圳宝宝公司',

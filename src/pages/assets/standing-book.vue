@@ -1,23 +1,44 @@
 <template>
-    <section class="panel-main property-to-confirm">        
-        <el-row class="toolbar toolbar-top">            
+    <section class="panel-main property-to-confirm"> 
+        <!-- <el-row class="toolbar toolbar-top"> 
             <div class="f-left">
-                <label style="padding-left:10px;">应收账款到期日：</label>
-                <el-date-picker size="small" class='date-picker'
-                    v-model="dateRange"
-                    type="daterange"
-                    range-separator=' 至 '
-                    placeholder="选择日期范围">
-                </el-date-picker>
-                <label style="padding-left:10px;">宽限期限到期日：</label>
-                <el-date-picker size="small" class='date-picker'
-                    v-model="dateRange2"
-                    type="daterange"
-                    range-separator=' 至 '
-                    placeholder="选择日期范围">
-                </el-date-picker>
+                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" ><i class="el-icon-search"></i> 搜索</el-button>
             </div>  
-            <div class="f-right">
+        </el-row>  -->     
+        <el-row class="toolbar toolbar-top">            
+            <el-col :span="17">
+                <el-col>
+                    <label style="display:inline-block;min-width:115px; padding-left:10px;text-align:right;">资产状态：</label>
+                    <el-select size="small" v-model="currentStatus" placeholder="请选择" style="width:230px;">
+                        <el-option v-for="(item,index) in propertyStatus" :label="item" :value="index" :key="index"></el-option>
+                    </el-select>
+                    <label style="display:inline-block;min-width:115px; padding-left:10px;text-align:right;">放款日期：</label>
+                    <el-date-picker size="small" class='date-picker'
+                        v-model="dateRange3"
+                        type="daterange"
+                        range-separator=' 至 '
+                        placeholder="选择日期范围">
+                    </el-date-picker>
+                </el-col>
+                <el-col style="margin-top:10px;">
+                    <label style="display:inline-block;min-width:115px; padding-left:10px;text-align:right;">应收账款到期日：</label>
+                    <el-date-picker size="small" class='date-picker'
+                        v-model="dateRange"
+                        type="daterange"
+                        range-separator=' 至 '
+                        placeholder="选择日期范围">
+                    </el-date-picker>
+                    <label style="display:inline-block;min-width:115px; padding-left:10px;text-align:right;">宽限期限到期日：</label>
+                    <el-date-picker size="small" class='date-picker'
+                        v-model="dateRange2"
+                        type="daterange"
+                        range-separator=' 至 '
+                        placeholder="选择日期范围">
+                    </el-date-picker>
+                </el-col> 
+            </el-col>  
+            <div class="f-right" style="padding-top:40px;">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
                 <el-button size="small" type='primary'>导出</el-button>
@@ -65,6 +86,8 @@
             return {
                 dateRange:'',
                 dateRange2:'',
+                dateRange3:'',
+                currentStatus:'',
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:100,
@@ -215,5 +238,5 @@
 </script>
 <style>
     /*.property-to-confirm .date-picker input{width: 400px;font-size: 13px;color: #666;}*/
-    .property-to-confirm .toolbar-top .el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}
+    .property-to-confirm .toolbar-top .date-picker.el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}
 </style>
