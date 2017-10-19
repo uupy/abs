@@ -4,6 +4,7 @@ const NotFound = resolve => require(['./pages/404.vue'], resolve)
 const Home = resolve => require(['./pages/Home.vue'], resolve)
 
 //企业管理
+const AllEnterpriseList = resolve => require(['./pages/enterprise/all_enterprise.vue'],resolve)
 const CoreList = resolve => require(['./pages/enterprise/core.vue'],resolve)
 const SupplierList = resolve => require(['./pages/enterprise/supplier.vue'],resolve)
 const CapitalList = resolve => require(['./pages/enterprise/capital.vue'],resolve)
@@ -49,11 +50,23 @@ let routes = [
         iconCls: 'im-icon-management',
         children: [
             {
-                path: '/pages/core',
-                component: {template:'<router-view></router-view>'},
-                name: '核心企业',
+                path: '/pages/enterprise/views',
+                component: EnterpriseViews,
+                name: '企业信息',
                 show:{
-                    1:true,
+                    1:false,
+                    2:true,
+                    3:true,
+                    4:false,
+                    5:true,
+                }
+            },
+            {
+                path: '/pages/all_enterprise',
+                component: {template:'<router-view></router-view>'},
+                name: '企业汇总',
+                show:{
+                    1:false,
                     2:false,
                     3:false,
                     4:true,
@@ -61,14 +74,39 @@ let routes = [
                 },
                 children:[
                     {
+                        path: '/pages/all_enterprise',
+                        component: AllEnterpriseList,
+                        name: '企业汇总列表',
+                    },
+                    {
+                        path: '/pages/all_enterprise/views',
+                        component: EnterpriseViews,
+                        name: '企业汇总详情',
+                        hidden: true
+                    },
+                ]
+            },
+            {
+                path: '/pages/core',
+                component: {template:'<router-view></router-view>'},
+                name: '集团管理',
+                show:{
+                    1:true,
+                    2:false,
+                    3:false,
+                    4:true,
+                    5:true,
+                },
+                children:[
+                    {
                         path: '/pages/core',
                         component: CoreList,
-                        name: '核心企业列表',
+                        name: '集团列表',
                     },
                     {
                         path: '/pages/core/views',
                         component: EnterpriseViews,
-                        name: '核心企业详情',
+                        name: '集团详情',
                         hidden: true
                     },
                 ]
@@ -76,24 +114,24 @@ let routes = [
             {
                 path: '/pages/supplier',
                 component: {template:'<router-view></router-view>'},
-                name: '供应商',
+                name: '融资客户管理',
                 show:{
                     1:true,
-                    2:false,
+                    2:true,
                     3:false,
                     4:true,
-                    5:false,
+                    5:true,
                 },
                 children:[
                     {
                         path: '/pages/supplier',
                         component: SupplierList,
-                        name: '供应商列表',
+                        name: '融资客户列表',
                     },
                     {
                         path: '/pages/supplier/views',
                         component: EnterpriseViews,
-                        name: '供应商详情',
+                        name: '融资客户详情',
                         hidden: true
                     },
                 ]
@@ -101,7 +139,7 @@ let routes = [
             {
                 path: '/pages/capital',
                 component: {template:'<router-view></router-view>'},
-                name: '合作方',
+                name: '合作方管理',
                 show:{
                     1:false,
                     2:false,
@@ -122,18 +160,6 @@ let routes = [
                         hidden: true
                     },
                 ]
-            },
-            {
-                path: '/pages/enterprise/views',
-                component: EnterpriseViews,
-                name: '企业信息',
-                show:{
-                    1:false,
-                    2:true,
-                    3:true,
-                    4:false,
-                    5:true,
-                }
             },
         ]
     },

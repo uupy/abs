@@ -47,14 +47,8 @@ export default {
                 method: options.method,
                 url: `${self.url}${options.path}`,
                 headers: {
-                    "Authorization": `Bearer ${self.token}`
+                    "x-auth-token": `${self.token}`
                 }
-                // headers: {
-                //     "Content-Type": "application/x-www-form-urlencoded",
-                //     "UserName": Base64.encode(self.username)
-                // },
-                // credentials: true,
-                // emulateJSON: true
             }
             options.method == 'GET' ? config.params = options.params : (options.method == 'POST' ? config.body = JSON.stringify(options.params) : '');
             self.$http(config).then((response) => {
@@ -73,12 +67,10 @@ export default {
                         {attr:'onLoading',val:false},
                         {attr:'innerLoading',val:false}
                     ]);
-                    if(self.errorCount % 30 == 0){
-                        self.$message({
-                            message: `请求结果：${response.ok}`,
-                            type: 'error'
-                        });
-                    }
+                    self.$message({
+                        message: `请求结果：${response.ok}`,
+                        type: 'error'
+                    });
                     console.log(`请求地址：${response.url} 请求结果：${response.ok}`, 'error');
                 }
             });

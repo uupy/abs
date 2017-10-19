@@ -12,24 +12,24 @@
                     </el-col>
                     <el-col class="info-box" style="margin-top:-8px;">
                         <p>
-                            <label>公开电话：</label>
+                            <label>固定电话：</label>
                             <span>{{contact_form.tel}}</span>
                         </p>
                         <p>
-                            <label>邮箱：</label>
-                            <span>{{contact_form.email}}</span>
+                            <label>传真号码：</label>
+                            <span>{{contact_form.fax}}</span>
                         </p>
                         <p>
-                            <label>官网：</label>
-                            <span>{{contact_form.links}}</span>
+                            <label>官方网站：</label>
+                            <span>{{contact_form.website}}</span>
                         </p>
                         <p>
-                            <label>办公地址：</label>
-                            <span>{{contact_form.address}}</span>
+                            <label>注册地址：</label>
+                            <span>{{contact_form.reg_addr}}</span>
                         </p>
                         <p>
-                            <label>所属区域：</label>
-                            <span>{{contact_form.area}}</span>
+                            <label>联系地址：</label>
+                            <span>{{contact_form.contact_addr}}</span>
                         </p>
                     </el-col>
                 </el-row>
@@ -42,21 +42,19 @@
                         <el-table :data="contact_persons" class="table-list">
                             <el-table-column prop="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="name" label="联系人姓名"></el-table-column>
-                            <el-table-column prop="role" label="签约角色">
+                            <el-table-column prop="role" label="角色">
                                 <template slot-scope="scope">
                                     <span>{{contact_roles[scope.row.role]}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="authority" label="操作权限">
+                            <el-table-column prop="authority" label="系统权限">
                                 <template slot-scope="scope">
                                     <span>{{authorities[scope.row.authority]}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="position" label="职位"></el-table-column>
-                            <el-table-column prop="tel" label="联系电话"></el-table-column>
-                            <el-table-column prop="weixin" label="微信号"></el-table-column>
-                            <el-table-column prop="qq" label="QQ号"></el-table-column>
-                            <el-table-column prop="email" label="邮箱"></el-table-column>
+                            <el-table-column prop="tel" label="手机号码"></el-table-column>
+                            <el-table-column prop="email" label="邮箱地址"></el-table-column>
                             <el-table-column prop="status" label="认证状态" width="100">
                                 <template slot-scope="scope">
                                     <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '未认证' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
@@ -64,8 +62,7 @@
                             </el-table-column>
                             <el-table-column inline-template :context="_self" label="操作" width="120" align='center' v-if="operate_authority">
                                 <span>
-                                    <!-- <span class="table-btn health">个人认证</span> -->
-                                    <span class="table-btn health" v-if="row.role === 2 || row.role === 3">授权</span>
+                                    <span class="table-btn health" v-if="row.role === 2 || row.role === 3" @click.stop="editContactPerson">编辑</span>
                                     <span class="table-btn health" v-else></span>
                                     <span class="table-btn danger" @click.stop="handleDelContact(row)">删除</span>
                                 </span>
@@ -196,34 +193,34 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="资料管理" name="data_management">
+            <el-tab-pane label="基础资料" name="data_management">
                 <el-col :span="24">
                     <el-row>
                         <el-col class="toolbar toolbar-top">
-                            <span class="title">标准资料清单</span>
-                            <div class="f-right" v-if="operate_authority">
+                            <span class="title">基础资料清单</span>
+                            <!-- <div class="f-right" v-if="operate_authority">
                                 <el-button size="small" type="primary" @click="dialog_add_data = true"><i class="el-icon-plus"></i>新增资料</el-button>
-                            </div>
+                            </div> -->
                         </el-col>
                         <el-col :span="24">
                             <el-table :data="data_list" class="table-list">
                                 <el-table-column prop="index" label="序号" width="90"></el-table-column>
                                 <el-table-column prop="name" label="资料名称"></el-table-column>
-                                <el-table-column prop="range" label="收集范围"></el-table-column>
-                                <el-table-column prop="modus" label="提交形式"></el-table-column>
-                                <el-table-column prop="status" label="状态" width="100">
+                                <!-- <el-table-column prop="range" label="收集范围"></el-table-column> -->
+                                <!-- <el-table-column prop="modus" label="提交形式"></el-table-column> -->
+                                <el-table-column prop="status" label="状态">
                                     <template slot-scope="scope">
                                         <el-tag :type="scope.row.status == '已上传' ? 'success' : (scope.row.status == '未上传' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
                                     </template>
                                 </el-table-column>
                                 <el-table-column inline-template :context="_self" label="操作" width="160">
                                     <span>
-                                        <el-button size="small" v-if="operate_authority">上传</el-button>
+                                        <!-- <el-button size="small" v-if="operate_authority">上传</el-button> -->
                                         <el-button size="small">下载</el-button>
                                     </span>
                                 </el-table-column>
                             </el-table>
-                            <el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="dataSizeChange" @current-change="dataCurrentChange" :page-size="data_pagesize" :total="data_total"></el-pagination>
+                            <!-- <el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="dataSizeChange" @current-change="dataCurrentChange" :page-size="data_pagesize" :total="data_total"></el-pagination> -->
                         </el-col>
                     </el-row>
                 </el-col>
@@ -339,20 +336,20 @@
         <!-- 对话框 -->
         <el-dialog size="tiny" title="编辑联系方式" v-model="dialog_edit_contact" @close="cancelEditContact('contact_form')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="contact_form" :rules="edit_rules" ref="contact_form" label-width="80px">
-                <el-form-item label="公开电话" prop="tel">
-                    <el-input v-model="contact_form.tel" placeholder="请输入电话"></el-input>
+                <el-form-item label="固定电话" prop="tel">
+                    <el-input v-model="contact_form.tel" placeholder="请输入固定电话"></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="contact_form.email" placeholder="请输入邮箱"></el-input>
+                <el-form-item label="传真号码" prop="fax">
+                    <el-input v-model="contact_form.fax" placeholder="请输入传真号码"></el-input>
                 </el-form-item>
-                <el-form-item label="官网" prop="links">
-                    <el-input v-model="contact_form.links" placeholder="请输入官网"></el-input>
+                <el-form-item label="官方网站" prop="website">
+                    <el-input v-model="contact_form.website" placeholder="请输入官方网站"></el-input>
                 </el-form-item>
-                <el-form-item label="办公地址" prop="address">
-                    <el-input type="textarea" v-model="contact_form.address" placeholder="请输入办公地址"></el-input>
+                <el-form-item label="注册地址" prop="reg_addr">
+                    <el-input type="textarea" v-model="contact_form.reg_addr" placeholder="请输入注册地址"></el-input>
                 </el-form-item>
-                <el-form-item label="所属区域" prop="area">
-                    <el-input type="textarea" v-model="contact_form.area" placeholder="请输入所属区域"></el-input>
+                <el-form-item label="联系地址" prop="contact_addr">
+                    <el-input type="textarea" v-model="contact_form.contact_addr" placeholder="请输入联系地址"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -364,7 +361,7 @@
         <!-- 对话框 -->
         <el-dialog size="tiny" title="新增联系人" v-model="dialog_add_contact" @close="cancelAddContact('addForm')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
-                <el-form-item label="签约角色" prop="role">
+                <el-form-item label="角色" prop="role">
                     <el-select v-model="addForm.role" placeholder="请选择签约角色">
                         <el-option v-for="(item,value) in contact_roles" :label="item" :value="value" :key="value"></el-option>
                     </el-select>
@@ -378,17 +375,11 @@
                 <el-form-item label="职位" prop="position">
                     <el-input v-model="addForm.position" placeholder="请输入联系人职位"></el-input>
                 </el-form-item>
-                <el-form-item label="联系电话" prop="tel">
-                    <el-input v-model="addForm.tel" placeholder="请输入联系人电话"></el-input>
+                <el-form-item label="手机号码" prop="tel">
+                    <el-input v-model="addForm.tel" placeholder="请输入联系人手机号码"></el-input>
                 </el-form-item>
-                <el-form-item label="微信号" prop="weixin">
-                    <el-input v-model="addForm.weixin" placeholder="请输入联系人微信号"></el-input>
-                </el-form-item>
-                <el-form-item label="QQ号" prop="qq">
-                    <el-input v-model="addForm.qq" placeholder="请输入联系人QQ号"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="addForm.email" placeholder="请输入联系人邮箱"></el-input>
+                <el-form-item label="邮箱地址" prop="email">
+                    <el-input v-model="addForm.email" placeholder="请输入联系人邮箱地址"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -429,16 +420,14 @@
                     authority:'0',
                     position:'',
                     tel:'',
-                    weixin:'',
-                    qq:'',
                     email:'',
                 },
                 contact_form:{
                     tel:'666666',
-                    email:'123456@qq.com',
-                    links:'https://www.baidu.com/',
-                    address:'深圳市福田区',
-                    area:'深圳市福田区',
+                    fax:'222222',
+                    website:'https://www.baidu.com/',
+                    contact_addr:'深圳市福田区',
+                    reg_addr:'深圳市福田区',
                 },
                 edit_rules:{
 
@@ -453,30 +442,23 @@
                     {
                         index:1,
                         name:'企业法人营业执照',
-                        range:'',
-                        modus:'原件拍照/扫描',
+                        // range:'',
+                        // modus:'原件拍照/扫描',
                         status:'已上传'
                     },
                     {
                         index:2,
-                        name:'公司章程及修正案',
-                        range:'',
-                        modus:'原件拍照/扫描',
+                        name:'法人身份证正反面',
+                        // range:'',
+                        // modus:'原件拍照/扫描',
                         status:'未上传'
                     },
                     {
                         index:3,
-                        name:'身份证',
-                        range:'法定代表人',
-                        modus:'原件拍照/扫描',
+                        name:'代理人身份证正反面',
+                        // range:'法定代表人',
+                        // modus:'原件拍照/扫描',
                         status:'已上传'
-                    },
-                    {
-                        index:4,
-                        name:'与买方合同协议',
-                        range:'包含所有与买方签署的协议及其附件',
-                        modus:'原件拍照/扫描',
-                        status:'未上传'
                     }
                 ],
                 contact_pagenum:1,
@@ -490,8 +472,6 @@
                         authority:0,
                         position:'CEO',
                         tel:'18812345678',
-                        weixin:'weixin',
-                        qq:'66666',
                         email:'66666@qq.com',
                         status:'已认证',
                     },
@@ -502,8 +482,6 @@
                         authority:1,
                         position:'CEO',
                         tel:'18812345678',
-                        weixin:'weixin',
-                        qq:'66666',
                         email:'66666@qq.com',
                         status:'已认证'
                     },
@@ -514,8 +492,6 @@
                         authority:2,
                         position:'CEO',
                         tel:'18812345678',
-                        weixin:'weixin',
-                        qq:'66666',
                         email:'66666@qq.com',
                         status:'未认证'
                     },
@@ -526,8 +502,6 @@
                         authority:2,
                         position:'CEO',
                         tel:'18812345678',
-                        weixin:'weixin',
-                        qq:'66666',
                         email:'66666@qq.com',
                         status:'未认证'
                     }
@@ -789,6 +763,9 @@
             dataCurrentChange(){},
             handleDelContact(){},
             confirmAddContact(){},
+            editContactPerson(){
+                this.dialog_add_contact = true;
+            },
             cancelEditContact(){
                 this.dialog_edit_contact = false;
             },
@@ -808,7 +785,17 @@
             self.$nextTick(()=>{
                 self.operate_authority = self.enterprise_menu_type !== 1 || (self.enterprise_menu_type === 1 && (self.user_role === 1 || self.user_role === 4));
                 if(self.enterprise_menu_type === 1){
-                    self.operate_authority = true;
+                    if(!(self.user_role === 5)){
+                        self.operate_authority = true;
+                    }else{
+                        self.operate_authority = false;
+                    }
+                }else if(self.enterprise_menu_type === 2){
+                    if(!(self.user_role === 1 || self.user_role === 2 || self.user_role === 5)){
+                        self.operate_authority = true;
+                    }else{
+                        self.operate_authority = false;
+                    }
                 }else{
                     if(self.user_role !== 1){
                         self.operate_authority = true;

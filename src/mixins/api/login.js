@@ -39,8 +39,10 @@ export default{
 	            		localStorage.setItem('username',self.loginForm.account);
 	            		localStorage.setItem('user_role',users[self.loginForm.account].role);
 	            		self.updateBaseInfo();
-	            		if(users[self.loginForm.account].role === 1 || users[self.loginForm.account].role === 4){
+	            		if(users[self.loginForm.account].role === 1){
 	            			self.$router.push({ path: '/pages/core' });
+	            		}else if(users[self.loginForm.account].role === 4){
+	            			self.$router.push({ path: '/pages/all_enterprise' });
 	            		}else{	
 	            			self.$router.push({ path: '/pages/enterprise/views' });
 	            		}

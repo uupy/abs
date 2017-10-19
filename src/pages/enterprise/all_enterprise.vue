@@ -6,11 +6,15 @@
                 <el-select size="small" v-model="enterprise_status" placeholder="请选择">
                     <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>
+                <label style="padding-left:10px;">企业角色：</label>
+                <el-select size="small" v-model="enterprise_role" placeholder="请选择">
+                    <el-option v-for="(item,index) in enterprise_roles" :label="item.label" :value="item.value" :key="index"></el-option>
+                </el-select>
             </div>
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
-                <el-button size="small" type="primary" @click="dialog_add_client = true" v-if="user_role === 4"><i class="el-icon-plus"></i>新增</el-button>
+                <el-button size="small" type="primary" @click="dialog_add_client = true"><i class="el-icon-plus"></i>新增</el-button>
             </div>
         </el-row>
         <el-row :span="24">
@@ -18,6 +22,8 @@
                 <el-table-column prop="index" label="序号" width="90"></el-table-column>
                 <el-table-column prop="id" label="企业编号"></el-table-column>
                 <el-table-column prop="name" label="企业名称"></el-table-column>
+                <el-table-column prop="role" label="企业角色"></el-table-column>
+                <el-table-column prop="area" label="所属区域"></el-table-column>
                 <el-table-column prop="status" label="认证状态">
                     <template slot-scope="scope">
                         <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
@@ -26,15 +32,20 @@
                 <el-table-column inline-template :context="_self" label="操作" width="140">
                     <span>
                         <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                        <span class="table-btn danger" v-if="user_role === 4">删除</span>
+                        <span class="table-btn danger">删除</span>
                     </span>
                 </el-table-column>
             </el-table>
             <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
         </el-row>
         <!-- 对话框 -->
-        <el-dialog size="tiny" title="新增供应商" v-model="dialog_add_client" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
+        <el-dialog size="tiny" title="新增项目企业" v-model="dialog_add_client" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
+                <el-form-item label="企业角色" prop="role">
+                    <el-select v-model="add_form.role" placeholder="请选择企业角色">
+                        <el-option v-for="(item,index) in enterprise_roles" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="企业名称" prop="name">
                     <el-input v-model="add_form.name" placeholder="请输入企业名称"></el-input>
                 </el-form-item>
@@ -56,6 +67,7 @@
 <script>
     import Common from '../../mixins/common.js'
     import Clients from '../../api/clients.js'
+    // import PagerLimit from '../../mixins/pagerLimit.js'
     export default {
         data() {
             return {
@@ -66,33 +78,55 @@
                     {label:'已认证',value:1},
                     {label:'创建中',value:2},
                 ],
+                enterprise_role:0,
+                enterprise_roles:[
+                    {label:'全部',value:0},
+                    {label:'集团公司',value:1},
+                    {label:'项目公司',value:2},
+                    {label:'融资客户',value:3},
+                    {label:'合作方',value:4},
+                ],
                 clients_pagenum:10,
                 clients_pagesize:10,
                 clients_total:10,
                 clients:[
                     {
                         index:1,
-                        id:'BGYS0001',
-                        name:'东莞啊啊工程公司',
+                        id:'BGYA0001',
+                        name:'碧桂园集团控股有限公司',
+                        role:'集团公司',
+                        area:'无',
                         status:'创建中'
                     },
                     {
                         index:2,
-                        id:'BGYS0002',
-                        name:'东莞报表工程公司',
+                        id:'BGYB0001',
+                        name:'碧桂园佛山项目公司',
+                        role:'项目公司',
+                        area:'华南',
                         status:'已认证'
                     },
                     {
                         index:3,
-                        id:'BGYS0003',
-                        name:'东莞报表工程公司',
+                        id:'BGYS0001',
+                        name:'东莞啊啊工程公司',
+                        role:'融资客户',
+                        area:'无',
+                        status:'已认证'
+                    },
+                    {
+                        index:3,
+                        id:'GDSC0001',
+                        name:'招商证券',
+                        role:'合作方',
+                        area:'无',
                         status:'已认证'
                     }
                 ],
                 dialog_add_client:false,
                 add_form:{
                     name:'',
-                    role:'1',
+                    role:1,
                     principal:'',
                     position:''
                 },
@@ -118,9 +152,9 @@
             checkView(row){
                 this.setState({
                     attr:'enterprise_menu_type',
-                    val:2
+                    val:1
                 });
-                this.$router.push({ path: '/pages/supplier/views' });
+                this.$router.push({ path: '/pages/all_enterprise/views' });
             },
             cancelAddClient(){
                 this.dialog_add_client = false;
