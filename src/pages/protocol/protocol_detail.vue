@@ -129,7 +129,7 @@
                 <el-form :model='propertyTransferInfo' label-width='180px' class='item-list'>
                     <el-form-item label='中登网登记文件' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary" @click.native='imgPreview(propertyTransferInfo.assignFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.assignFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -144,7 +144,7 @@
                     </el-form-item>
                     <el-form-item label='应收账款债权转让协议' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary" @click.native='imgPreview(propertyTransferInfo.transferFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.transferFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -159,7 +159,7 @@
 
                     <el-form-item label='应收账款转让通知函及回执' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary" @click.native='imgPreview(propertyTransferInfo.notifyFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.notifyFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -172,7 +172,7 @@
                     </el-form-item>
                     <el-form-item label='付款确认书（项目公司）' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary"  @click.native='imgPreview(propertyTransferInfo.paymentProject)'>点击查看</el-button>
+                            <el-button size="small" type="primary"  @click.native='getFile(propertyTransferInfo.paymentProject)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -185,7 +185,7 @@
                     </el-form-item>
                     <el-form-item label='付款确认书（总部）' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary"  @click.native='imgPreview(propertyTransferInfo.transferFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary"  @click.native='getFile(propertyTransferInfo.transferFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -198,7 +198,7 @@
                     </el-form-item>
                     <el-form-item label='股东会决议' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary"  @click.native='imgPreview(propertyTransferInfo.partnerFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary"  @click.native='getFile(propertyTransferInfo.partnerFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -211,7 +211,7 @@
                     </el-form-item>
                     <el-form-item label='基础资产买卖协议' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary" @click.native='imgPreview(propertyTransferInfo.baseFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.baseFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -224,7 +224,7 @@
                     </el-form-item>
                     <el-form-item label='服务协议' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary" @click.native='imgPreview(propertyTransferInfo.serverFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.serverFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -239,17 +239,19 @@
             </el-tab-pane>           
         </el-tabs>     
         <el-dialog size="full" title="编辑联系方式" v-model="dialogFormVisible" class="file-img">
-            <img :src='fileImgUrl' />
+            <img :src='fileImgUrl'/>
         </el-dialog>
     </section>
 </template>
 <script>
     import Common from '@/mixins/common.js'
     import Clients from '@/api/clients.js'
+    import NoImg from '@/assets/images/empty_box.png'
     export default {
         data() {
             return {
                 dialogFormVisible:false,
+                fileType:'',
                 fileImgUrl:'',
                 tableData5: [{
                   id: '12987122',
@@ -360,7 +362,7 @@
                     paymentBase:'http://a3.topitme.com/f/d1/4b/11292760524e84bd1fo.jpg',
                     partnerFile:'http://img1.imgtn.bdimg.com/it/u=4235859327,2792662286&fm=214&gp=0.jpg',
                     baseFile:'http://pic5.nipic.com/20100302/2177138_084003138452_2.jpg',
-                    serverFile:'http://a3.topitme.com/b/4f/67/1128623636b9c674fbo.jpg',
+                    serverFile:'http://www.danielpeng.me/file/ABS资产管理.rar',
                 }   
             }
         },
@@ -378,17 +380,19 @@
                 console.log(key)
            },
            cancelReset(){},
-           imgPreview(url){
+           getFile(url){
                 const self = this;
-                let fileType =  url.substr((url.lastIndexOf('.'))+1);
-
+                self.fileType =  url.substr((url.lastIndexOf('.'))+1);
                 //图片文件
-                if(fileType == 'jpg' || fileType == 'jpeg' || fileType == 'png' || fileType == 'gif' ){
+                if(self.fileType == 'jpg' || self.fileType == 'jpeg' || self.fileType == 'png' || self.fileType == 'gif' ){
                     self.dialogFormVisible = true;
                     self.fileImgUrl = url;
                 }else{
-
+                    window.open(url)
                 }                    
+           },
+           imgError(){
+                alert('sb')
            }
         },
         watch: {
