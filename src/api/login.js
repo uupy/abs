@@ -18,19 +18,6 @@ export default {
                         attr:'innerLoading',
                         val:true
                     });
-                    // const params = {
-                    //     mobile: self.loginForm.account,
-                    //     password: self.loginForm.password
-                    // };
-                    // $.ajax({
-                    //     url:`${self.url}/doLogin`,
-                    //     type: "POST",
-                    //     data: params,
-                    //     success:function(data) {
-                    //         console.log(data);
-                    //     }
-                    // });
-                    // return;
                     self.$http({
                         method: 'POST',
                         url:`${self.url}/doLogin`,

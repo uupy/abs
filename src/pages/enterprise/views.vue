@@ -699,6 +699,13 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
+                if(!self.set_menu_type){
+                    this.saveStorageState({
+                        attr:'nav_menu_type',
+                        val:0,
+                        type:'number' 
+                    });
+                }
                 document.addEventListener("keyup", self.enterKeyup, false);
                 if(sessionStorage.getItem('enterprise_tname')){
                     self.active_name = sessionStorage.getItem('enterprise_tname');
@@ -715,6 +722,18 @@
                 val:0,
                 type:'number'
             });
+            this.saveStorageState([
+                {
+                    attr:'nav_menu_type',
+                    val:0,
+                    type:'number' 
+                },
+                {
+                    attr:'set_menu_type',
+                    val:false,
+                    type:'boolean' 
+                }
+            ]);
             this.updateOperateAuthority();
         }
     }
