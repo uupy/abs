@@ -1,8 +1,7 @@
 <template>
-    <section class="panel-main property-to-confirm">        
+    <section class="panel-main property-to-confirm" :style="styles">        
         <el-row class="toolbar toolbar-top">            
             <div class="f-left">
-
                 <label style="padding-left:10px;">应收账款到期日：</label>
                 <el-date-picker size="small" class='date-picker'
                     v-model="dateRange"
@@ -10,7 +9,7 @@
                     range-separator=' 至 '
                     placeholder="选择日期范围">
                 </el-date-picker>
-                <label style="padding-left:10px;">宽限期限到期日：</label>
+                <label style="padding-left:10px;">提交日期：</label>
                 <el-date-picker size="small" class='date-picker'
                     v-model="dateRange2"
                     type="daterange"
@@ -21,44 +20,36 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>签约</el-button>
                 <el-button size="small" type='primary'>确认放款</el-button>
             </div>       
         </el-row>
 
         <el-row>
-            <el-table
-                ref="multipleTable"
-                :data="propertyList"
-                border
-                tooltip-effect="dark"                
-                @selection-change="handleSelectionChange">
-
+            <el-table ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='pno'  align='center'  label='资产编号'></el-table-column>
-                <el-table-column prop='hxqy'  align='center' label='核心企业'></el-table-column>
-                <el-table-column prop='gysmc' align='center' label='供应商名称'></el-table-column>
+                <el-table-column prop='supplier'  align='center'  label='供应商'></el-table-column>
+                <el-table-column prop='project'  align='center' label='项目公司'></el-table-column>
+                <el-table-column prop='area'  align='center' label='所属区域'></el-table-column>
                 <el-table-column prop='yszkje' align='center'  label='应收账款金额'></el-table-column>
-                <el-table-column prop='blrzje' align='center'  label='保理融资金额'></el-table-column>
-                <el-table-column prop='fkrq' label='放款日期' align='center' ></el-table-column>
+                <el-table-column prop='zrzj' align='center'  label='转让折价'></el-table-column>
+                <el-table-column prop='tjrq' align='center' label='提交日期'></el-table-column>
                 <el-table-column prop='yszkdqr'  align='center' label='应收账款到期日'></el-table-column>
-                <el-table-column prop='kxqxdqr' align='center' label='宽限期限到期日'></el-table-column>
-                <el-table-column prop='hkr'  align='center' label='还款日'></el-table-column>
-                <el-table-column align='center' label='状态'>
+                <el-table-column prop='rzts'  align='center' label='融资天数'></el-table-column>
+                <el-table-column prop='dclr'  align='center' label='待处理人'></el-table-column>
+                <el-table-column align='center' label='资产状态'>
                     <template slot-scope='scope'>
-                        <el-tag :type="scope.row.status == '1' ? 'success' : (scope.row.status == '2' ? 'warning':'default')" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
+                        <el-tag :type="(scope.row.status == '6' || scope.row.status == '7' || scope.row.status == '8') ? 'success' : 'warning'" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column align='center' label='操作'>
+                <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
-                        <span class="table-btn health">详情</span>
-                        <span class="table-btn health">签约</span>
-                        <span class="table-btn health">放款</span>
-                        <span class="table-btn danger">回退</span>
+                        <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
+                        <span class="table-btn danger">确认放款</span>
                     </template>
                 </el-table-column>                
-              </el-table>
-               <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+            </el-table>
+            <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
         </el-row>
     </section>
 </template>
@@ -72,134 +63,42 @@
                 dateRange2:'',
                 filter_name:'',
                 clients_pagesize:10,
-                clients_total:100,
+                clients_total:1,
                 propertyList:[
                     {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
+                        pno:'ZCA01171019001',
+                        supplier:'供应商1',
+                        project:'碧桂园',
+                        area:'深圳宝安',
+                        yszkje:'2,000,000',
+                        zrzj:'1,988,000',
+                        tjrq:'2017-12-30',
                         yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'1',
+                        rzts:'360',
+                        dclr:'保理商复核',
+                        status:'5',
                     },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'2',
-                    },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'3',
-                    },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'4',
-                    },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'4',
-                    },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'4',
-                    },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'4',
-                    },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'4',
-                    },
-                    {
-                        pno:'zc001',
-                        hxqy:'碧桂园',
-                        gysmc:'供应商1',
-                        yszkje:'100万',
-                        blrzje:'100万',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        kxqxdqr:'2017-12-30',
-                        hkr:'2017-12-30',
-                        status:'4',
-                    }
-
                 ],
                 propertyStatus:{},
             }
         },
         methods: {
-           clearFilter(){
-
-           },
-           handleSelectionChange(){
-
-           },
-           clientsSizeChange(){
-
-           },
-           clientsCurrentChange(){
-
-           }
+            clearFilter(){
+ 
+            },
+            handleSelectionChange(){
+ 
+            },
+            clientsSizeChange(){
+ 
+            },
+            clientsCurrentChange(){
+ 
+            },
+            checkView(row){
+                const self = this;
+                self.$router.push({path:'/pages/assets/property-to-loan/views'});
+            },
         },
         watch: {
             

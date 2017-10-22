@@ -12,12 +12,9 @@ const state = {
     onLoading: false,
     isTimeOut: false,
     isKickedOut:false,
-    username: localStorage.getItem('username') ? JSON.parse(localStorage.getItem('username')) : '',
-    token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '',
+    username: localStorage.getItem('username') || '',
+    token: localStorage.getItem('token') || '',
     styles:'min-height:'+(window.innerHeight-84)+'px',
-
-    // user_role:parseInt(localStorage.getItem('user_role')),
-    // enterprise_menu_type:0,
 
     // 用户角色 1>admin 2>企业法人 3>代理人1 4>代理人2 5>对接人  
     user_type:parseInt(localStorage.getItem('user_type') || '0'),
@@ -82,41 +79,33 @@ const mutations = {
         }
     },
     saveStorageState(state,options){
-        if(Object.prototype.toString.call(options) == '[object Object]'){
-            localStorage.setItem(options.attr,JSON.stringify(options.val));
-            if(state[options.attr] !== undefined){
-                switch(options.type){
+        function setStorageState(type,attr,val){
+            if(type === 'number' || type === 'boolean' || type === 'object'){
+                localStorage.setItem(attr,JSON.stringify(val));
+            }else{
+                localStorage.setItem(attr,val);
+            }
+            if(state[attr] !== undefined){
+                switch(type){
                     case 'number':
-                        state[options.attr] = parseInt(localStorage.getItem(options.attr));
+                        state[attr] = parseInt(localStorage.getItem(attr));
                         break;
                     case 'boolean':
                     case 'object':
-                    case 'string':
-                        state[options.attr] = JSON.parse(localStorage.getItem(options.attr));
                         break;
+                        state[attr] = JSON.parse(localStorage.getItem(attr));
+                    case 'string':
                     default :
-                        state[options.attr] = JSON.parse(localStorage.getItem(options.attr));
+                        state[attr] = localStorage.getItem(attr);
                         break;
                 }
             }
+        }
+        if(Object.prototype.toString.call(options) == '[object Object]'){
+            setStorageState(options.type,options.attr,options.val);
         }else if(Object.prototype.toString.call(options) == '[object Array]'){
             options.forEach((item)=>{
-                localStorage.setItem(item.attr,JSON.stringify(item.val));
-                if(state[item.attr] !== undefined){
-                    switch(item.type){
-                        case 'number':
-                            state[item.attr] = parseInt(localStorage.getItem(item.attr));
-                            break;
-                        case 'boolean':
-                        case 'object':
-                        case 'string':
-                            state[item.attr] = JSON.parse(localStorage.getItem(item.attr));
-                            break;
-                        default :
-                            state[item.attr] = JSON.parse(localStorage.getItem(item.attr));
-                            break;
-                    }
-                }
+                setStorageState(item.type,item.attr,item.val);
             });
         }
     },
