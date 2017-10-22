@@ -57,7 +57,7 @@
                 </el-form-item> -->
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary">确 认</el-button>
+                <el-button @click="addEnterprise" type="primary">确 认</el-button>
                 <el-button @click="cancelAddClient('add_form')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
@@ -66,8 +66,8 @@
 </template>
 <script>
     import Common from '../../mixins/common.js'
-    import Clients from '../../api/clients.js'
-    // import PagerLimit from '../../mixins/pagerLimit.js'
+    // import Clients from '../../api/clients.js'
+    import AllEnterprise from '../../api/enterprise/all_enterprise.js'
     export default {
         data() {
             return {
@@ -81,12 +81,12 @@
                 enterprise_role:0,
                 enterprise_roles:[
                     {label:'全部',value:0},
-                    {label:'集团公司',value:1},
-                    {label:'项目公司',value:2},
+                    {label:'集团公司',value:2},
+                    {label:'项目公司',value:4},
                     {label:'融资客户',value:3},
-                    {label:'合作方',value:4},
+                    {label:'合作方',value:5},
                 ],
-                clients_pagenum:10,
+                clients_pagenum:0,
                 clients_pagesize:10,
                 clients_total:10,
                 clients:[
@@ -126,14 +126,14 @@
                 dialog_add_client:false,
                 add_form:{
                     name:'',
-                    role:1,
+                    role:2,
                     principal:'',
                     position:''
                 },
                 rules:{}
             } 
         },
-        mixins:[Common,Clients],
+        mixins:[Common,AllEnterprise],
         methods: {
             clientsCurrentChange(val) {
                 
@@ -150,10 +150,7 @@
                 
             },
             checkView(row){
-                this.setState({
-                    attr:'enterprise_menu_type',
-                    val:1
-                });
+                
                 this.$router.push({ path: '/pages/all_enterprise/views' });
             },
             cancelAddClient(){
@@ -170,8 +167,13 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
+                self.saveStorageState({
+                    attr:'nav_menu_type',
+                    val:2,
+                    type:'number'
+                });
+                self.getAllEnterprise();
                 document.addEventListener("keyup", self.enterKeyup, false);
-                
             });
         },
         watch:{

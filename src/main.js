@@ -76,8 +76,8 @@ Vue.prototype.$nprogress = NProgress;
 
 const router = new VueRouter({
     routes,
-    // mode: 'history',
-    // history: true
+    mode: 'history',
+    history: true
 })
 router.beforeEach((to, from, next) => {
     // debugger

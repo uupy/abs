@@ -70,7 +70,6 @@
 <script>
     import Common from '../../mixins/common.js'
     import Clients from '../../api/clients.js'
-    // import PagerLimit from '../../mixins/pagerLimit.js'
     export default {
         data() {
             return {
@@ -144,10 +143,6 @@
                 
             },
             checkView(row){
-                this.setState({
-                    attr:'enterprise_menu_type',
-                    val:3
-                });
                 this.$router.push({ path: '/pages/capital/views' });
             },
             cancelAddClient(){
@@ -164,8 +159,12 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
+                self.saveStorageState({
+                    attr:'nav_menu_type',
+                    val:5,
+                    type:'number'
+                });
                 document.addEventListener("keyup", self.enterKeyup, false);
-                
             });
         },
         watch:{

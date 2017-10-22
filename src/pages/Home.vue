@@ -12,8 +12,9 @@
 						<i class="el-icon-caret-bottom el-icon--right"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item @click.native="dialogFormVisible = true"><i class="im-icon-edit dropdown-icon"></i>认证中心</el-dropdown-item>	
+						<el-dropdown-item @click.native="userCenter"><i class="im-icon-edit dropdown-icon"></i>认证中心</el-dropdown-item>	
 						<el-dropdown-item @click.native="dialogFormVisible = true"><i class="im-icon-edit dropdown-icon"></i>修改密码</el-dropdown-item>
+
 						<el-dropdown-item @click.native="logout"><i class="im-icon-logout dropdown-icon"></i>退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
@@ -47,8 +48,8 @@
 			</div>
 		</el-col>
 		<!-- 对话框 -->
-        <!-- <el-dialog size="tiny" title="修改密码" v-model="dialogFormVisible" @close="cancelReset('resetPwdForm')">
-            <el-form :model="resetPwdForm" :rules="rules"  ref="resetPwdForm">
+        <el-dialog size="tiny" title="修改密码" v-model="dialogFormVisible" @close="cancelReset('resetPwdForm')">
+            <el-form :model="resetPwdForm"   ref="resetPwdForm">
                 <el-form-item label="旧密码" prop="oldPassword">
                     <el-input type="password" v-model="resetPwdForm.oldPassword" auto-complete="off" placeholder="请输入旧密码"></el-input>
                 </el-form-item>
@@ -64,7 +65,7 @@
                 <el-button @click="cancelReset('resetPwdForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
-        </el-dialog> -->
+        </el-dialog>
         <vs-loading :isShow="onLoading"></vs-loading>
 	</el-row>
 </template>
@@ -77,11 +78,11 @@
 		data() {
 			return {
 				dialogFormVisible:false,
-				// resetPwdForm:{
-				// 	oldPassword:'',
-				// 	newPassword:'',
-				// 	confirmPassword:''
-				// },
+				resetPwdForm:{
+					oldPassword:'',
+					newPassword:'',
+					confirmPassword:''
+				},
 				// rules:{
 				// 	oldPassword:[
 				// 		{ required: true,validator:this.testPassword('旧密码'), trigger: 'change' }
@@ -93,25 +94,29 @@
 				// 		{ required: true, validator:this.testPassword('确认密码'), trigger: 'change' }
 				// 	]
 				// },
-				// version:'',
+				version:'',
 				panelSideScroll:null,
 				panelCenterScroll:null
 			}
 		},
 		mixins:[Common,Home],
 		methods: {
-			// 取消修改密码
-			// cancelReset(formName){
-			// 	const self = this;
-			// 	self.$refs[formName].resetFields();
-			// 	self.dialogFormVisible = false;
-			// },
+			//取消修改密码
+			cancelReset(formName){
+				const self = this;
+				self.$refs[formName].resetFields();
+				self.dialogFormVisible = false;
+			},
 			enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13 && self.dialogFormVisible){
                     // self.resetPassword('resetPwdForm',self.resetPwdForm);
                 }
+            },
+            userCenter(){
+            	console.log('user-center')
+            	this.$router.push({path:'/user-center'})
             }
 		},
 		mounted() {

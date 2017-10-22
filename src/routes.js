@@ -25,9 +25,9 @@ const PropertyToBeVerify = resolve => require(['./pages/assets/property-to-verif
 const PropertyToBeDist = resolve => require(['./pages/assets/property-to-dist.vue'],resolve)
 const PropertyToBeLoan = resolve => require(['./pages/assets/property-to-loan.vue'],resolve)
 
-
 //结算管理
 
+//企业角色 1>保理商 2>核心企业 3>供应商 4>项目公司及子公司 5>合作方spv 6>合作方其他
 
 let routes = [
     {
@@ -69,11 +69,12 @@ let routes = [
                 component: EnterpriseViews,
                 name: '企业信息',
                 show:{
-                    1:false,
-                    2:true,
-                    3:true,
-                    4:false,
-                    5:true,
+                    1:false,    //保理商
+                    2:false,    //核心企业
+                    3:true,     //供应商
+                    4:true,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
                 }
             },
             {
@@ -81,11 +82,12 @@ let routes = [
                 component: {template:'<router-view></router-view>'},
                 name: '企业汇总',
                 show:{
-                    1:false,
-                    2:false,
-                    3:false,
-                    4:true,
-                    5:false,
+                    1:true,      //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:false,     //合作方spv
+                    6:false      //合作方其他
                 },
                 children:[
                     {
@@ -106,11 +108,12 @@ let routes = [
                 component: {template:'<router-view></router-view>'},
                 name: '集团管理',
                 show:{
-                    1:true,
-                    2:false,
-                    3:false,
-                    4:true,
-                    5:true,
+                    1:true,      //保理商
+                    2:true,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
                 },
                 children:[
                     {
@@ -131,11 +134,12 @@ let routes = [
                 component: {template:'<router-view></router-view>'},
                 name: '融资客户管理',
                 show:{
-                    1:true,
-                    2:true,
-                    3:false,
-                    4:true,
-                    5:true,
+                    1:true,      //保理商
+                    2:true,     //核心企业
+                    3:false,     //供应商
+                    4:true,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
                 },
                 children:[
                     {
@@ -156,11 +160,12 @@ let routes = [
                 component: {template:'<router-view></router-view>'},
                 name: '合作方管理',
                 show:{
-                    1:false,
-                    2:false,
-                    3:false,
-                    4:true,
-                    5:false,
+                    1:true,      //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:false,     //合作方spv
+                    6:false      //合作方其他
                 },
                 children:[
                     {
@@ -189,11 +194,12 @@ let routes = [
                 component: {template:'<router-view></router-view>'},
                 name: '未签约协议',
                 show:{
-                    1:true,
-                    2:true,
-                    3:true,
-                    4:true,
-                    5:true,
+                    1:true,     //保理商
+                    2:true,     //核心企业
+                    3:true,     //供应商
+                    4:true,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
                 },
                 children:[
                     {
@@ -214,11 +220,12 @@ let routes = [
                 component: {template:'<router-view></router-view>'},
                 name: '已签约协议',
                 show:{
-                    1:true,
-                    2:true,
-                    3:true,
-                    4:true,
-                    5:true,
+                    1:true,     //保理商
+                    2:true,     //核心企业
+                    3:true,     //供应商
+                    4:true,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
                 },
                 children:[
                     {
@@ -247,36 +254,25 @@ let routes = [
                 component: AssetsList,
                 name: '应付数据',
                 show:{
-                    1:false,
-                    2:false,
-                    3:true,
-                    4:false,
-                    5:false,
+                    1:true,     //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:false,     //合作方spv
+                    6:false      //合作方其他
                 }
             },
-            {
-                path: '/pages/assets/property-to-confirm',
-                component: PropertyToBeConfirm,
-                name: '待确认资产',
-                show:{
-                    1:false,
-                    2:false,
-                    3:false,
-                    4:false,
-                    5:false,
-                }
-            },
-
             {
                 path: '/pages/assets/property-to-verify',
                 component: PropertyToBeVerify,
                 name: '待审核资产',
                 show:{
-                    1:false,
-                    2:false,
-                    3:false,
-                    4:true,
-                    5:false,
+                    1:true,     //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:false,     //合作方spv
+                    6:false      //合作方其他
                 }
             },
             {
@@ -284,11 +280,12 @@ let routes = [
                 component: PropertyToBeDist,
                 name: '待分配资产',
                 show:{
-                    1:false,
-                    2:false,
-                    3:false,
-                    4:true,
-                    5:false,
+                    1:true,     //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:false,     //合作方spv
+                    6:false      //合作方其他
                 }
             },
             {
@@ -296,11 +293,12 @@ let routes = [
                 component: PropertyToBeLoan,
                 name: '待放款资产',
                 show:{
-                    1:false,
-                    2:false,
-                    3:false,
-                    4:false,
-                    5:true,
+                    1:true,     //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
                 }
             },           
 
@@ -309,11 +307,12 @@ let routes = [
                 component: StandingBook,
                 name: '台账管理',
                 show:{
-                    1:true,
-                    2:true,
-                    3:true,
-                    4:true,
-                    5:true,
+                    1:true,     //保理商
+                    2:true,     //核心企业
+                    3:true,     //供应商
+                    4:true,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
                 }
             },
             
