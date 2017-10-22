@@ -12,8 +12,9 @@
 						<i class="el-icon-caret-bottom el-icon--right"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
+						<el-dropdown-item @click.native="dialogFormVisible = true"><i class="im-icon-edit dropdown-icon"></i>认证中心</el-dropdown-item>	
 						<el-dropdown-item @click.native="dialogFormVisible = true"><i class="im-icon-edit dropdown-icon"></i>修改密码</el-dropdown-item>
-						<el-dropdown-item divided @click.native="logout"><i class="im-icon-logout dropdown-icon"></i>退出登录</el-dropdown-item>
+						<el-dropdown-item @click.native="logout"><i class="im-icon-logout dropdown-icon"></i>退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</el-col>
@@ -25,7 +26,7 @@
 						<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 							<el-submenu :index="index+''" v-if="!item.leaf">
 								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[user_role] && !child.hidden">{{child.name}}</el-menu-item>
+								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[enterprise_type] && !child.hidden">{{child.name}}</el-menu-item>
 							</el-submenu>
 							<el-menu-item v-if="item.leaf && item.children.length > 0" :index="item.children[0].path">
 								<i :class="item.iconCls"></i>{{item.children[0].name}}
@@ -46,7 +47,7 @@
 			</div>
 		</el-col>
 		<!-- 对话框 -->
-        <el-dialog size="tiny" title="修改密码" v-model="dialogFormVisible" @close="cancelReset('resetPwdForm')">
+        <!-- <el-dialog size="tiny" title="修改密码" v-model="dialogFormVisible" @close="cancelReset('resetPwdForm')">
             <el-form :model="resetPwdForm" :rules="rules"  ref="resetPwdForm">
                 <el-form-item label="旧密码" prop="oldPassword">
                     <el-input type="password" v-model="resetPwdForm.oldPassword" auto-complete="off" placeholder="请输入旧密码"></el-input>
@@ -63,133 +64,76 @@
                 <el-button @click="cancelReset('resetPwdForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
-        </el-dialog>
+        </el-dialog> -->
         <vs-loading :isShow="onLoading"></vs-loading>
 	</el-row>
 </template>
 <script>
 	import Optiscroll from 'optiscroll'
 	import Common from './../mixins/common.js'
-	import TestPassword from './../mixins/test/password.js'
+	import Home from './../api/home.js'
+	// import TestPassword from './../mixins/test/password.js'
 	export default {
 		data() {
 			return {
 				dialogFormVisible:false,
-				handlerCloseWs:false,
-				resetPwdForm:{
-					oldPassword:'',
-					newPassword:'',
-					confirmPassword:''
-				},
-				rules:{
-					oldPassword:[
-						{ required: true,validator:this.testPassword('旧密码'), trigger: 'change' }
-					],
-					newPassword:[
-						{ required: true, validator:this.testPassword('新密码'), trigger: 'change' }
-					],
-					confirmPassword:[
-						{ required: true, validator:this.testPassword('确认密码'), trigger: 'change' }
-					]
-				},
-				version:'',
-				tipstimer:null,
+				// resetPwdForm:{
+				// 	oldPassword:'',
+				// 	newPassword:'',
+				// 	confirmPassword:''
+				// },
+				// rules:{
+				// 	oldPassword:[
+				// 		{ required: true,validator:this.testPassword('旧密码'), trigger: 'change' }
+				// 	],
+				// 	newPassword:[
+				// 		{ required: true, validator:this.testPassword('新密码'), trigger: 'change' }
+				// 	],
+				// 	confirmPassword:[
+				// 		{ required: true, validator:this.testPassword('确认密码'), trigger: 'change' }
+				// 	]
+				// },
+				// version:'',
 				panelSideScroll:null,
 				panelCenterScroll:null
 			}
 		},
-		mixins:[Common,TestPassword],
+		mixins:[Common,Home],
 		methods: {
-			// 退出登录
-			logout () {
-				const self = this;
-				self.$confirm('确认退出吗?', '提示').then(() => {
-					localStorage.clear();
-					self.$router.push('/login');
-				}).catch(() => {});
-			},
-			// 修改密码
-			resetPassword(formName,resetPwdForm){
-				const self = this;
-				self.$refs[formName].validate((valid)=>{
-					if(!valid){return false}
-					if(resetPwdForm.newPassword !== resetPwdForm.confirmPassword){
-						self.$message({
-						    message: '新密码与确认密码不一致！',
-						    type: 'error'
-						});
-					}else{
-						self.setState({
-						    attr:'innerLoading',
-						    val:true
-						});
-						self.onHttp({
-							method:'POST',
-                            path:'/user/moidfypassword',
-                            params:{
-                                username:self.username,
-                                oldpassword:MD5(resetPwdForm.oldPassword),
-                                newpassword:MD5(resetPwdForm.newPassword)
-                            }
-                        },(response)=>{
-                        	self.setState({
-                        	    attr:'innerLoading',
-                        	    val:false
-                        	});
-                            if(response.ecode == 0){
-								self.dialogFormVisible = false;
-                                self.$message({
-                                    message: '密码修改成功！',
-                                    type: 'success'
-                                });
-                                setTimeout(()=>{
-	                                self.$confirm('重新登录?', '提示').then(() => {
-	                                	self.$router.push('/login');
-	                                }).catch(() => {});
-                                },30)
-                            }else{
-                                self.$message({
-                                    message: response.message,
-                                    type: 'error'
-                                });
-                            }
-                        });
-					}
-				});
-			},
 			// 取消修改密码
-			cancelReset(formName){
-				const self = this;
-				self.$refs[formName].resetFields();
-				self.dialogFormVisible = false;
-			},
+			// cancelReset(formName){
+			// 	const self = this;
+			// 	self.$refs[formName].resetFields();
+			// 	self.dialogFormVisible = false;
+			// },
 			enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13 && self.dialogFormVisible){
-                    self.resetPassword('resetPwdForm',self.resetPwdForm);
+                    // self.resetPassword('resetPwdForm',self.resetPwdForm);
                 }
             }
 		},
 		mounted() {
 			const self = this;
 			self.$nextTick(()=>{
+				self.updateOperateAuthority();
+				self.$router.beforeEach((to,from,next)=>{
+					self.updateOperateAuthority();
+					next();
+				});
 				setTimeout(function(){
 					const oSide = document.querySelector('#panel-aside');
 					const oPanelCenter = document.querySelector('#panel-c-scroll');
 					oSide ? self.panelSideScroll = new Optiscroll(oSide) : '';
 	                oPanelCenter ? self.panelCenterScroll = new Optiscroll(oPanelCenter) : '';
-				},10)
+				},10);
 			});
 			document.addEventListener("keyup", self.enterKeyup, false);
 		},
 		destroyed() {
             const self = this;
             document.removeEventListener("keyup", self.enterKeyup, false);
-            self.setState({
-            	attr:'socket',
-            	val:null
-            });
             if(self.panelSideScroll !== null){
             	self.panelSideScroll.destroy();
             }
