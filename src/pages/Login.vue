@@ -29,8 +29,8 @@
 </template>
 <script>
     import Common from '../mixins/common.js'
-    // import Login from '../mixins/api/login.js'
-    import Login from '../api/login.js'
+    import Login from '../mixins/api/login.js'
+    // import Login from '../api/login.js'
     export default {
         data() {
             return {
