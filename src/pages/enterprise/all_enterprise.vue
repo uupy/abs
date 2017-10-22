@@ -49,6 +49,9 @@
                 <el-form-item label="企业名称" prop="name">
                     <el-input v-model="add_form.name" placeholder="请输入企业名称"></el-input>
                 </el-form-item>
+                <el-form-item label="所属区域" prop="area" v-if="add_form.role === 4">
+                    <el-input v-model="add_form.area" placeholder="请输入所属区域"></el-input>
+                </el-form-item>
                 <!-- <el-form-item label="负责人" prop="principal">
                     <el-input v-model="add_form.principal" placeholder="请输入负责人"></el-input>
                 </el-form-item>
@@ -127,6 +130,7 @@
                 add_form:{
                     name:'',
                     role:2,
+                    area:'',
                     principal:'',
                     position:''
                 },
@@ -150,7 +154,11 @@
                 
             },
             checkView(row){
-                
+                this.saveStorageState({
+                    attr:'set_menu_type',
+                    val:true,
+                    type:'boolean'
+                });
                 this.$router.push({ path: '/pages/all_enterprise/views' });
             },
             cancelAddClient(){

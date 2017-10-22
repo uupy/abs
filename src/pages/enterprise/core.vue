@@ -17,7 +17,7 @@
                         <div class="f-right">
                             <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                             <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
-                            <el-button size="small" type="primary" @click="dialog_add_client = true" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -53,7 +53,7 @@
                         <div class="f-right">
                             <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                             <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
-                            <el-button size="small" type="primary" @click="dialog_add_client = true" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -61,8 +61,6 @@
                             <el-table-column prop="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="id" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
-                            <!-- <el-table-column prop="role" label="企业角色"></el-table-column> -->
-                            <!-- <el-table-column prop="area" label="所属区域"></el-table-column> -->
                             <el-table-column prop="status" label="认证状态">
                                 <template slot-scope="scope">
                                     <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
@@ -93,7 +91,7 @@
                         <div class="f-right">
                             <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                             <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
-                            <el-button size="small" type="primary" @click="dialog_add_client = true" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -135,7 +133,7 @@
                 <div class="f-right">
                     <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                     <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
-                    <el-button size="small" type="primary" @click="dialog_add_client = true"><i class="el-icon-plus"></i>新增</el-button>
+                    <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 1 || enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                 </div>
             </el-row>
             <el-row :span="24">
@@ -153,7 +151,7 @@
                     <el-table-column inline-template :context="_self" label="操作" width="140">
                         <span>
                             <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                            <span class="table-btn danger">删除</span>
+                            <span class="table-btn danger" v-if="enterprise_type === 1 || enterprise_type === 2">删除</span>
                         </span>
                     </el-table-column>
                 </el-table>
@@ -165,18 +163,15 @@
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
                 <el-form-item label="企业角色" prop="role">
                     <el-select v-model="add_form.role" placeholder="请选择企业角色">
-                        <el-option v-for="(item,index) in enterprise_roles" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
+                        <el-option v-for="(item,index) in add_form.enterprise_roles" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="企业名称" prop="name">
                     <el-input v-model="add_form.name" placeholder="请输入企业名称"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="负责人" prop="principal">
-                    <el-input v-model="add_form.principal" placeholder="请输入负责人"></el-input>
+                <el-form-item label="所属区域" prop="area" v-if="add_form.role === 2 && active_name !== 'head_cp'">
+                    <el-input v-model="add_form.area" placeholder="请输入所属区域"></el-input>
                 </el-form-item>
-                <el-form-item label="负责人职位" prop="position">
-                    <el-input v-model="add_form.position" placeholder="请输入负责人职位"></el-input>
-                </el-form-item> -->
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary">确 认</el-button>
@@ -278,8 +273,10 @@
                 add_form:{
                     name:'',
                     role:1,
+                    area:'',
                     principal:'',
-                    position:''
+                    position:'',
+                    enterprise_roles:[]
                 },
                 rules:{}
             } 
@@ -301,7 +298,44 @@
                 const self = this;
             },
             checkView(row){
+                this.saveStorageState({
+                    attr:'set_menu_type',
+                    val:true,
+                    type:'boolean'
+                });
                 this.$router.push({ path: '/pages/core/views' });
+            },
+            openAddEnterpriseDialog(){
+                if(this.enterprise_type === 2){
+                    switch(this.active_name){
+                        case 'overviews': 
+                            this.add_form.enterprise_roles = [
+                                {label:'集团公司',value:1},
+                                {label:'项目公司',value:2},
+                            ];
+                            this.add_form.role = 1;
+                            break;
+                        case 'head_cp': 
+                            this.add_form.enterprise_roles = [
+                                {label:'集团公司',value:1}
+                            ];
+                            this.add_form.role = 1;
+                            break;
+                        case 'project_cp': 
+                            this.add_form.enterprise_roles = [
+                                {label:'项目公司',value:2}
+                            ];
+                            this.add_form.role = 2;
+                            break;
+                    }
+                }else{
+                    this.add_form.enterprise_roles = [
+                        {label:'集团公司',value:1},
+                        {label:'项目公司',value:2},
+                    ];
+                    this.add_form.role = 1;
+                }
+                this.dialog_add_client = true;
             },
             cancelAddClient(){
                 this.dialog_add_client = false;

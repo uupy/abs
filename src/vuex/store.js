@@ -12,8 +12,8 @@ const state = {
     onLoading: false,
     isTimeOut: false,
     isKickedOut:false,
-    username: JSON.parse(localStorage.getItem('username') || '0'),
-    token: JSON.parse(localStorage.getItem('token') || '0'),
+    username: localStorage.getItem('username') ? JSON.parse(localStorage.getItem('username')) : '',
+    token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '',
     styles:'min-height:'+(window.innerHeight-84)+'px',
 
     // user_role:parseInt(localStorage.getItem('user_role')),
@@ -25,6 +25,7 @@ const state = {
     enterprise_type:parseInt(localStorage.getItem('enterprise_type') || '0'),
     // 子菜单类型 1>企业信息 2>企业汇总 3>集团管理 4>融资客户管理 5>合作方管理 6>未签约协议 7>已签约协议 8>应付数据 9>待审核资产 10>应付数据 11>待分配资产 12>待放款资产 13>台账管理
     nav_menu_type:parseInt(localStorage.getItem('nav_menu_type') || '0'),
+    set_menu_type:localStorage.getItem('set_menu_type') ? JSON.parse(localStorage.getItem('set_menu_type')) : '',
     // 操作权限
     operate_authority:JSON.parse(localStorage.getItem('operate_authority') || 'false')
 }

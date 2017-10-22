@@ -59,7 +59,6 @@ export default {
                     params_arr.push(`${key}=${options.params[key]}`);
                 }
                 config.body = params_arr.join('&');
-                console.log(config.body)
             }
             self.$http(config).then((response) => {
                 const res = response.body;
@@ -81,7 +80,7 @@ export default {
                         message: `请求结果：${response.ok}`,
                         type: 'error'
                     });
-                    console.log(`请求地址：${response.url} 请求结果：${response.ok}`, 'error');
+                    console.error(`请求地址：${response.url} 请求结果：${response.ok}`, 'error');
                 }
             });
         },
@@ -104,9 +103,8 @@ export default {
             'user_type',
             'enterprise_type',
             'nav_menu_type',
-            'operate_authority',
-            // 'enterprise_menu_type',
-            // 'user_role'
+            'set_menu_type',
+            'operate_authority'
         ])
     },
     destroyed(){

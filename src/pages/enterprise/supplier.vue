@@ -116,6 +116,11 @@
                 
             },
             checkView(row){
+                this.saveStorageState({
+                    attr:'set_menu_type',
+                    val:true,
+                    type:'boolean'
+                });
                 this.$router.push({ path: '/pages/supplier/views' });
             },
             cancelAddClient(){
