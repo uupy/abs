@@ -65,62 +65,77 @@
                     </el-form-item>                                       
                 </el-form>
             </el-tab-pane> 
-            <el-tab-pane label="单据信息" name="bills-info" >
-                <el-table :data="billsTable" border>
-                <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
-                <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
-                <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         
-                <el-table-column label="单据附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>         
-                <el-table-column prop="fangkuanri" label="单据号" align='center'></el-table-column>  
-                <el-table-column label="附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>        
-                <el-table-column prop="book" label="ERP审批表/支付申请书" align='center'></el-table-column> 
-                <el-table-column label="附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>        
-            </el-table>
+            <el-tab-pane label="单据信息" name="bills-info" >  
+                <el-table
+                    :data="tableData5"
+                    style="width: 100%">
+                    <el-table-column type="expand">
+                        <template scope="props">                            
+                            <el-table :data='props.fpTable'>
+                                <el-table-column prop='props.sum' label='发票号'></el-table-column>
+                                <el-table-column prop='props.fpTable.name' label='发票金额'></el-table-column>
+                                <el-table-column prop='props.fpTable.name' label='发票日期'></el-table-column>
+                                <el-table-column label='发票附件'>
+                                    <template slot-scope='scope'>
+                                        <el-upload 
+                                            class="upload-demo"
+                                            action="https://jsonplaceholder.typicode.com/posts/"
+                                            :on-remove="handleRemove">
+                                            <el-button size="small" type="primary">上传附件</el-button>
+                                        </el-upload>  
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                      label="应付单号"
+                      prop="id">
+                    </el-table-column>
+                    <el-table-column
+                      label="应付类型"
+                      prop="yflx">
+                    </el-table-column>
+                    <el-table-column
+                      label="应付金额"
+                      prop="yfje">
+                    </el-table-column>
+                    <el-table-column
+                      label="单据日期"
+                      prop="djrq">
+                    </el-table-column>
+                    <el-table-column
+                      label="发票总金额"
+                      prop="fpje">
+                    </el-table-column>
+                    <el-table-column
+                      label="应付单附件"
+                      >
+                        <template slot-scope='scope'>
+                            <el-upload v-if='scope.row.yfdfile!=""'
+                                class="upload-demo"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-remove="handleRemove">
+                                <el-button size="small" type="primary">上传证件</el-button>
+                            </el-upload>
+                            <span v-else>
+                                <el-button size="small" type="primary">下载</el-button>
+                            </span>                           
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                      label="进度款申请支付表附件"
+                      >
+                      <template slot-scope='scope'>
+                            <el-upload 
+                                class="upload-demo"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-remove="handleRemove">
+                                <el-button size="small" type="primary">上传附件</el-button>
+                            </el-upload>                    
+                        </template>
+                    </el-table-column>                    
+                  </el-table>
             </el-tab-pane>
             <el-tab-pane label="资产转让信息" name="property-2-info" >
                 <el-form label-width='180px' class='item-list'>
@@ -232,174 +247,7 @@
                 </el-form-item>
             </el-form>
             </el-tab-pane>           
-        </el-tabs>
-
-        <!-- <el-row>
-            <span class="title" style="font-size:16px;">商务合同信息</span>
-            <el-table :data="business_infos" border>
-                <el-table-column prop="index" label="序号" width="70" align='center'></el-table-column>
-                <el-table-column prop="supplier" label="供应商名称" align='center'></el-table-column>
-                <el-table-column prop="company" label="项目公司" align='center'></el-table-column>         
-                <el-table-column prop="area" label="所属区域" align='center'></el-table-column>         
-                <el-table-column prop="contractType" label="合同类别" align='center'></el-table-column>         
-                <el-table-column prop="projectName" label="项目名称" align='center'></el-table-column>         
-                <el-table-column prop="contractName" label="商务合同名称" align='center'></el-table-column>         
-                <el-table-column prop="contractNo" label="商务合同编号" align='center'></el-table-column>         
-                <el-table-column inline-template :context="_self" label="附件" align='center' width="140">
-                    <span>
-                        <span class="table-btn default">预览</span>
-                        <span class="table-btn health">上传</span>
-                    </span>
-                </el-table-column>        
-            </el-table>
-        </el-row>
-        <el-row>
-            <span class="title" style="font-size:16px;">资产信息</span>
-            <el-table :data="propertyInfo" border>
-                <el-table-column prop="id" label="资产编号"  align='center'></el-table-column>
-                <el-table-column prop="status" label="资产状态" align='center'></el-table-column>
-                <el-table-column prop="sum" label="应收账款金额" align='center'></el-table-column>         
-                <el-table-column prop="sum1" label="保理融资金额" align='center'></el-table-column>         
-                <el-table-column prop="submitDate" label="提交数据日期" align='center'></el-table-column>         
-                <el-table-column prop="fangkuanri" label="放款日" align='center'></el-table-column>         
-                <el-table-column prop="deadline" label="应收账款到期日" align='center'></el-table-column>         
-                <el-table-column prop="kuanxian" label="宽限期到期日" align='center'></el-table-column>         
-                <el-table-column prop="huaikuanri" label="还款日" align='center'></el-table-column>         
-                <el-table-column prop="days" label="融资天数" align='center'></el-table-column>         
-            </el-table>
-        </el-row>
-
-        <el-row>
-            <span class="title" style="font-size:16px;">单据信息</span>
-            <el-table :data="billsTable" border>
-                <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
-                <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
-                <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         
-                <el-table-column label="单据附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>         
-                <el-table-column prop="fangkuanri" label="单据号" align='center'></el-table-column>  
-                <el-table-column label="附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>        
-                <el-table-column prop="book" label="ERP审批表/支付申请书" align='center'></el-table-column> 
-                <el-table-column label="附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>        
-            </el-table>
-        </el-row>
-
-        <el-row>
-            <span class="title" style="font-size:16px;">资产转让信息</span>
-             <el-form label-width='180px' class='item-list'>
-                <el-form-item label='中登网登记文件' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                          <el-button size="small" type="primary">点击上传</el-button>
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='资产转让合同（保理公司）' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-
-                <el-form-item label='付款确认书（项目公司）' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='付款确认书（总部）' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='资产转让合同（专项计划）' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-            </el-form>
-        </el-row> -->
+        </el-tabs>       
     </section>
 </template>
 <script>
@@ -408,6 +256,30 @@
     export default {
         data() {
             return {
+                tableData5: [{
+                  id: '12987122',
+                  name: '好滋好味鸡蛋仔',
+                  category: '江浙小吃、小吃零食',
+                  desc: '荷兰优质淡奶，奶香浓而不腻',
+                  address: '上海市普陀区真北路',
+                  shop: '王小虎夫妻店',
+                  shopId: '10333',
+                  yflx:'',
+                  yfje:'1000万',
+                  djrq:'2017-10-11',
+                  fpje:'1000万',
+                  yfdfile:'',
+                  jdsqfile:'sss',
+                  fpTable:[
+                    {
+                        no:'223',
+                        sum:'100万',
+                        date:'2017-10-11',
+                        file:''
+                    }
+                  ]
+                },
+                ],
                 active_name:'business-contract',
                 protocolId:'',
                 protocol:{
@@ -513,10 +385,22 @@
     }
 </script>
 
-<style scoped>
+<style>
     .title{border-bottom: 1px solid #e0e0e0;display: inline-block;padding-bottom: 5px;text-align: left;margin-bottom: 15px;margin-top: 15px;padding-left: 10px;padding-right: 10px;}
     .item-list>div{margin-bottom: 5px !important}
     .item-list .el-form-item__content{display: flex;}
     .float-left{float: left;margin-left: 15px;}
     .item-inner .info{width:80px;}
+     .demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+  }
 </style>
