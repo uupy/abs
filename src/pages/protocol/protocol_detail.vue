@@ -1,7 +1,8 @@
 <template>
-    <section class="panel-main">
+    <section class="panel-main" :style="styles">
         <el-tabs v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="商务合同信息" name="business-contract"> 
+
                 <el-form label-width='100px'> 
                     <el-form-item label='供应商名称'>
                         {{businessContract.supplier}}
@@ -25,44 +26,31 @@
                         {{businessContract.contractNo}}
                     </el-form-item>
                     <el-form-item label='附件'>
-                        <el-upload v-if='businessContract.file==""'
+                        <el-upload 
                             class="upload-demo"
                             action="https://jsonplaceholder.typicode.com/posts/"
                             :on-preview="handlePreview"
                             :on-remove="handleRemove">
                             <el-button size="small" type="primary">上传附件</el-button>
                         </el-upload>
-                        <span v-else>{{businessContract.file}}</span>                        
                     </el-form-item>                    
                 </el-form>
             </el-tab-pane>
             <el-tab-pane label="资产详情" name="property-info" >
-                <el-form label-width='130px'> 
-                    <el-form-item label='资产编号'>
-                        {{propertyInfo.no}}
-                    </el-form-item>
-                    <el-form-item label='资产状态'>
-                        {{propertyInfo.status}}
-                    </el-form-item>
-                    <el-form-item label='应收账款金额'>
-                        {{propertyInfo.yszk}}
-                    </el-form-item>
-                    <el-form-item label='保理融资金额'>
-                        {{propertyInfo.blje}}
-                    </el-form-item>
-                    <el-form-item label='提交数据日期'>
-                        {{propertyInfo.submitDate}}
-                    </el-form-item>
-                    <el-form-item label='放款日期'>
-                        {{propertyInfo.loanDate}}
-                    </el-form-item>
-                    <el-form-item label='资产发行日期'>
-                        {{propertyInfo.fxdate}}
-                    </el-form-item>
-                    <el-form-item label='应收账款到期日'>
-                        {{propertyInfo.zkdeadline}}
-                    </el-form-item>                                       
-                </el-form>
+                <el-table :data="propertyInfos" border>
+                    <el-table-column prop="no" label="资产编号" width="90"></el-table-column>
+                    <el-table-column prop="status" label="资产状态">
+                        <template slot-scope="scope">
+                            <el-tag :type="(scope.row.status == '已匹配' || scope.row.status == '已还款' || scope.row.status == '已结算') ? 'success' : 'warning'" close-transition>{{scope.row.status}}</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="yszk" label="应收账款金额"></el-table-column>
+                    <el-table-column prop="zrzj" label="转让折价"></el-table-column>
+                    <el-table-column prop="submitDate" label="提交日期"></el-table-column>
+                    <el-table-column prop="loanDate" label="放款日期"></el-table-column>
+                    <el-table-column prop="fxdate" label="资产发行日期"></el-table-column>
+                    <el-table-column prop="zkdeadline" label="应收账款到期日"></el-table-column>
+                </el-table>
             </el-tab-pane> 
             <el-tab-pane label="单据信息" name="bills-info" >  
                 <el-table
@@ -249,10 +237,10 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>           
-        </el-tabs>  
-        <el-dialog title="查看附件" class="file-img" size='full' v-model="dialogFormVisible" @close="cancelReset('resetPwdForm')">
-            <img :src='fileImgUrl'/>
-        </el-dialog>     
+        </el-tabs>     
+        <el-dialog size="full" title="编辑联系方式" v-model="dialogFormVisible" class="file-img">
+            <img :src='fileImgUrl' />
+        </el-dialog>
     </section>
 </template>
 <script>
@@ -301,14 +289,15 @@
                     deadline:'2027-10-16'
                 },
                 businessContract:{
-                    supplier:'供应商1',
+                    index:1,
+                    supplier:'深圳xx公司',
                     projectCompany:'深圳大唐公司',
                     area:'深圳宝安',
                     contractType:'工程类',
                     projectName:'大唐公司签约项目',
                     contractName:'大唐公司签约项目',
                     contractNo:'21',
-                    file:''
+                    file:'' 
                 },
                 business_infos:[
                     {
@@ -337,17 +326,18 @@
                     },
                     
                 ],
-                propertyInfo:{
-                    no:'111',
-                    zkdeadline:'2017-10-11',
-                    status:'1',
-                    yszk:'100万',
-                    blje:'1000万',
-                    submitDate:'2017-10-11',
-                    loanDate:'2017-10-11',
-                    fxdate:'2017-10-11',
-                    zkdeadline:'2017-10-11',
-                },
+                propertyInfos:[
+                    {
+                        no:'111',
+                        status:'待结算',
+                        yszk:'2,000,000',
+                        zrzj:'2,000,000',
+                        submitDate:'2017-10-11',
+                        loanDate:'2017-10-11',
+                        fxdate:'2017-10-11',
+                        zkdeadline:'2017-10-11',
+                    }
+                ],
                 billsInfo:{
                     id:'001',
                     no:'billsx101'

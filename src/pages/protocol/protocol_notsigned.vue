@@ -1,12 +1,12 @@
 <template>
-    <section class="panel-main">
+    <section class="panel-main" :style="styles">
         <el-row class="toolbar toolbar-top">
-            <div class="f-left">
+            <!-- <div class="f-left">
                 <label style="padding-left:10px;">协议类型：</label>
                 <el-select size="small" v-model="currentType" placeholder="请选择">
                     <el-option v-for="(item,index) in protocolType" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>
-            </div>
+            </div> -->
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i> 查询</el-button>
@@ -16,13 +16,10 @@
             <el-row :span="24">
                 <el-table :data="list" class="table-list">
                     <el-table-column prop="index" label="序号" width="90"></el-table-column>
-                    <el-table-column prop="id" label="资产编号"></el-table-column>
-                    <el-table-column prop="type" label="协议类型"></el-table-column>
+                    <el-table-column prop="id" label="协议编号"></el-table-column>
                     <el-table-column prop="name" label="协议名称"></el-table-column>
                     <el-table-column prop="signatory" label="协议签署方"></el-table-column>
-                    <el-table-column prop="sum" label="资产金额"></el-table-column>
-                    <el-table-column prop="signDate" label="签约日期"></el-table-column>
-                    <el-table-column prop="deadline" label="合同到期日"></el-table-column>
+                    <el-table-column prop="signatoryOtherSide" label="协议签署对方"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
                         <span>
                             <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
@@ -80,7 +77,7 @@
             return {
                 currentStatus:'',
                 clients_pagesize:10,
-                clients_total:100,
+                clients_total:8,
                 currentType:0,
                 filter_name:'',
                 signDate:'',
@@ -90,125 +87,60 @@
                 list:[
                     {
                         index:'1',
-                        id:'pt1001',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'1',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
+                        id:'ZRA20171019001',
+                        name:'应收帐款债权转让协议',
+                        signatory:'工程公司',
+                        signatoryOtherSide:'佛山项目公司'
                     },
                     {
                         index:'2',
-                        id:'pt1002',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'1',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
+                        id:'TZA20171019001',
+                        name:'应收帐款债权转让通知函',
+                        signatory:'工程公司',
+                        signatoryOtherSide:'佛山项目公司'
                     },
                     {
                         index:'3',
-                        id:'pt1003',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'2',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
+                        id:'QRA20171019001',
+                        name:'付款确认书',
+                        signatory:'工程公司',
+                        signatoryOtherSide:'佛山项目公司'
                     },
                     {
                         index:'4',
-                        id:'pt1004',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'3',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
+                        id:'QRB20171019001',
+                        name:'付款确认书',
+                        signatory:'碧桂园集团',
+                        signatoryOtherSide:''
                     },
                     {
                         index:'5',
-                        id:'pt1005',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'2',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
+                        id:'GJA20171019001',
+                        name:'股东会决议',
+                        signatory:'工程公司',
+                        signatoryOtherSide:''
                     },
                     {
                         index:'6',
-                        id:'pt1006',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'1',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
+                        id:'HZA20171019001',
+                        name:'合作协议',
+                        signatory:'高银保理',
+                        signatoryOtherSide:'碧桂园'
                     },
                     {
                         index:'7',
-                        id:'pt1007',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'3',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
+                        id:'ZMA20171019001',
+                        name:'基础资产买卖协议',
+                        signatory:'高银保理',
+                        signatoryOtherSide:'cms'
                     },
                     {
                         index:'8',
-                        id:'pt1007',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'1',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
-                    },
-                    {
-                        index:'9',
-                        id:'pt1007',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'2',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
-                    },
-                    {
-                        index:'10',
-                        id:'pt1007',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'3',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
-                    },
-                    {
-                        index:'11',
-                        id:'pt1007',
-                        type:'主合同',
-                        name:'协议名称',
-                        signatory:'深圳xx公司',
-                        sum:'1000万',
-                        status:'1',   
-                        signDate:'2017-10-16',
-                        deadline:'2027-10-16'
-                    },
+                        id:'FYA20171019001',
+                        name:'服务协议',
+                        signatory:'高银保理',
+                        signatoryOtherSide:'cms'
+                    }
                 ],
                 protocolType:[
                     {label:'全部',value:0},

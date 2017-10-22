@@ -1,6 +1,6 @@
 <template>
-    <section class="panel-main">
-        <el-tabs v-if='userRole=="geren"' v-model="active_name" @tab-click="tabChange">
+    <section class="panel-main" :style="styles">
+        <el-tabs v-if='true' v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="个人认证" name="contact_information">
                 <el-col>
                 	<el-form label-width='100px' class='user-form'>
@@ -21,25 +21,28 @@
                             <el-button size="small" type="primary">上传证件</el-button>
                           </el-upload>
                 		</el-form-item>
+                        <el-form-item>
+                            <el-button type="primary">认 证</el-button>
+                        </el-form-item>
                 	</el-form>
                 </el-col>
             </el-tab-pane>
             <el-tab-pane label="资料详情" name="base_information" >
                 <el-form label-width='100px' class='user-form'>
                 		<el-form-item label='姓名'>
-                			<el-input v-model='profile.name' disabled></el-input>
+                			<el-input v-model='profile.name' readonly="readonly"></el-input>
                 		</el-form-item>
                 		<el-form-item label='角色'>
-                			<el-input v-model='profile.role' disabled></el-input>
+                			<el-input v-model='profile.role' readonly="readonly"></el-input>
                 		</el-form-item>
                 		<el-form-item label='系统权限'>
-                			<el-input v-model='profile.author' disabled></el-input>
+                			<el-input v-model='profile.author' readonly="readonly"></el-input>
                 		</el-form-item>
                 		<el-form-item label='职位'>
-                			<el-input v-model='profile.position' disabled></el-input>
+                			<el-input v-model='profile.position' readonly="readonly"></el-input>
                 		</el-form-item>
                 		<el-form-item label='手机号码'>
-                			<el-input v-model='profile.phone' disabled></el-input>
+                			<el-input v-model='profile.phone' readonly="readonly"></el-input>
                 		</el-form-item>
                 		<el-form-item label='邮箱地址'>
                 			<el-input v-model='profile.email'></el-input>
@@ -74,10 +77,14 @@
                             <el-button size="small" type="primary">上传证件</el-button>
                           </el-upload>
                 	</el-form-item>
+                    <el-form-item>
+                        <el-button type="primary">认 证</el-button>
+                    </el-form-item>
                 </el-form>
             </el-tab-pane>
             <el-tab-pane label="授权" name="tab-author" >
                 <el-table border :data='company'>
+                    <el-table-column label='序号' prop='index' width="90"></el-table-column>
                 	<el-table-column label='姓名' prop='name' align='center'></el-table-column>
                 	<el-table-column label='角色' prop='role' align='center'></el-table-column>
                 	<el-table-column label='权限' prop='author' align='center'></el-table-column>
@@ -94,7 +101,7 @@
 </template>
 
 <script>
-	import { mapGetters , mapActions } from 'vuex'
+	import Common from '../mixins/common.js'
     export default {
         data() {
             return {
@@ -102,6 +109,7 @@
             	active_name:"contact_information",
             	active_name2:"tab-enterprise",
             	profile:{
+                    index:1,
             		name:'王大锤',
             		role:'个人用户',
             		author:'xxx',
@@ -111,6 +119,7 @@
             	},
             	company:[
             		{
+                        index:1,
             			name:'王大锤',
             			role:'管理员',
             			author:'',
@@ -119,17 +128,25 @@
             	],
             }
         },
+        mixins:[Common],
         methods: {
            tabChange(){
 
            },
            handleRemove(){},
-           ...mapActions([
-			    'setState'
-			])
+           enterKeyup(e){
+                const self = this;
+                const ev = e || window.event;
+                if(ev.keyCode == 13){
+                    
+                }
+            }
         },
         mounted() {
-            
+            const self = this;
+            self.$nextTick(()=>{
+                document.addEventListener("keyup", self.enterKeyup, false);
+            });
         },
         watch:{
             

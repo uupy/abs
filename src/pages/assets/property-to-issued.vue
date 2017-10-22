@@ -20,7 +20,7 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>分配资金方</el-button>
+                <el-button size="small" type='primary'>确认发行</el-button>
             </div>       
         </el-row>
 
@@ -44,9 +44,8 @@
                 </el-table-column>
                 <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
-                        <span class="table-btn health" @click.stop="checkView(row)">详情</span>
-                        <span class="table-btn danger">分配</span>
-                        <span class="table-btn danger">回退</span>
+                        <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
+                        <span class="table-btn danger">确认发行</span>
                     </template>
                 </el-table-column>                
             </el-table>
@@ -77,7 +76,7 @@
                         yszkdqr:'2017-12-30',
                         rzts:'360',
                         dclr:'保理商复核',
-                        status:'3',
+                        status:'4',
                     },
                 ],
                 propertyStatus:{},
@@ -98,7 +97,7 @@
             },
             checkView(row){
                 const self = this;
-                self.$router.push({path:'/pages/assets/property-to-dist/views'});
+                self.$router.push({path:'/pages/assets/property-to-issued/views'});
             },
         },
         watch: {
