@@ -1,5 +1,5 @@
 <template>
-    <section class="panel-main property-to-confirm" :style="styles">        
+    <section class="panel-main property-to-confirm" :style="styles">
         <el-row class="toolbar toolbar-top">            
             <div class="f-left">
                 <label style="padding-left:10px;">应收账款到期日：</label>
@@ -23,7 +23,6 @@
                 <el-button size="small" type='primary'>审核通过</el-button>
             </div>       
         </el-row>
-
         <el-row>
             <el-table ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
@@ -76,7 +75,7 @@
                         tjrq:'2017-12-30',
                         yszkdqr:'2017-12-30',
                         rzts:'360',
-                        dclr:'保理商经办',
+                        dclr:'经办',
                         status:'2',
                     },
                 ],

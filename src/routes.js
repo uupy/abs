@@ -29,7 +29,6 @@ const PropertyToBeLoan = resolve => require(['./pages/assets/property-to-loan.vu
 //结算管理
 
 //企业角色 1>保理商 2>核心企业 3>供应商 4>项目公司及子公司 5>合作方spv 6>合作方其他
-
 let routes = [
     {
         path: '/login',
@@ -269,10 +268,10 @@ let routes = [
                 name: '待审核资产',
                 show:{
                     1:true,     //保理商
-                    2:false,     //核心企业
-                    3:false,     //供应商
-                    4:false,     //项目公司及子公司
-                    5:false,     //合作方spv
+                    2:true,     //核心企业
+                    3:true,     //供应商
+                    4:true,     //项目公司及子公司
+                    5:true,     //合作方spv
                     6:false      //合作方其他
                 },
                 children:[
