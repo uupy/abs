@@ -2,6 +2,7 @@
 const Login = resolve => require(['./pages/Login.vue'], resolve)
 const NotFound = resolve => require(['./pages/404.vue'], resolve)
 const Home = resolve => require(['./pages/Home.vue'], resolve)
+const UserCenter = resolve => require(['./pages/user-center.vue'], resolve)
 
 //企业管理
 const AllEnterpriseList = resolve => require(['./pages/enterprise/all_enterprise.vue'],resolve)
@@ -42,6 +43,20 @@ let routes = [
         name: '',
         leaf:true,
         hidden: true
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '',
+        leaf:true,
+        hidden: true,
+        children:[
+            {
+                path:'/user-center',
+                name:'用户中心',
+                component:UserCenter
+            }
+        ]
     },
     {
         path: '/',
