@@ -2,7 +2,24 @@ const WEBConfig = {
 	name:'ABS系统'
 }
 
-const WEBNAME = {
+const ABS_ROLE = {
+	user:{
+		1:'管理员',
+		2:'企业法人',
+		3:'代理人1',
+		4:'代理人2',
+		5:'对接人'
+	},
+	enterprise:{
+		1:'集团公司',
+		2:'企业法人',
+		3:'代理人1',
+		4:'代理人2',
+		5:'对接人'
+	}
+}
+
+const ABS_NAME = {
 	user_role:{
 		1:'核心企业',
 		2:'项目公司',

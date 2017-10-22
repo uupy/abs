@@ -47,13 +47,23 @@ export default {
                 method: options.method,
                 url: `${self.url}${options.path}`,
                 headers: {
+                    'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8',
                     "x-auth-token": `${self.token}`
                 }
             }
-            options.method == 'GET' ? config.params = options.params : (options.method == 'POST' ? config.body = JSON.stringify(options.params) : '');
+            if(options.method === 'GET'){
+                config.params = options.params;
+            }else if(options.method == 'POST'){
+                let params_arr = [];
+                for(let key in options.params){
+                    params_arr.push(`${key}=${options.params[key]}`);
+                }
+                config.body = params_arr.join('&');
+                console.log(config.body)
+            }
             self.$http(config).then((response) => {
-                const res = response.data;
-                if(res.ecode == 9150 || res.ecode == 9401 || res.ecode == 9402){
+                const res = response.body;
+                if(res.code == 9150 || res.code == 9401 || res.code == 9402){
                     self.fnTimeOut();
                 }else{
                     Util.isFunction(successCallback) ? successCallback(res) : '';
@@ -77,7 +87,8 @@ export default {
         },
         ...mapActions([
             'setState',
-            'updateBaseInfo'
+            'saveStorageState',
+            'updateOperateAuthority'
         ])
     },
     computed: {
@@ -90,8 +101,12 @@ export default {
             'styles',
             'onLoading',
             'innerLoading',
-            'enterprise_menu_type',
-            'user_role'
+            'user_type',
+            'enterprise_type',
+            'nav_menu_type',
+            'operate_authority',
+            // 'enterprise_menu_type',
+            // 'user_role'
         ])
     },
     destroyed(){

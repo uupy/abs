@@ -10,7 +10,7 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
-                <el-button size="small" type="primary" @click="dialog_add_client = true" v-if="user_role === 4"><i class="el-icon-plus"></i>新增</el-button>
+                <el-button size="small" type="primary" @click="dialog_add_client = true" v-if="enterprise_type === 1"><i class="el-icon-plus"></i>新增</el-button>
             </div>
         </el-row>
         <el-row :span="24">
@@ -26,7 +26,7 @@
                 <el-table-column inline-template :context="_self" label="操作" width="140">
                     <span>
                         <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                        <span class="table-btn danger" v-if="user_role === 4">删除</span>
+                        <span class="table-btn danger" v-if="enterprise_type === 1">删除</span>
                     </span>
                 </el-table-column>
             </el-table>
@@ -116,10 +116,6 @@
                 
             },
             checkView(row){
-                this.setState({
-                    attr:'enterprise_menu_type',
-                    val:2
-                });
                 this.$router.push({ path: '/pages/supplier/views' });
             },
             cancelAddClient(){
@@ -136,8 +132,12 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
+                self.saveStorageState({
+                    attr:'nav_menu_type',
+                    val:4,
+                    type:'number'
+                });
                 document.addEventListener("keyup", self.enterKeyup, false);
-                
             });
         },
         watch:{

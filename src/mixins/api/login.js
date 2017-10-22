@@ -25,26 +25,28 @@ export default{
 	            };
 	            //模拟登录
 	            const users = {
-	            	//用户角色 1>核心企业 2>项目公司 3>供应商 4>保理商 5>资金方
-	            	user1:{password:'user1',role:1},
+	            	// 企业角色 1>保理商 2>核心企业 3>供应商 4>项目公司及子公司 5>合作方spv 6>合作方其他
+	            	admin:{password:'admin',role:1},
 	            	user2:{password:'user2',role:2},
 	            	user3:{password:'user3',role:3},
-	            	admin:{password:'admin',role:4},
+	            	user4:{password:'user4',role:4},
 	            	user5:{password:'user5',role:5},
+	            	user6:{password:'user6',role:6},
 	            };
-	            let login_status = false;
-	            let login_role = 1;
 	            if(users[self.loginForm.account]){
 	            	if(self.loginForm.password === users[self.loginForm.account].password){
-	            		localStorage.setItem('username',self.loginForm.account);
-	            		localStorage.setItem('user_role',users[self.loginForm.account].role);
-	            		self.updateBaseInfo();
+	            		self.saveStorageState([
+	            		    {attr:'token',val:''},
+	            		    {attr:'username',val:self.loginForm.account},
+	            		    {attr:'user_type',val:1,type:'number'},
+	            		    {attr:'enterprise_type',val:users[self.loginForm.account].role,type:'number'},
+	            		]);
 	            		if(users[self.loginForm.account].role === 1){
-	            			self.$router.push({ path: '/pages/core' });
-	            		}else if(users[self.loginForm.account].role === 4){
-	            			self.$router.push({ path: '/pages/all_enterprise' });
-	            		}else{	
-	            			self.$router.push({ path: '/pages/enterprise/views' });
+	            		    self.$router.push({ path: '/pages/all_enterprise' });
+	            		}else if(users[self.loginForm.account].role === 2){
+	            		    self.$router.push({ path: '/pages/core' });
+	            		}else{  
+	            		    self.$router.push({ path: '/pages/enterprise/views' });
 	            		}
 	            	}else{
 	            		self.$message({
