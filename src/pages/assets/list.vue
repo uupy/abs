@@ -157,7 +157,7 @@
                         </template>
                     </el-table-column>     
                 </el-table>
-                <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="listSizeChange" @current-change="listCurrentChange" :page-size="list_pagesize" :total="list_total"></el-pagination>
+                <el-pagination v-if='pages>1' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
             </el-row>
         </template>
         <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
@@ -180,12 +180,16 @@
 </template>
 <script>
     import Common from '../../mixins/common.js'
+    import Assets from '@/api/assets/assets.js'
     export default {
         data() {
             return {
                 filter_name:'',
                 currentCompany:'',
                 propertyStatus:{},
+                currentPage:1,
+                pageNum:10,
+                pages:0,
                 activeName:'first',
                 dialog_add_client:false,
                 add_form:{},
@@ -299,7 +303,7 @@
                 list_total:10,
             }
         },
-        mixins:[Common],
+        mixins:[Common,Assets],
         methods: {
             listSizeChange(){},
             listCurrentChange(){},
@@ -312,7 +316,14 @@
             },
             handleClick(){
 
+            },
+            clientsSizeChange(){
+
+            },
+            clientsCurrentChange(){
+
             }
+
         },
         watch: {
             
@@ -325,6 +336,8 @@
                 });
             });
             this.propertyStatus = STATUS.propertyStatus;
+
+            this.getAssetsList({})
         },
         computed: {
             
