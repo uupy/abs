@@ -1,10 +1,18 @@
 <template>
     <section class="panel-main" :style="styles">
         <el-row class="toolbar toolbar-top">
+            <div class="f-left">
+                <label>签署日期：</label>
+                <el-date-picker
+                    v-model="signDate"
+                    type="daterange" size='small' class='date-picker'
+                    placeholder="选择日期范围"
+                    @change='dateChange'>
+                </el-date-picker>
+            </div>
             <div class="f-right">
-                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i> 查询</el-button>
-                <!-- <el-button size="small" type="primary" @click="dialog_add_client = true"><i class="el-icon-plus"></i> 新增</el-button> -->
+                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @keyup.native.enter='search(filter_name)' @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" @click="search(filter_name)"><i class="el-icon-search"></i> 查询</el-button>
             </div>
         </el-row>
         <div class="panel-protocol">
@@ -22,7 +30,7 @@
                         </span>
                     </el-table-column>
                 </el-table>
-                <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+                <el-pagination v-if='pages>1' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
             </el-row>
         </div>
 
@@ -67,13 +75,17 @@
 <script>
     import Common from '@/mixins/common.js'
     import Clients from '@/api/clients.js'
+    import Protocol from '@/api/protocol/protocol.js'
     export default {
         data() {
             return {
                 currentStatus:'',
                 clients_pagesize:10,
                 clients_total:2,
+                pages:0,
                 currentType:0,
+                currentPage:1,
+                pageNum:10,
                 filter_name:'',
                 signDate:'',
                 protocolStatus:{},
@@ -136,15 +148,26 @@
             cancelAddClient(){
                 this.dialog_add_client = false;
             },
+            dateChange(e){
+                const self = this;
+                e = e.replace(/ /g,'');
+                let begin = e.substring(0,10);
+                let end = e.substring(11,e.length);
+                self.getProtocolList({status:2,begin:begin,end:end})
+            },
+            search(){
+                const self = this;
+                self.getProtocolList({status:2,keyword:self.filter_name})
+            }
         },
         watch: {
             
         },
-        mixins:[Common,Clients],
+        mixins:[Common,Clients,Protocol],
         mounted() {
             const self = this;
+            self.getProtocolList({status:2});
             self.protocolStatus = STATUS.protocolStatus;
-            console.log(self.protocolStatus)
         },
         computed: {
             
@@ -154,3 +177,6 @@
         }
     }
 </script>
+<style>
+    .toolbar-top .date-picker.el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}    
+</style>

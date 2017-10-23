@@ -1,12 +1,6 @@
 <template>
     <section class="panel-main" :style="styles">
-        <el-row class="toolbar toolbar-top">
-            <!-- <div class="f-left">
-                <label style="padding-left:10px;">协议类型：</label>
-                <el-select size="small" v-model="currentType" placeholder="请选择">
-                    <el-option v-for="(item,index) in protocolType" :label="item.label" :value="item.value" :key="index"></el-option>
-                </el-select>
-            </div> -->
+        <el-row class="toolbar toolbar-top">            
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @keyup.native.enter='search(filter_name)' @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click="search(filter_name)"><i class="el-icon-search"></i> 查询</el-button>
@@ -27,7 +21,7 @@
                         </span>
                     </el-table-column>
                 </el-table>
-                <el-pagination  class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
+                <el-pagination v-if='pages>1' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
             </el-row>
         </div>
 
@@ -72,12 +66,13 @@
 <script>
     import Common from '@/mixins/common.js'
     import Clients from '@/api/clients.js'
-    import Protocol from '../../api/protocol/protocol.js'
+    import Protocol from '@/api/protocol/protocol.js'
     export default {
         data() {
             return {
                 currentStatus:'',
                 pageNum:10,
+                pages:0,
                 clients_total:16,
                 keyword:'',
                 currentType:0,
@@ -168,11 +163,11 @@
             clientsSizeChange(e){
                 this.pageNum = e;
                 this.currentPage = 1;
-                this.getProtocolList();
+                this.getProtocolList({status:1});
             },
             clientsCurrentChange(e){
                 this.currentPage = e;
-                this.getProtocolList();
+                this.getProtocolList({status:1});
             },
             checkView(row){
                 const self = this;
@@ -189,7 +184,7 @@
             },
             search(){
                 const self = this;
-                self.searchByKeyword();
+                self.getProtocolList({status:1,keyword:self.filter_name});
             }
         },
         watch: {
@@ -198,8 +193,8 @@
         mixins:[Common,Clients,Protocol],
         mounted() {
             const self = this;
-            self.protocolStatus = STATUS.protocolStatus;
-            self.getProtocolList();
+            // self.protocolStatus = STATUS.protocolStatus;
+            self.getProtocolList({status:1});
         },
         computed: {
             
