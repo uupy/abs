@@ -137,11 +137,23 @@
                     </el-table-column> 
                     <el-table-column label="展开" type="expand">
                         <template slot-scope="props">
-                            <el-table :data="props.row.fp_list" show-summary border style="width: 100%">
-                                <el-table-column prop="index" label="发票号" align='center'></el-table-column>
-                                <el-table-column prop="money" label="发票金额" align='center'></el-table-column>
-                                <el-table-column prop="date" label="发票日期" align='center'></el-table-column>
-                              </el-table>
+                            <ul class="abs-table">
+                                <li class="abs-table-header">
+                                    <div class="cell" :style="`width:${100/3}%;`">发票号</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">发票金额</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">发票日期</div>
+                                </li>
+                                <li v-for="(item,idx) in props.row.fp_list" :key="idx">
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.index}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.money}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.date}}</div>
+                                </li>
+                                <li>
+                                    <div class="cell" :style="`width:${100/3}%;`">合计</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{props.row.fp_sum}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">-</div>
+                                </li>
+                            </ul>
                         </template>
                     </el-table-column>     
                 </el-table>
@@ -218,7 +230,8 @@
                                money:'2000' ,
                                date:'2017-10-17' 
                             },
-                        ]
+                        ],
+                        fp_sum:'4000'
                     },
                     {
                         single:'2',
@@ -247,7 +260,8 @@
                                money:'2000' ,
                                date:'2017-10-17' 
                             },
-                        ]
+                        ],
+                        fp_sum:'4000'
                     },
                     {
                         single:'3',
@@ -276,7 +290,8 @@
                                money:'2000' ,
                                date:'2017-10-17' 
                             },
-                        ]
+                        ],
+                        fp_sum:'4000'
                     },
                 ],
                 list_pagenum:1,
