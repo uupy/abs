@@ -62,10 +62,28 @@ export default {
             }
             self.$http(config).then((response) => {
                 const res = response.body;
-                if(res.code == 9150 || res.code == 9401 || res.code == 9402){
-                    self.fnTimeOut();
+                if(res.code > 0){
+                    if(res.code == 9150){
+                        self.fnTimeOut();
+                    }else{
+                        if(res.token && res.token !== ''){
+                            self.saveStorageState({
+                                attr:'token',
+                                val:res.token
+                            });
+                        }
+                        Util.isFunction(successCallback) ? successCallback(res) : '';
+                    }
                 }else{
-                    Util.isFunction(successCallback) ? successCallback(res) : '';
+                    self.$nprogress.done();
+                    self.setState([
+                        {attr:'onLoading',val:false},
+                        {attr:'innerLoading',val:false}
+                    ]);
+                    self.$message({
+                        message: `${res.msg}`,
+                        type: 'error'
+                    });
                 }
             }, (response) => {
                 if(Util.isFunction(errorCallback)){
