@@ -267,9 +267,9 @@ let routes = [
                 name: '待审核资产',
                 show:{
                     1:true,     //保理商
-                    2:true,     //核心企业
+                    2:false,     //核心企业
                     3:false,     //供应商
-                    4:true,     //项目公司及子公司
+                    4:false,     //项目公司及子公司
                     5:true,     //合作方spv
                     6:false      //合作方其他
                 },

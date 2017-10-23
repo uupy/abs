@@ -4,12 +4,10 @@
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="未融资数据" name="first">
                     <el-row class="toolbar toolbar-top">
-                        <div class="f-left">
+                        <div class="f-right">
                             <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
                             <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>           
-                        </div>
-                        <div class="f-right">
-                            <el-button type='primary' @click='supply("first")'>签 约</el-button>
+                            <el-button size="small" type='primary' @click='supply("first")'>签 约</el-button>
                         </div>
                     </el-row>
                     <el-row>
@@ -114,7 +112,7 @@
                         <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
                         <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>
                     </template>
-                    <el-button type='primary' @click='supply("first")' v-if="enterprise_type === 2">确 认</el-button>
+                    <el-button size="small" type='primary' @click='supply("first")' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>

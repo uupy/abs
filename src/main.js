@@ -86,16 +86,35 @@ router.beforeEach((to, from, next) => {
         localStorage.clear();
     }
     let user = localStorage.getItem('username');
+    let enterprise_type = parseInt(localStorage.getItem('enterprise_type') || '0');
+    console.log(router.options.routes)
     if (!user && to.path != '/login') {
         next({
             path: '/login'
         })
     } else {
         if (to.path == '/' || to.path == '') {
-            next({
-                path: '/pages/core'
-            })
+            switch(enterprise_type){
+                case 1:
+                    next({
+                        path: '/pages/all_enterprise'
+                    })
+                    break;
+                case 2:
+                    next({
+                        path: '/pages/core'
+                    })
+                    break;
+                default:
+                    next({
+                        path: '/pages/enterprise/views'
+                    })
+                    break;
+            }
         } else {
+            router.options.routes.forEach((menu)=>{
+
+            });
             next()
         }
     }
