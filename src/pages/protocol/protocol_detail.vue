@@ -92,125 +92,158 @@
                 </el-table-column>        
             </el-table>
             </el-tab-pane>
-            <el-tab-pane label="资产转让信息" name="property-2-info" >
-                <el-form label-width='180px' class='item-list'>
-                <el-form-item label='中登网登记文件' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                          <el-button size="small" type="primary">点击上传</el-button>
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='应收账款债权转让协议' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
+            <el-tab-pane label="资产转让信息" name="property-transfer-info" >
+                <el-form :model='propertyTransferInfo' label-width='180px' class='item-list'>
+                    <el-form-item label='中登网登记文件' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.assignFile)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                                class="upload-demo"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-preview="handlePreview"
+                                :on-remove="handleRemove"
+                                :on-change='handleChange()'>
+                                <el-button size="small" type="warning">点击上传</el-button>
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label='应收账款债权转让协议' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.transferFile)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                              class="upload-demo"
+                              action="https://jsonplaceholder.typicode.com/posts/"
+                              :on-preview="handlePreview"
+                              :on-remove="handleRemove">
+                              <el-button size="small" type="warning">点击上传</el-button>
+                            </el-upload>
+                        </div>
+                    </el-form-item>
 
-                <el-form-item label='应收账款转让通知函及回执' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='付款确认书（项目公司）' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='付款确认书（总部）' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='股东会决议' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='基础资产买卖协议' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-                <el-form-item label='服务协议' class='item-inner'>
-                    <div class="float-left info">
-                        <el-button size="small" type="primary">点击查看</el-button>
-                    </div>
-                    <div class="float-left">
-                        <el-upload
-                          class="upload-demo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="handlePreview"
-                          :on-remove="handleRemove">
-                        </el-upload>
-                    </div>
-                </el-form-item>
-            </el-form>
+                    <el-form-item label='应收账款转让通知函及回执' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.notifyFile)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                              class="upload-demo"
+                              action="https://jsonplaceholder.typicode.com/posts/"
+                              :on-preview="handlePreview"
+                              :on-remove="handleRemove">
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label='付款确认书（项目公司）' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary"  @click.native='getFile(propertyTransferInfo.paymentProject)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                              class="upload-demo"
+                              action="https://jsonplaceholder.typicode.com/posts/"
+                              :on-preview="handlePreview"
+                              :on-remove="handleRemove">
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label='付款确认书（总部）' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary"  @click.native='getFile(propertyTransferInfo.transferFile)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                              class="upload-demo"
+                              action="https://jsonplaceholder.typicode.com/posts/"
+                              :on-preview="handlePreview"
+                              :on-remove="handleRemove">
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label='股东会决议' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary"  @click.native='getFile(propertyTransferInfo.partnerFile)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                              class="upload-demo"
+                              action="https://jsonplaceholder.typicode.com/posts/"
+                              :on-preview="handlePreview"
+                              :on-remove="handleRemove">
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label='基础资产买卖协议' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.baseFile)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                              class="upload-demo"
+                              action="https://jsonplaceholder.typicode.com/posts/"
+                              :on-preview="handlePreview"
+                              :on-remove="handleRemove">
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label='服务协议' class='item-inner'>
+                        <div class="float-left info">
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.serverFile)'>点击查看</el-button>
+                        </div>
+                        <div class="float-left">
+                            <el-upload
+                              class="upload-demo"
+                              action="https://jsonplaceholder.typicode.com/posts/"
+                              :on-preview="handlePreview"
+                              :on-remove="handleRemove">
+                            </el-upload>
+                        </div>
+                    </el-form-item>
+                </el-form>
             </el-tab-pane>           
-        </el-tabs>
+        </el-tabs>     
+        <el-dialog size="full" title="编辑联系方式" v-model="dialogFormVisible" class="file-img">
+            <img :src='fileImgUrl'/>
+        </el-dialog>
     </section>
 </template>
 <script>
     import Common from '@/mixins/common.js'
     import Clients from '@/api/clients.js'
+    import NoImg from '@/assets/images/empty_box.png'
     export default {
         data() {
             return {
+                dialogFormVisible:false,
+                fileType:'',
+                fileImgUrl:'',
+                tableData5: [{
+                  id: '12987122',
+                  name: '好滋好味鸡蛋仔',
+                  category: '江浙小吃、小吃零食',
+                  desc: '荷兰优质淡奶，奶香浓而不腻',
+                  address: '上海市普陀区真北路',
+                  shop: '王小虎夫妻店',
+                  shopId: '10333',
+                  yflx:'',
+                  yfje:'1000万',
+                  djrq:'2017-10-11',
+                  fpje:'1000万',
+                  yfdfile:'',
+                  jdsqfile:'sss',
+                  fpTable:[
+                    {
+                        no:'223',
+                        sum:'100万',
+                        date:'2017-10-11',
+                        file:''
+                    }
+                  ]
+                },
+                ],
                 active_name:'business-contract',
                 protocolId:'',
                 protocol:{
@@ -289,7 +322,17 @@
                         danjuhao:'101',
                         book:''
                     }
-                ]     
+                ],
+                propertyTransferInfo:{
+                    assignFile:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508689556093&di=9f946fc7aa1515d2c2bcf8e8902e9e9e&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F9a504fc2d5628535b9bcc6329aef76c6a7ef6340.jpg',
+                    transferFile:'http://img5.imgtn.bdimg.com/it/u=3191256922,1392369155&fm=27&gp=0.jpg',
+                    notifyFile:'http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg',
+                    paymentProject:'http://img1.50tu.com/meinv/xinggan/2013-11-16/e65e7cd83f37eed87067299266152807.jpg',
+                    paymentBase:'http://a3.topitme.com/f/d1/4b/11292760524e84bd1fo.jpg',
+                    partnerFile:'http://img1.imgtn.bdimg.com/it/u=4235859327,2792662286&fm=214&gp=0.jpg',
+                    baseFile:'http://pic5.nipic.com/20100302/2177138_084003138452_2.jpg',
+                    serverFile:'http://www.danielpeng.me/file/ABS资产管理.rar',
+                }   
             }
         },
         methods: {
@@ -300,7 +343,24 @@
 
            },
            tabChange(){
-
+           },
+           handleChange(key){
+                console.log(key)
+           },
+           cancelReset(){},
+           getFile(url){
+                const self = this;
+                self.fileType =  url.substr((url.lastIndexOf('.'))+1);
+                //图片文件
+                if(self.fileType == 'jpg' || self.fileType == 'jpeg' || self.fileType == 'png' || self.fileType == 'gif' ){
+                    self.dialogFormVisible = true;
+                    self.fileImgUrl = url;
+                }else{
+                    window.open(url)
+                }                    
+           },
+           imgError(){
+                alert('sb')
            }
         },
         watch: {

@@ -8,8 +8,8 @@
                 </el-select>
             </div> -->
             <div class="f-right">
-                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i> 查询</el-button>
+                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @keyup.native.enter='search(filter_name)' @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" @click="search(filter_name)"><i class="el-icon-search"></i> 查询</el-button>
             </div>
         </el-row>
         <div class="panel-protocol">
@@ -27,7 +27,7 @@
                         </span>
                     </el-table-column>
                 </el-table>
-                <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+                <el-pagination  class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
             </el-row>
         </div>
 
@@ -72,16 +72,19 @@
 <script>
     import Common from '@/mixins/common.js'
     import Clients from '@/api/clients.js'
+    import Protocol from '../../api/protocol/protocol.js'
     export default {
         data() {
             return {
                 currentStatus:'',
-                clients_pagesize:10,
-                clients_total:8,
+                pageNum:10,
+                clients_total:16,
+                keyword:'',
                 currentType:0,
                 filter_name:'',
                 signDate:'',
                 protocolStatus:{},
+                currentPage:1,
                 deadline:'',
                 dialog_add_client:false,
                 list:[
@@ -150,23 +153,26 @@
                 add_form:{},
                 rules:{},
                 pickerOptions0: {
-                  disabledDate(time) {
-                    return time.getTime() < Date.now() - 8.64e7;
-                  }
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    }
                 },
                 pickerOptions1: {
-                  disabledDate(time) {
-                    return time.getTime() < Date.now() - 8.64e7;
-                  }
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    }
                 },
             }
         },
         methods: {
-            clientsSizeChange(){
-
+            clientsSizeChange(e){
+                this.pageNum = e;
+                this.currentPage = 1;
+                this.getProtocolList();
             },
-            clientsCurrentChange(){
-
+            clientsCurrentChange(e){
+                this.currentPage = e;
+                this.getProtocolList();
             },
             checkView(row){
                 const self = this;
@@ -176,20 +182,24 @@
                 const self = this;
             },
             getclient(){
-
+                const self = this;
             },
             cancelAddClient(){
                 this.dialog_add_client = false;
             },
+            search(){
+                const self = this;
+                self.searchByKeyword();
+            }
         },
         watch: {
             
         },
-        mixins:[Common,Clients],
+        mixins:[Common,Clients,Protocol],
         mounted() {
             const self = this;
             self.protocolStatus = STATUS.protocolStatus;
-            console.log(self.protocolStatus)
+            self.getProtocolList();
         },
         computed: {
             
