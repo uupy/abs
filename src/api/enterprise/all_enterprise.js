@@ -6,6 +6,7 @@ export default {
         // 获取所有企业列表
         getAllEnterprise(){
             const self = this;
+            return false;
             self.$nprogress.start();
             self.setState({
                 attr:'onLoading',

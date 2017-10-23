@@ -27,7 +27,6 @@ export default {
                         body: `mobile=${self.loginForm.account}&password=${self.loginForm.password}`
                     }).then((response) => {
                         // 响应成功回调
-                        console.log(response)
                         const res = response.body;
                         self.$nprogress.done();
                         self.setState({

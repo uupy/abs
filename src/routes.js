@@ -269,7 +269,7 @@ let routes = [
                 show:{
                     1:true,     //保理商
                     2:true,     //核心企业
-                    3:true,     //供应商
+                    3:false,     //供应商
                     4:true,     //项目公司及子公司
                     5:true,     //合作方spv
                     6:false      //合作方其他
