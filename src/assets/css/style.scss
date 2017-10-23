@@ -555,9 +555,6 @@ i[class*=" im-icon-"]:after {
 		font-size: 13px;
 		&.table-list{
 			border:0;
-			// .is-leaf{
-			// 	border:0;
-			// }
 		}
 		&:before,&:after{
 			background:none;
@@ -567,21 +564,10 @@ i[class*=" im-icon-"]:after {
 			.cell{
 				font-weight: normal;
 				color: nth($fontColors, 3);
+				line-height:20px;
 				background:$tableBg;
 			}
 		}
-		// .ascending .sort-caret.ascending{
-		// 	border-bottom-color:nth($fontColors, 2);
-		// }
-		// .sort-caret.ascending{
-		// 	border-bottom-color:nth($fontColors, 5);
-		// }
-		// .descending .sort-caret.descending{
-		// 	border-top-color:nth($fontColors, 2);
-		// }
-		// .sort-caret.descending{
-		// 	border-top-color:nth($fontColors, 5);
-		// }
 	}
 	.panel-404{
 		position: relative;

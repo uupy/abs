@@ -33,11 +33,11 @@
                 <el-table-column prop='area'  align='center' label='所属区域'></el-table-column>
                 <el-table-column prop='yszkje' align='center'  label='应收账款金额'></el-table-column>
                 <el-table-column prop='zrzj' align='center'  label='转让折价'></el-table-column>
-                <el-table-column prop='tjrq' align='center' label='提交日期'></el-table-column>
-                <el-table-column prop='yszkdqr'  align='center' label='应收账款到期日'></el-table-column>
-                <el-table-column prop='rzts'  align='center' label='融资天数'></el-table-column>
-                <el-table-column prop='dclr'  align='center' label='待处理人'></el-table-column>
-                <el-table-column align='center' label='资产状态'>
+                <el-table-column prop='tjrq' align='center' label='提交日期' width="120"></el-table-column>
+                <el-table-column prop='yszkdqr'  align='center' label='应收账款到期日' width="130"></el-table-column>
+                <el-table-column prop='rzts'  align='center' label='融资天数' width="100"></el-table-column>
+                <el-table-column prop='dclr'  align='center' label='待处理人' width="100"></el-table-column>
+                <el-table-column align='center' label='资产状态' width="100">
                     <template slot-scope='scope'>
                         <el-tag :type="(scope.row.status == '6' || scope.row.status == '7' || scope.row.status == '8') ? 'success' : 'warning'" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
                     </template>

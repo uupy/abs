@@ -20,7 +20,6 @@ const ProtocolDetail = resolve => require(['./pages/protocol/protocol_detail.vue
 const AssetsList = resolve => require(['./pages/assets/list.vue'],resolve)
 const AssetsStatistics = resolve => require(['./pages/assets/statistics.vue'],resolve)
 const StandingBook = resolve => require(['./pages/assets/standing-book.vue'],resolve)
-const PropertyToBeConfirm = resolve => require(['./pages/assets/property-to-confirm.vue'],resolve)
 const PropertyToBeVerify = resolve => require(['./pages/assets/property-to-verify.vue'],resolve)
 const PropertyToBeDist = resolve => require(['./pages/assets/property-to-dist.vue'],resolve)
 const PropertyToIssued = resolve => require(['./pages/assets/property-to-issued.vue'],resolve)

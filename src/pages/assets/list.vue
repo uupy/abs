@@ -109,19 +109,19 @@
         </template>
         <template v-else>
             <el-row class="toolbar toolbar-top">
-                <div class="f-left" v-if="enterprise_type !== 4">
-                    <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
-                    <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>           
-                </div>
-                <div class="f-right" v-if="enterprise_type === 2">
-                    <el-button type='primary' @click='supply("first")'>确 认</el-button>
+                <div class="f-right">
+                    <template v-if="enterprise_type !== 4">
+                        <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
+                        <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>
+                    </template>
+                    <el-button type='primary' @click='supply("first")' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>
                 <el-table :data="data_list" class='table-list table-expand'>
                     <el-table-column type="selection" width="40" v-if="enterprise_type === 2"></el-table-column>
                     <el-table-column prop="single" label="应付单号" align='center'></el-table-column>
-                    <el-table-column prop="djdate" label="单据日期" align='center'></el-table-column>         
+                    <el-table-column prop="djdate" label="单据日期" align='center' width="120"></el-table-column>         
                     <el-table-column prop="yfsum" label="应付金额（元）" align='center' width="130"></el-table-column>         
                     <el-table-column prop="supplier" label="供应商" align='center'></el-table-column>
                     <el-table-column prop="company" label="项目公司" align='center'></el-table-column>
