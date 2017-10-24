@@ -116,7 +116,7 @@
                 </div>
             </el-row>
             <el-row>
-                <el-table :data="list" class='table-list table-expand' @expand='tableExpand'>
+                <el-table @select='tableSelect' @select-all='tableSelectAll' :data="list" class='table-list table-expand' @expand='tableExpand'>
                     <el-table-column type="selection" width="40" v-if="enterprise_type === 2"></el-table-column>
                     <el-table-column prop="orderReceiptsId" label="应付单号" align='center'></el-table-column>
                     <el-table-column prop="receiptsTime" label="单据日期" align='center' width="120"></el-table-column>         
@@ -161,18 +161,22 @@
         <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="120px">
                 <el-form-item label='1.付款确认书'>
-                    <el-button size='small' type='primary'>查看</el-button>
+                    <el-button size='small' type='primary' @click.native='filePreview("1")'>查看</el-button>
                     <el-button size='small' type='primary'>签订</el-button>
                 </el-form-item>
                 <el-form-item label='2.付款确认书'>
-                    <el-button size='small' type='primary'>查看</el-button>
+                    <el-button size='small' type='primary' @click.native='filePreview("2")'>查看</el-button>
                     <el-button size='small' type='primary'>签订</el-button>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary">确认融资</el-button>
+                <el-button type="primary" @click.native='confirm'>确认融资</el-button>
                 <el-button @click="cancelAddClient('add_form')">取 消</el-button>
             </div>
+        </el-dialog>
+
+        <el-dialog size="full" title="付款确认书" v-model="dialogDisable2" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
+            <img :src='fileImgUrl'/>
         </el-dialog>
     </section>
 </template>
@@ -183,7 +187,9 @@
         data() {
             return {
                 currentStatus:'',
+                dialogDisable2:false,
                 currentPage:1,
+                fileImgUrl:'',
                 pageSize:10,
                 pageTotal:0,
                 pages:0,
@@ -201,6 +207,7 @@
                 dialogDisable:false,
                 dialogDisable2:false,
                 rules:{},
+                orderReceiptsIds:[],
                 companyList:[
                     {
                         label:'深圳xx公司',
@@ -213,7 +220,37 @@
                 ],
                 list:[
                     {
-                        single:'1',
+                        orderReceiptsId:'1',
+                        supplier:'大疆集团',
+                        company:'深圳宝宝公司',
+                        area:'深圳宝安',
+                        project_name:'项目1',
+                        contract_name:'合同1',
+                        contract_no:'ht001',
+                        yfsum:'4000',
+                        djdate:'2017-10-17',
+                        fpsum:'4000',
+                        fp_list:[
+                            {
+                               index:'1' ,
+                               money:'1000' ,
+                               date:'2017-10-17' 
+                            },
+                            {
+                               index:'2' ,
+                               money:'1000' ,
+                               date:'2017-10-17' 
+                            },
+                            {
+                               index:'3' ,
+                               money:'2000' ,
+                               date:'2017-10-17' 
+                            },
+                        ],
+                        fp_sum:'4000'
+                    },
+                    {
+                        orderReceiptsId:'2',
                         supplier:'大疆集团',
                         company:'深圳宝宝公司',
                         area:'深圳宝安',
@@ -254,6 +291,10 @@
             listCurrentChange(){},
             clearFilter(){},
             supply(type){
+                 if(this.orderReceiptsIds.length<=0){
+                    this.$message.warning('请勾选数据')
+                    return;
+                }
                 this.dialogDisable = true;
             },
             cancelAddClient(){
@@ -278,15 +319,40 @@
                 this.getAssetsList();
             },
             tableExpand(row,expanded){
+                console.log('id:',row.orderReceiptsId)
                 if(expanded){
                     const self = this;
-                    self.getReceipts({orderReceiptsId:row.orderReceiptsId});
+                    if(row.orderReceiptsId&&row.orderReceiptsId!=''){
+                        self.getReceipts({orderReceiptsId:row.orderReceiptsId});
+                    }
                 }
                     
             },
             search(){
                 const self = this;
                 self.getAssetsList({productCompanyName:self.filter_name})
+            },
+            filePreview(id){
+                const self = this;
+                self.dialogDisable2 = true;
+            },
+            tableSelect(selection,row){
+                const self = this;
+                self.orderReceiptsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                self.orderReceiptsIds = selection;
+            },
+            confirm(){
+                const self = this;
+                let ids = [];
+               
+                self.orderReceiptsIds.forEach(val=>{
+                    ids.push(val.orderReceiptsId)
+                });
+                
+                self.confirmFinancing({orderReceiptsIds:ids.join(',')});
             }
 
         },
