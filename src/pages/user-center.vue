@@ -1,6 +1,6 @@
 <template>
     <section class="panel-main" :style="styles">
-        <el-tabs v-if='false' v-model="active_name" @tab-click="tabChange">
+        <el-tabs v-if='user_type !== 1' v-model="active_name" @tab-click="presonTabChange">
             <el-tab-pane label="个人认证" name="contact_information">
                 <el-col>
                 	<el-form label-width='100px' class='user-form'>
@@ -161,8 +161,13 @@
         },
         mixins:[Common,UserCenter],
         methods: {
-           tabChange(){
-
+           presonTabChange(type){
+                sessionStorage.setItem('presonTabName',this.active_name);
+                if (this.active_name == 'contact_information') {
+                    this.getUserInfo();
+                } else if (this.active_name == 'base_information') {
+                    this.getUserBaseInfo();
+                }
            },
            enterpriseTabChange(type) {
                 sessionStorage.setItem('enterpriseTabName',this.active_name2);
@@ -208,15 +213,28 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
-                if(sessionStorage.getItem('enterpriseTabName')){
-                    self.active_name2 = sessionStorage.getItem('enterpriseTabName');
-                    if(sessionStorage.getItem('enterpriseTabName') === 'tab-enterprise'){
-                        self.getEnterpriseInfo();
+                if(self.user_type === 1){
+                    if(sessionStorage.getItem('enterpriseTabName')){
+                        self.active_name2 = sessionStorage.getItem('enterpriseTabName');
+                        if(sessionStorage.getItem('enterpriseTabName') === 'tab-enterprise'){
+                            self.getEnterpriseInfo();
+                        }else{
+                            self.getUserList();
+                        }
                     }else{
-                        self.getUserList();
+                        self.getEnterpriseInfo();
                     }
                 }else{
-                    self.getEnterpriseInfo();
+                    if(sessionStorage.getItem('presonTabName')){
+                        self.active_name2 = sessionStorage.getItem('presonTabName');
+                        if(sessionStorage.getItem('presonTabName') === 'contact_information'){
+                            self.getUserInfo();
+                        }else{
+                            self.getUserBaseInfo();
+                        }
+                    }else{
+                        self.getUserInfo();
+                    }
                 }
                 document.addEventListener("keyup", self.enterKeyup, false);
             });

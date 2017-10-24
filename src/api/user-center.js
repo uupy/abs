@@ -68,6 +68,8 @@ export default {
                 }
             });
         },
+        // 获取用户基本信息
+        getUserBaseInfo(){},
 
         // 获取企业认证信息
         getEnterpriseInfo () {
