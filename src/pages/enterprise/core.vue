@@ -6,30 +6,34 @@
                     <el-row class="toolbar toolbar-top">
                         <div class="f-left">
                             <label>企业状态：</label>
-                            <el-select size="small" v-model="enterprise_status" placeholder="请选择">
+                            <el-select size="small" v-model="enterprise_status" @change="filterEnterprise" placeholder="请选择">
                                 <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                             </el-select>
                             <label style="padding-left:10px;">企业角色：</label>
-                            <el-select size="small" v-model="enterprise_role" placeholder="请选择">
-                                <el-option v-for="(item,index) in enterprise_roles" :label="item.label" :value="item.value" :key="index"></el-option>
+                            <el-select size="small" v-model="enterpriseCurType" @change="filterEnterprise" placeholder="请选择">
+                                <el-option v-for="(item,index) in enterpriseCurTypes" :label="item.label" :value="item.value" :key="index"></el-option>
                             </el-select>
                         </div>
                         <div class="f-right">
-                            <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                            <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
+                            <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
+                            <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
                             <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
-                        <el-table :data="clients" class="table-list">
-                            <el-table-column prop="index" label="序号" width="90"></el-table-column>
-                            <el-table-column prop="id" label="企业编号"></el-table-column>
+                        <el-table :data="list" class="table-list">
+                            <el-table-column type="index" label="序号" width="90"></el-table-column>
+                            <el-table-column prop="code" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
-                            <el-table-column prop="role" label="企业角色"></el-table-column>
+                            <el-table-column prop="type" label="企业角色">
+                                <template slot-scope="scope">
+                                    <span>{{enterpriseType[scope.row.type] ? enterpriseType[scope.row.type] : '未知'}}</span>
+                                </template>
+                            </el-table-column>
                             <el-table-column prop="area" label="所属区域"></el-table-column>
                             <el-table-column prop="status" label="认证状态">
                                 <template slot-scope="scope">
-                                    <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
+                                    <el-tag :type="scope.row.status == 2 ? 'success' : (scope.row.status == 3 ? 'danger':(scope.row.status == 1 ? 'warning':'default'))" close-transition>{{enterpriseStatus[scope.row.status] ? enterpriseStatus[scope.row.status] : '未知'}}</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column inline-template :context="_self" label="操作" width="140">
@@ -39,31 +43,31 @@
                                 </span>
                             </el-table-column>
                         </el-table>
-                        <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+                        <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="集团公司" name="head_cp">
                     <el-row class="toolbar toolbar-top">
                         <div class="f-left">
                             <label>企业状态：</label>
-                            <el-select size="small" v-model="enterprise_status" placeholder="请选择">
+                            <el-select size="small" v-model="enterprise_status" @change="filterEnterprise" placeholder="请选择">
                                 <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                             </el-select>
                         </div>
                         <div class="f-right">
-                            <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                            <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
+                            <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
+                            <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
                             <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
-                        <el-table :data="head_cps" class="table-list">
-                            <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                        <el-table :data="list" class="table-list">
+                            <el-table-column type="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="id" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
                             <el-table-column prop="status" label="认证状态">
                                 <template slot-scope="scope">
-                                    <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
+                                    <el-tag :type="scope.row.status == 2 ? 'success' : (scope.row.status == 3 ? 'danger':(scope.row.status == 1 ? 'warning':'default'))" close-transition>{{enterpriseStatus[scope.row.status] ? enterpriseStatus[scope.row.status] : '未知'}}</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column inline-template :context="_self" label="操作" width="140">
@@ -73,14 +77,14 @@
                                 </span>
                             </el-table-column>
                         </el-table>
-                        <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+                        <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="项目公司" name="project_cp">
                     <el-row class="toolbar toolbar-top">
                         <div class="f-left">
                             <label>企业状态：</label>
-                            <el-select size="small" v-model="enterprise_status" placeholder="请选择">
+                            <el-select size="small" v-model="enterprise_status" @change="filterEnterprise" placeholder="请选择">
                                 <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                             </el-select>
                             <label style="padding-left:10px;">所属区域：</label>
@@ -89,21 +93,20 @@
                             </el-select>
                         </div>
                         <div class="f-right">
-                            <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                            <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
+                            <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
+                            <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
                             <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
-                        <el-table :data="project_cps" class="table-list">
-                            <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                        <el-table :data="list" class="table-list">
+                            <el-table-column type="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="id" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
-                            <!-- <el-table-column prop="role" label="企业角色"></el-table-column> -->
                             <el-table-column prop="area" label="所属区域"></el-table-column>
                             <el-table-column prop="status" label="认证状态">
                                 <template slot-scope="scope">
-                                    <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
+                                    <el-tag :type="scope.row.status == 2 ? 'success' : (scope.row.status == 3 ? 'danger':(scope.row.status == 1 ? 'warning':'default'))" close-transition>{{enterpriseStatus[scope.row.status] ? enterpriseStatus[scope.row.status] : '未知'}}</el-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column inline-template :context="_self" label="操作" width="140">
@@ -113,7 +116,7 @@
                                 </span>
                             </el-table-column>
                         </el-table>
-                        <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+                        <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
                     </el-row>
                 </el-tab-pane>
             </el-tabs>
@@ -122,30 +125,34 @@
             <el-row class="toolbar toolbar-top">
                 <div class="f-left">
                     <label>企业状态：</label>
-                    <el-select size="small" v-model="enterprise_status" placeholder="请选择">
+                    <el-select size="small" v-model="enterprise_status" @change="filterEnterprise" placeholder="请选择">
                         <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                     </el-select>
                     <label style="padding-left:10px;">企业角色：</label>
-                    <el-select size="small" v-model="enterprise_role" placeholder="请选择">
-                        <el-option v-for="(item,index) in enterprise_roles" :label="item.label" :value="item.value" :key="index"></el-option>
+                    <el-select size="small" v-model="enterpriseCurType" @change="filterEnterprise" placeholder="请选择">
+                        <el-option v-for="(item,index) in enterpriseCurTypes" :label="item.label" :value="item.value" :key="index"></el-option>
                     </el-select>
                 </div>
                 <div class="f-right">
-                    <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                    <el-button size="small" type="primary" @click="getclient"><i class="el-icon-search"></i>查询</el-button>
+                    <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
+                    <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
                     <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 1 || enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
                 </div>
             </el-row>
             <el-row :span="24">
-                <el-table :data="clients" class="table-list">
-                    <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                <el-table :data="list" class="table-list">
+                    <el-table-column type="index" label="序号" width="90"></el-table-column>
                     <el-table-column prop="id" label="企业编号"></el-table-column>
                     <el-table-column prop="name" label="企业名称"></el-table-column>
-                    <el-table-column prop="role" label="企业角色"></el-table-column>
+                    <el-table-column prop="type" label="企业角色">
+                        <template slot-scope="scope">
+                            <span>{{enterpriseType[scope.row.type] ? enterpriseType[scope.row.type] : '未知'}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="area" label="所属区域"></el-table-column>
                     <el-table-column prop="status" label="认证状态">
                         <template slot-scope="scope">
-                            <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
+                            <el-tag :type="scope.row.status == 2 ? 'success' : (scope.row.status == 3 ? 'danger':(scope.row.status == 1 ? 'warning':'default'))" close-transition>{{enterpriseStatus[scope.row.status] ? enterpriseStatus[scope.row.status] : '未知'}}</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140">
@@ -155,45 +162,48 @@
                         </span>
                     </el-table-column>
                 </el-table>
-                <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+                <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page="currentPage" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
         <!-- 对话框 -->
-        <el-dialog size="tiny" title="新增项目企业" v-model="dialog_add_client" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
-            <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
+        <el-dialog size="tiny" title="新增企业" v-model="dialogVisibleAddNew" @close="cancelAddEnterprise('addForm')" :close-on-click-modal="false">
+            <el-form :model="addForm" :rules="rules" ref="addForm" label-width="90px">
                 <el-form-item label="企业角色" prop="role">
-                    <el-select v-model="add_form.role" placeholder="请选择企业角色">
-                        <el-option v-for="(item,index) in add_form.enterprise_roles" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
+                    <el-select v-model="addForm.role" placeholder="请选择企业角色">
+                        <el-option v-for="(item,index) in addForm.enterpriseCurTypes" :label="item.label" :value="item.value" :key="index" v-if="item.value !== '2,4'"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="企业名称" prop="name">
-                    <el-input v-model="add_form.name" placeholder="请输入企业名称"></el-input>
+                    <el-input v-model="addForm.name" placeholder="请输入企业名称"></el-input>
                 </el-form-item>
-                <el-form-item label="所属区域" prop="area" v-if="add_form.role === 2 && active_name !== 'head_cp'">
-                    <el-input v-model="add_form.area" placeholder="请输入所属区域"></el-input>
+                <el-form-item label="所属区域" prop="area" v-if="addForm.role === '4' && active_name !== 'head_cp'">
+                    <el-input v-model="addForm.area" placeholder="请输入所属区域"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary">确 认</el-button>
-                <el-button @click="cancelAddClient('add_form')">取 消</el-button>
+                <el-button @click="addEnterprise('addForm')" type="primary">确 认</el-button>
+                <el-button @click="cancelAddEnterprise('addForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
         </el-dialog>
     </section>
 </template>
 <script>
-    import Common from '../../mixins/common.js'
-    // import Clients from '../../api/clients.js'
+    import Common from '@/mixins/common.js'
+    import Enterprise from '@/api/enterprise/enterprise.js'
     export default {
         data() {
             return {
-                filter_name:'',
+                filterOnfocus:false,
+                filterKeyword:'',
                 active_name:'overviews',
+                enterpriseType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
+                enterpriseStatus:ABS_STATUS['enterprise'] ? ABS_STATUS['enterprise'] : {},
                 enterprise_status:0,
                 enterprise_statuses:[
                     {label:'全部',value:0},
-                    {label:'已认证',value:1},
-                    {label:'创建中',value:2},
+                    {label:'创建中',value:1},
+                    {label:'已认证',value:2}
                 ],
                 enterprise_area:'',
                 enterprise_areas:[
@@ -205,96 +215,82 @@
                     {label:'西南',value:5},
                     {label:'西北',value:6},
                 ],
-                enterprise_role:0,
-                enterprise_roles:[
-                    {label:'全部',value:0},
-                    {label:'集团公司',value:1},
-                    {label:'项目公司',value:2},
+                enterpriseCurType:'2,4',
+                enterpriseCurTypes:[
+                    {label:'全部',value:'2,4'},
+                    {label:'集团公司',value:'2'},
+                    {label:'项目公司',value:'4'},
                 ],
-                clients_pagenum:10,
-                clients_pagesize:10,
-                clients_total:10,
-                clients:[
-                    {
-                        index:1,
-                        id:'BGYA0001',
-                        name:'碧桂园集团控股有限公司',
-                        role:'集团公司',
-                        area:'无',
-                        status:'创建中'
-                    },
-                    {
-                        index:2,
-                        id:'BGYB0001',
-                        name:'碧桂园佛山项目公司',
-                        role:'项目公司',
-                        area:'华南',
-                        status:'已认证'
-                    },
-                    {
-                        index:3,
-                        id:'BGYB0002',
-                        name:'碧桂园大连项目公司',
-                        role:'项目公司',
-                        area:'华北',
-                        status:'已认证'
-                    }
-                ],
-                head_cps:[
-                    {
-                        index:1,
-                        id:'BGYA0001',
-                        name:'碧桂园集团控股有限公司',
-                        role:'集团公司',
-                        area:'无',
-                        status:'创建中'
-                    },
-                ],
-                project_cps:[
-                    {
-                        index:1,
-                        id:'BGYB0001',
-                        name:'碧桂园佛山项目公司',
-                        role:'项目公司',
-                        area:'华南',
-                        status:'已认证'
-                    },
-                    {
-                        index:2,
-                        id:'BGYB0002',
-                        name:'碧桂园大连项目公司',
-                        role:'项目公司',
-                        area:'华北',
-                        status:'已认证'
-                    }
-                ],
-                dialog_add_client:false,
-                add_form:{
+                curPage:1,
+                currentPage:1,
+                pageSize:10,
+                pageTotal:0,
+                list:[],
+                dialogVisibleAddNew:false,
+                addForm:{
                     name:'',
-                    role:1,
+                    role:2,
                     area:'',
-                    principal:'',
-                    position:'',
-                    enterprise_roles:[]
+                    enterpriseCurTypes:[]
                 },
-                rules:{}
+                rules:{
+                    name:[
+                        {required:true,message:'企业名称不能为空',trigger: 'change'}
+                    ],
+                    area:[
+                        {required:true,message:'所属区域不能为空',trigger: 'change'}
+                    ]
+                }
             } 
         },
-        mixins:[Common],
+        mixins:[Common,Enterprise],
         methods: {
-            handleClickTab(type){},
-            clientsCurrentChange(val) {
-                
-            },
-            clientsSizeChange(val){
-                
-            },
-            // 查询告警
-            getclient(){
+            handleClickTab(type){
                 const self = this;
+                self.enterprise_status = 0;
+                self.enterpriseCurType = '2,4';
+                self.curPage = 1;
+                self.currentPage = 1;
+                self.filterKeyword = '';
+                sessionStorage.setItem('enterpriseTypeTabName',type.name);
+                self.enterpriseActiveNameSwitch(false);
             },
+            // 列表当前页改变
+            pageCurrentChange(val){
+                this.curPage = val;
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
+            },
+            // 列表条数改变
+            pageSizeChange(val){
+                this.pageSize = val;
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
+            },
+            // 过滤列表
+            filterEnterprise(){
+                this.currentPage = 1;
+                this.enterpriseActiveNameSwitch(true);
+            },
+            enterpriseActiveNameSwitch(filter){
+                const self = this;
+                switch(self.active_name){
+                    case 'overviews':
+                        break;
+                    case 'head_cp':
+                        self.enterpriseCurType = '2';
+                        break;
+                    case 'project_cp':
+                        self.enterpriseCurType = '4';
+                        break;
+                    default :
+                        break;
+                }
+                self.getEnterpriseList({status:parseInt(self.enterprise_status),type:self.enterpriseCurType,filter:filter});
+            },
+            // 清空查询
             clearFilter(type){
-                const self = this;
+                this.filterKeyword = '';
+                this.currentPage = 1;
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType,filter:true});
             },
             checkView(row){
                 this.saveStorageState({
@@ -308,42 +304,47 @@
                 if(this.enterprise_type === 2){
                     switch(this.active_name){
                         case 'overviews': 
-                            this.add_form.enterprise_roles = [
-                                {label:'集团公司',value:1},
-                                {label:'项目公司',value:2},
+                            this.addForm.enterpriseCurTypes = [
+                                {label:'集团公司',value:'2'},
+                                {label:'项目公司',value:'4'}
                             ];
-                            this.add_form.role = 1;
+                            this.addForm.role = '2';
                             break;
                         case 'head_cp': 
-                            this.add_form.enterprise_roles = [
-                                {label:'集团公司',value:1}
+                            this.addForm.enterpriseCurTypes = [
+                                {label:'集团公司',value:'2'}
                             ];
-                            this.add_form.role = 1;
+                            this.addForm.role = '2';
                             break;
                         case 'project_cp': 
-                            this.add_form.enterprise_roles = [
-                                {label:'项目公司',value:2}
+                            this.addForm.enterpriseCurTypes = [
+                                {label:'项目公司',value:'4'}
                             ];
-                            this.add_form.role = 2;
+                            this.addForm.role = '4';
                             break;
                     }
                 }else{
-                    this.add_form.enterprise_roles = [
-                        {label:'集团公司',value:1},
-                        {label:'项目公司',value:2},
+                    this.addForm.enterpriseCurTypes = [
+                        {label:'集团公司',value:'2'},
+                        {label:'项目公司',value:'4'}
                     ];
-                    this.add_form.role = 1;
+                    this.addForm.role = '2';
                 }
-                this.dialog_add_client = true;
+                this.dialogVisibleAddNew = true;
             },
-            cancelAddClient(){
-                this.dialog_add_client = false;
+            cancelAddEnterprise(formName){
+                this.$refs[formName].resetFields();
+                this.dialogVisibleAddNew = false;
             },
             enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13){
-                    
+                    if(self.dialogVisibleAddNew){
+                        self.addEnterprise('addForm');
+                    }else if(self.filterOnfocus){
+                        self.filterEnterprise();
+                    }
                 }
             }
         },
@@ -355,13 +356,25 @@
                     val:3,
                     type:'number'
                 });
+                if(self.enterprise_type === 2 || self.enterprise_type === 4){
+                    if(sessionStorage.getItem('enterpriseTypeTabName')){
+                        const typeName = sessionStorage.getItem('enterpriseTypeTabName');
+                        self.active_name = typeName;
+                        self.enterpriseActiveNameSwitch(true);
+                    }else{
+                        self.getEnterpriseList({type:this.enterpriseCurType});
+                    }
+                }else{
+                    self.getEnterpriseList({type:this.enterpriseCurType});
+                }
                 document.addEventListener("keyup", self.enterKeyup, false);
             });
         },
         watch:{
-            
+
         },
         destroyed() {
+            sessionStorage.removeItem('enterpriseTypeTabName')
             document.removeEventListener("keyup", self.enterKeyup, false);
         }
     }

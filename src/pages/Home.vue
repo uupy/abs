@@ -49,7 +49,7 @@
 		</el-col>
 		<!-- 对话框 -->
         <el-dialog size="tiny" title="修改密码" v-model="dialogFormVisible" @close="cancelReset('resetPwdForm')">
-            <el-form :model="resetPwdForm"   ref="resetPwdForm">
+            <el-form :model="resetPwdForm" :rules="rules" ref="resetPwdForm">
                 <el-form-item label="旧密码" prop="oldPassword">
                     <el-input type="password" v-model="resetPwdForm.oldPassword" auto-complete="off" placeholder="请输入旧密码"></el-input>
                 </el-form-item>
@@ -71,9 +71,8 @@
 </template>
 <script>
 	import Optiscroll from 'optiscroll'
-	import Common from './../mixins/common.js'
-	import Home from './../api/home.js'
-	// import TestPassword from './../mixins/test/password.js'
+	import Common from '@/mixins/common.js'
+	import Home from '@/api/home.js'
 	export default {
 		data() {
 			return {
@@ -83,18 +82,17 @@
 					newPassword:'',
 					confirmPassword:''
 				},
-				// rules:{
-				// 	oldPassword:[
-				// 		{ required: true,validator:this.testPassword('旧密码'), trigger: 'change' }
-				// 	],
-				// 	newPassword:[
-				// 		{ required: true, validator:this.testPassword('新密码'), trigger: 'change' }
-				// 	],
-				// 	confirmPassword:[
-				// 		{ required: true, validator:this.testPassword('确认密码'), trigger: 'change' }
-				// 	]
-				// },
-				version:'',
+				rules:{
+					oldPassword:[
+						{ required: true,message:'旧密码不能为空', trigger: 'change' }
+					],
+					newPassword:[
+						{ required: true, message:'新密码不能为空',trigger: 'change' }
+					],
+					confirmPassword:[
+						{ required: true, message:'确认密码不能为空', trigger: 'change' }
+					]
+				},
 				panelSideScroll:null,
 				panelCenterScroll:null
 			}
@@ -110,12 +108,13 @@
 			enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
-                if(ev.keyCode == 13 && self.dialogFormVisible){
-                    // self.resetPassword('resetPwdForm',self.resetPwdForm);
+                if(ev.keyCode == 13){
+                	if(self.dialogFormVisible){
+                		self.resetPassword('resetPwdForm',self.resetPwdForm);
+                	}
                 }
             },
             userCenter(){
-            	console.log('user-center')
             	this.$router.push({path:'/user-center'})
             }
 		},

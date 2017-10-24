@@ -13,7 +13,7 @@
                     <el-col class="info-box" style="margin-top:-8px;">
                         <p>
                             <label>固定电话：</label>
-                            <span>{{contact_form.tel}}</span>
+                            <span>{{contact_form.telephone}}</span>
                         </p>
                         <p>
                             <label>传真号码：</label>
@@ -25,11 +25,11 @@
                         </p>
                         <p>
                             <label>注册地址：</label>
-                            <span>{{contact_form.reg_addr}}</span>
+                            <span>{{contact_form.registerAddress}}</span>
                         </p>
                         <p>
                             <label>联系地址：</label>
-                            <span>{{contact_form.contact_addr}}</span>
+                            <span>{{contact_form.contactAddress}}</span>
                         </p>
                     </el-col>
                 </el-row>
@@ -40,25 +40,26 @@
                     </el-col>
                     <el-col :span="24">
                         <el-table :data="contact_persons" class="table-list">
-                            <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                            <el-table-column label="序号" width="90">
+                                <template slot-scope='scope'>{{scope.$index+1}}</template>
+                            </el-table-column>
                             <el-table-column prop="name" label="联系人姓名"></el-table-column>
-                            <el-table-column prop="role" label="角色">
+                            <el-table-column prop="roleType" label="角色">
                                 <template slot-scope="scope">
-                                    <span>{{contact_roles[scope.row.role]}}</span>
+                                    <span>{{contact_roles[scope.row.roleType]}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="authority" label="系统权限">
+                            <el-table-column prop="auditType" label="系统权限">
                                 <template slot-scope="scope">
-                                    <span>{{authorities[scope.row.authority]}}</span>
+                                    <span>{{authorities[scope.row.auditType]}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="position" label="职位"></el-table-column>
-                            <el-table-column prop="tel" label="手机号码"></el-table-column>
+                            <el-table-column prop="mobile" label="手机号码"></el-table-column>
                             <el-table-column prop="email" label="邮箱地址"></el-table-column>
                             <el-table-column prop="status" label="认证状态" width="100">
                                 <template slot-scope="scope">
-                                    <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '未认证' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
-                                </template>
+                                    <el-tag :type="scope.row.status == 2 ? 'success' : (scope.row.status == 3 ? 'danger':(scope.row.status == 1 ? 'warning':'default'))" close-transition>{{enterpriseMemberStatus[scope.row.status] ? enterpriseMemberStatus[scope.row.status] : '未知'}}</el-tag>                                </template>
                             </el-table-column>
                             <el-table-column inline-template :context="_self" label="操作" width="120" align='center' v-if="operate_authority">
                                 <span>
@@ -277,8 +278,8 @@
         <!-- 对话框 -->
         <el-dialog size="tiny" title="编辑联系方式" v-model="dialog_edit_contact" @close="cancelEditContact('contact_form')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="contact_form" :rules="edit_rules" ref="contact_form" label-width="80px">
-                <el-form-item label="固定电话" prop="tel">
-                    <el-input v-model="contact_form.tel" placeholder="请输入固定电话"></el-input>
+                <el-form-item label="固定电话" prop="telephone">
+                    <el-input v-model="contact_form.telephone" placeholder="请输入固定电话"></el-input>
                 </el-form-item>
                 <el-form-item label="传真号码" prop="fax">
                     <el-input v-model="contact_form.fax" placeholder="请输入传真号码"></el-input>
@@ -286,11 +287,11 @@
                 <el-form-item label="官方网站" prop="website">
                     <el-input v-model="contact_form.website" placeholder="请输入官方网站"></el-input>
                 </el-form-item>
-                <el-form-item label="注册地址" prop="reg_addr">
-                    <el-input type="textarea" v-model="contact_form.reg_addr" placeholder="请输入注册地址"></el-input>
+                <el-form-item label="注册地址" prop="registerAddress">
+                    <el-input type="textarea" v-model="contact_form.registerAddress" placeholder="请输入注册地址"></el-input>
                 </el-form-item>
-                <el-form-item label="联系地址" prop="contact_addr">
-                    <el-input type="textarea" v-model="contact_form.contact_addr" placeholder="请输入联系地址"></el-input>
+                <el-form-item label="联系地址" prop="contactAddress">
+                    <el-input type="textarea" v-model="contact_form.contactAddress" placeholder="请输入联系地址"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -334,12 +335,14 @@
 <script>
     import Common from '../../mixins/common.js'
     // import Logs from '../../mixins/api/logs.js'
+    import Enterprise from '@/api/enterprise/enterprise.js'
     export default {
         data() {
             return {
                 enterprise_name:'碧桂园控股有限公司',
                 filter_name:'',
                 active_name:'contact_information',
+                enterpriseMemberStatus:ABS_STATUS['enterpriseMemberStatus'] ? ABS_STATUS['enterpriseMemberStatus'] : {},
                 contact_roles:{
                     1:'法人代表',
                     2:'代理人1',
@@ -363,11 +366,11 @@
                     email:'',
                 },
                 contact_form:{
-                    tel:'666666',
-                    fax:'222222',
-                    website:'https://www.baidu.com/',
-                    contact_addr:'深圳市福田区',
-                    reg_addr:'深圳市福田区',
+                    // tel:'666666',
+                    // fax:'222222',
+                    // website:'https://www.baidu.com/',
+                    // contact_addr:'深圳市福田区',
+                    // reg_addr:'深圳市福田区',
                 },
                 edit_rules:{
 
@@ -647,12 +650,14 @@
                 ]
             } 
         },
-        mixins:[Common],
+        mixins:[Common,Enterprise],
         methods: {
             //选项卡切换
             tabChange(tab, event){
+                this.active_name = tab.name;
                 sessionStorage.setItem('enterprise_tname',tab.name);
                 this.loadEnterpriseContent(tab.name);
+                this.getData(this.active_name)
             },
             loadEnterpriseContent(tname){
                 switch(tname){
@@ -694,6 +699,24 @@
                 if(ev.keyCode == 13){
                     
                 }
+            },
+            getData(active_name){
+                const self = this;
+                if(active_name == 'contact_information'){
+                    //联系方式：
+                    self.getEnterpriseMembers({
+                        enterpriseId:self.$route.params.enterpriseId
+                    });
+                }else if(active_name == 'base_information'){
+                    //基本信息
+                    self.getEnterpriseBasicInfo({enterpriseId:self.$route.params.enterpriseId});
+
+                }else if(active_name == 'data_management'){
+                    //资料清单
+                    self.getMaterialsList({enterpriseId:self.$route.params.enterpriseId});
+                }else if(active_name == 'signed_information'){
+                    //签约信息
+                }
             }
         },
         mounted() {
@@ -709,9 +732,13 @@
                 document.addEventListener("keyup", self.enterKeyup, false);
                 if(sessionStorage.getItem('enterprise_tname')){
                     self.active_name = sessionStorage.getItem('enterprise_tname');
+                    self.getData(self.active_name); 
+                }else{
+                    self.getData('contact_information')
                 }
                 self.loadEnterpriseContent(self.active_name);
             });
+            
         },
         watch:{},
         destroyed() {
