@@ -35,21 +35,33 @@
                             </el-table-column> 
                             <el-table-column label="展开" type="expand">
                                 <template slot-scope="props">
-                                    <el-table :data="props.row.fp_list" show-summary border style="width: 100%">
-                                        <el-table-column prop="index" label="发票号" align='center'></el-table-column>
-                                        <el-table-column prop="money" label="发票金额" align='center'></el-table-column>
-                                        <el-table-column prop="date" label="发票日期" align='center'></el-table-column>
-                                        <el-table-column label="发票附件" align='center'>
-                                            <template slot-scope='scope'>
+                                    <ul class="abs-table">
+                                        <li class="abs-table-header">
+                                            <div class="cell" :style="`width:${100/5}%;`">发票号</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">发票金额</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">发票日期</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">发票附件</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">操作</div>
+                                        </li>
+                                        <li v-for="(item,idx) in props.row.fp_list" :key="idx">
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.index}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.date}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
-                                            </template>
-                                        </el-table-column>
-                                        <el-table-column label="操作" align='center'>
-                                            <template slot-scope='scope'>
+                                            </div>
+                                            <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>上传</el-button>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="cell" :style="`width:${100/5}%;`">合计</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{props.row.fp_sum}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                        </li>
+                                    </ul>
                                 </template>
                             </el-table-column>     
                         </el-table>
@@ -58,7 +70,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="已融资数据" name="second">
                     <el-row class="toolbar toolbar-top">
-                        <div class="f-left">
+                        <div class="f-right">
                             <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
                             <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>           
                         </div>
@@ -87,16 +99,33 @@
                             </el-table-column> 
                             <el-table-column label="展开" type="expand">
                                 <template slot-scope="props">
-                                    <el-table :data="props.row.fp_list" show-summary border style="width: 100%">
-                                        <el-table-column prop="index" label="发票号" align='center'></el-table-column>
-                                        <el-table-column prop="money" label="发票金额" align='center'></el-table-column>
-                                        <el-table-column prop="date" label="发票日期" align='center'></el-table-column>
-                                        <el-table-column label="发票附件" align='center'>
-                                            <template slot-scope='scope'>
+                                    <ul class="abs-table">
+                                        <li class="abs-table-header">
+                                            <div class="cell" :style="`width:${100/5}%;`">发票号</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">发票金额</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">发票日期</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">发票附件</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">操作</div>
+                                        </li>
+                                        <li v-for="(item,idx) in props.row.fp_list" :key="idx">
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.index}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.date}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
+                                            </div>
+                                            <div class="cell" :style="`width:${100/5}%;`">
+                                                <el-button size='small'>上传</el-button>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="cell" :style="`width:${100/5}%;`">合计</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{props.row.fp_sum}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                        </li>
+                                    </ul>
                                 </template>
                             </el-table-column>     
                         </el-table>
@@ -333,7 +362,7 @@
                     item.querySelector('th.el-table__expand-column').innerHTML = '<div class="cell">展开</div>';
                 });
             });
-            this.propertyStatus = STATUS.propertyStatus;
+            this.propertyStatus = ABS_STATUS.propertyStatus;
 
             this.getAssetsList()
         },

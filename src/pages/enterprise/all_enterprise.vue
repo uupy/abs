@@ -3,17 +3,17 @@
         <el-row class="toolbar toolbar-top">
             <div class="f-left">
                 <label>企业状态：</label>
-                <el-select size="small" v-model="enterprise_status" placeholder="请选择" @change="filterEnterpriseStatus">
+                <el-select size="small" v-model="enterprise_status" placeholder="请选择" @change="filterEnterprise">
                     <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>
                 <label style="padding-left:10px;">企业角色：</label>
-                <el-select size="small" v-model="enterpriseCurType" placeholder="请选择" @change="filterEnterpriseType">
+                <el-select size="small" v-model="enterpriseCurType" placeholder="请选择" @change="filterEnterprise">
                     <el-option v-for="(item,index) in enterprise_types" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>
             </div>
             <div class="f-right">
-                <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" @click="getEnterprise"><i class="el-icon-search"></i>查询</el-button>
+                <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
                 <el-button size="small" type="primary" @click="dialogVisibleAddNew = true"><i class="el-icon-plus"></i>新增</el-button>
             </div>
         </el-row>
@@ -43,7 +43,7 @@
             <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
         </el-row>
         <!-- 对话框 -->
-        <el-dialog size="tiny" title="新增项目企业" v-model="dialogVisibleAddNew" @close="cancelAddClient('addForm')" :close-on-click-modal="false">
+        <el-dialog size="tiny" title="新增企业" v-model="dialogVisibleAddNew" @close="cancelAddEnterprise('addForm')" :close-on-click-modal="false">
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="90px">
                 <el-form-item label="企业角色" prop="role">
                     <el-select v-model="addForm.role" placeholder="请选择企业角色">
@@ -58,8 +58,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="addEnterprise" type="primary">确 认</el-button>
-                <el-button @click="cancelAddClient('addForm')">取 消</el-button>
+                <el-button @click="addEnterprise('addForm')" type="primary">确 认</el-button>
+                <el-button @click="cancelAddEnterprise('addForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
         </el-dialog>
@@ -71,6 +71,7 @@
     export default {
         data() {
             return {
+                filterOnfocus:false,
                 filterKeyword:'',
                 enterprise_status:0,
                 enterprise_statuses:[
@@ -86,9 +87,10 @@
                     {label:'集团公司',value:2},
                     {label:'项目公司',value:4},
                     {label:'融资客户',value:3},
-                    {label:'合作方',value:56},
+                    {label:'合作方（SPV）',value:5},
+                    {label:'合作方（其他）',value:6},
                 ],
-                currentPage:1,
+                curPage:1,
                 pageSize:10,
                 pageTotal:10,
                 list:[],
@@ -101,7 +103,12 @@
                     position:''
                 },
                 rules:{
-
+                    name:[
+                        {required:true,message:'企业名称不能为空',trigger: 'change'}
+                    ],
+                    area:[
+                        {required:true,message:'所属区域不能为空',trigger: 'change'}
+                    ]
                 }
             } 
         },
@@ -109,38 +116,26 @@
         methods: {
             // 列表当前页改变
             pageCurrentChange(val){
-                
+                this.curPage = val;
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
             },
             // 列表条数改变
             pageSizeChange(val){
-                
+                this.pageSize = val;
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
             },
-            // 过滤企业状态
-            filterEnterpriseStatus(){
-                if(this.enterprise_status === 0){
-                    this.getEnterpriseList();
+            // 过滤列表
+            filterEnterprise(){
+                if(this.curPage === 1){
+                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
                 }else{
-                    this.getEnterpriseList({status:parseInt(this.enterprise_status)});
+                    this.curPage = 1;
                 }
-            },
-            // 过滤企业类型
-            filterEnterpriseType(){
-                if(this.enterpriseCurType === 0){
-                    this.getEnterpriseList();
-                }else{
-                    this.getEnterpriseList({type:parseInt(this.enterpriseCurType)});
-                }
-            },
-            // 查询列表
-            getEnterprise(){
-                const self = this;
-
-                self.getEnterpriseList();
             },
             // 清空查询
             clearFilter(type){
-                const self = this;
-                
+                this.filterKeyword = '';
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
             },
             // 查看详情
             checkView(row){
@@ -151,14 +146,19 @@
                 });
                 this.$router.push({ path: '/pages/all_enterprise/views' });
             },
-            cancelAddClient(){
+            cancelAddEnterprise(formName){
+                this.$refs[formName].resetFields();
                 this.dialogVisibleAddNew = false;
             },
             enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13){
-                    
+                    if(self.dialogVisibleAddNew){
+                        self.addEnterprise('addForm');
+                    }else if(self.filterOnfocus){
+                        self.filterEnterprise();
+                    }
                 }
             }
         },
