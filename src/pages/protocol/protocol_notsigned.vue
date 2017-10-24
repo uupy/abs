@@ -9,7 +9,11 @@
         <div class="panel-protocol">
             <el-row :span="24">
                 <el-table :data="list" class="table-list">
-                    <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                    <el-table-column label="序号" width="90">
+                        <template slot-scope='scope'>
+                            {{scope.$index+1}}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="protocolCode" label="协议编号"></el-table-column>
                     <el-table-column prop="protocolName" label="协议名称"></el-table-column>
                     <el-table-column prop="signatory" label="协议签署方"></el-table-column>
@@ -73,6 +77,7 @@
                 currentPage:1,
                 pageSize:10,
                 pageTotal:0,
+                pages:0,
                 keyword:'',
                 currentType:0,
                 filter_name:'',
