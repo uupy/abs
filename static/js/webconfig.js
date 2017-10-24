@@ -19,17 +19,18 @@ var ABS_ROLE = {
 	}
 }
 
-var ABS_NAME = {
-	user_role:{
-		1:'核心企业',
-		2:'项目公司',
-		3:'供应商',
-		4:'保理商',
-		5:'资金方',
+var ABS_TYPE = {
+	enterprise:{
+		1:'保理商',
+		2:'集团公司',
+		3:'融资客户',
+		4:'项目公司',
+		5:'合作方',
+		6:'合作方',
 	}
 }
 
-var STATUS = {
+var ABS_STATUS = {
 	protocolStatus:{
 		1:'已签约',
 		2:'签约中',
@@ -49,5 +50,14 @@ var STATUS = {
 		1:'已认证',
 		2:'未认证',
 		3:'未知'
+	},
+	enterprise:{
+		1:'创建中',
+		2:'已认证'
 	}
 }
+
+window.WEBConfig = WEBConfig;
+window.ABS_ROLE = ABS_ROLE;
+window.ABS_TYPE = ABS_TYPE;
+window.ABS_STATUS = ABS_STATUS;

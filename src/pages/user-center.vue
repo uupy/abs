@@ -1,6 +1,6 @@
 <template>
     <section class="panel-main" :style="styles">
-        <el-tabs v-if='true' v-model="active_name" @tab-click="tabChange">
+        <el-tabs v-if='false' v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="个人认证" name="contact_information">
                 <el-col>
                 	<el-form label-width='100px' class='user-form'>
@@ -56,26 +56,23 @@
 
         <el-tabs v-else  class='user-form' v-model="active_name2" @tab-click="tabChange">            
             <el-tab-pane label="企业认证" name="tab-enterprise">
-                <el-form class='enterprise-form' label-width='200px'>
-                	<el-form-item label='企业注册号/统一社会信用代码'>
-                		<el-input placeholder='请填写企业注册号/统一社会信用代码'></el-input>
+                <el-form class='enterprise-form' label-width='220px' :rules="rules" :model="enterprise" ref="enterprise">
+                	<el-form-item label='企业注册号/统一社会信用代码' prop="code">
+                		<el-input v-model='enterprise.code' placeholder='请填写企业注册号/统一社会信用代码'></el-input>
                 	</el-form-item>
-                	<el-form-item label='企业名称'>
-                		<el-input placeholder='请填写企业名称'></el-input>
+                	<el-form-item label='企业名称' prop="enterprise_name">
+                		<el-input v-model='enterprise.enterprise_name' placeholder='请填写企业名称'></el-input>
                 	</el-form-item>
-                	<el-form-item label='法人代表姓名'>
-                		<el-input placeholder='请填写法人代表姓名'></el-input>
+                	<el-form-item label='法人代表姓名' prop="corporation_name">
+                		<el-input v-model='enterprise.corporation_name' placeholder='请填写法人代表姓名'></el-input>
                 	</el-form-item>
-                	<el-form-item label='法人代表身份号'>
-                		<el-input placeholder='请填写法人代表身份号'></el-input>
+                	<el-form-item label='法人代表身份号' prop="corporation_id_number">
+                		<el-input v-model='enterprise.corporation_id_number' placeholder='请填写法人代表身份号'></el-input>
                 	</el-form-item>
-                	<el-form-item label='营业执照上传'>
-                		<el-upload
-                             	class="upload-demo"
-                            	action="https://jsonplaceholder.typicode.com/posts/"
-                              	:on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传证件</el-button>
-                          </el-upload>
+                	<el-form-item label='营业执照上传' prop="path">
+                		<el-upload class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback">
+                            <el-input v-model='enterprise.path' placeholder='点击上传证件' readonly="readonly"></el-input>
+                        </el-upload>
                 	</el-form-item>
                     <el-form-item>
                         <el-button type="primary">认 证</el-button>
@@ -101,7 +98,8 @@
 </template>
 
 <script>
-	import Common from '../mixins/common.js'
+    import Common from '@/mixins/common.js'
+	import UserCenter from '@/api/user-center.js'
     export default {
         data() {
             return {
@@ -126,12 +124,40 @@
             			status:'1'            			
             		}
             	],
+                enterprise:{
+                    code:'',
+                    enterprise_name:'',
+                    corporation_name:'',
+                    corporation_id_number:'',
+                    path:''
+                },
+                rules:{
+                    code:[
+                        { required: true,message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    enterprise_name:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    corporation_name:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    corporation_id_number:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    path:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ]
+                },
             }
         },
-        mixins:[Common],
+        mixins:[Common,UserCenter],
         methods: {
            tabChange(){
 
+           },
+           uploadSuccessCallback(response){
+            console.log(response)
+                // this.enterprise.path = response
            },
            handleRemove(){},
            enterKeyup(e){
@@ -145,6 +171,7 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
+                self.getEnterpriseInfo();
                 document.addEventListener("keyup", self.enterKeyup, false);
             });
         },
