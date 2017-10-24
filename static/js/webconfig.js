@@ -1,8 +1,8 @@
-const WEBConfig = {
+var WEBConfig = {
 	name:'ABS系统'
 }
 
-const ABS_ROLE = {
+var ABS_ROLE = {
 	user:{
 		1:'管理员',
 		2:'企业法人',
@@ -19,7 +19,7 @@ const ABS_ROLE = {
 	}
 }
 
-const ABS_NAME = {
+var ABS_NAME = {
 	user_role:{
 		1:'核心企业',
 		2:'项目公司',
@@ -29,7 +29,7 @@ const ABS_NAME = {
 	}
 }
 
-const STATUS = {
+var STATUS = {
 	protocolStatus:{
 		1:'已签约',
 		2:'签约中',

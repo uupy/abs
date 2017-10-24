@@ -74,7 +74,6 @@
 </template>
 <script>
     import Common from '@/mixins/common.js'
-    import Clients from '@/api/clients.js'
     import Protocol from '@/api/protocol/protocol.js'
     export default {
         data() {
@@ -163,7 +162,7 @@
         watch: {
             
         },
-        mixins:[Common,Clients,Protocol],
+        mixins:[Common,Protocol],
         mounted() {
             const self = this;
             self.getProtocolList({status:2});
