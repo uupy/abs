@@ -103,7 +103,7 @@ let routes = [
                         name: '企业汇总列表',
                     },
                     {
-                        path: '/pages/all_enterprise/views',
+                        path: '/pages/all_enterprise/views/:enterpriseId',
                         component: EnterpriseViews,
                         name: '企业汇总详情',
                         hidden: true
