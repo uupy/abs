@@ -87,7 +87,6 @@ router.beforeEach((to, from, next) => {
     }
     let user = localStorage.getItem('username');
     let enterprise_type = parseInt(localStorage.getItem('enterprise_type') || '0');
-    console.log(router.options.routes)
     if (!user && to.path != '/login') {
         next({
             path: '/login'
@@ -112,8 +111,25 @@ router.beforeEach((to, from, next) => {
                     break;
             }
         } else {
-            router.options.routes.forEach((menu)=>{
-
+            var routes = router.options.routes;
+            routes.forEach((menu)=>{
+                if(Util.isArray(menu.children)){
+                    menu.children.forEach((submenu)=>{
+                        if(submenu.path.indexOf('views') === -1){
+                            if(to.path === submenu.path){
+                                if(submenu.show[enterprise_type]){
+                                    next()
+                                }else{
+                                    next({
+                                        path: '/404'
+                                    })
+                                }
+                            }
+                        }else{
+                            next()
+                        }
+                    });
+                }
             });
             next()
         }
