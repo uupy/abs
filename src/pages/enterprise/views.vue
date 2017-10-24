@@ -712,6 +712,8 @@
                 }
                 self.loadEnterpriseContent(self.active_name);
             });
+
+            console.log('enterpriseId:',self.$route.params.enterpriseId)
         },
         watch:{},
         destroyed() {
