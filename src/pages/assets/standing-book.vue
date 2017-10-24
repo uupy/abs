@@ -77,7 +77,6 @@
 </template>
 <script>
     import Common from '@/mixins/common.js'
-    import Clients from '@/api/clients.js'
     export default {
         data() {
             return {
@@ -128,7 +127,7 @@
         watch: {
             
         },
-        mixins:[Common,Clients],
+        mixins:[Common],
         mounted() {
             const self = this;
             self.propertyStatus = STATUS.propertyStatus;

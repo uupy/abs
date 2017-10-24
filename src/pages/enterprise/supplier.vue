@@ -55,7 +55,6 @@
 </template>
 <script>
     import Common from '../../mixins/common.js'
-    import Clients from '../../api/clients.js'
     export default {
         data() {
             return {
@@ -99,7 +98,7 @@
                 rules:{}
             } 
         },
-        mixins:[Common,Clients],
+        mixins:[Common],
         methods: {
             clientsCurrentChange(val) {
                 

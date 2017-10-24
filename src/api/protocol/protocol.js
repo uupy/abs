@@ -6,7 +6,6 @@ export default {
         getProtocolList(options){
             const self = this;
             self.$nprogress.start();
-
             self.setState({
                 attr:'onLoading',
                 val:true
@@ -16,7 +15,7 @@ export default {
                 path:'/protocol/list',
                 params:{
                     curPage:self.currentPage,
-                    pageSize:self.pageNum,
+                    pageSize:self.pageSize,
                     status:options.status?options.status:'',
                     keyword:options.keyword?options.keyword:'',
                     begin:options.begin?options.begin:'',
@@ -29,9 +28,17 @@ export default {
                     val:false
                 });
                 if(response.code > 0){
-                    self.list = response.list;
-                    self.clients_total = response.total;
-                    self.pages = response.pages;
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            data.list.forEach((item,index)=>{
+                                item.index = (self.currentPage - 1)*self.pageSize + index + 1;
+                            });
+                            self.list = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }
                 }else{
                     self.$message({
                         message: response.msg,

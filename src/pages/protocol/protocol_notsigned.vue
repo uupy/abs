@@ -10,8 +10,8 @@
             <el-row :span="24">
                 <el-table :data="list" class="table-list">
                     <el-table-column prop="index" label="序号" width="90"></el-table-column>
-                    <el-table-column prop="id" label="协议编号"></el-table-column>
-                    <el-table-column prop="name" label="协议名称"></el-table-column>
+                    <el-table-column prop="protocolCode" label="协议编号"></el-table-column>
+                    <el-table-column prop="protocolName" label="协议名称"></el-table-column>
                     <el-table-column prop="signatory" label="协议签署方"></el-table-column>
                     <el-table-column prop="signatoryOtherSide" label="协议签署对方"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
@@ -21,7 +21,7 @@
                         </span>
                     </el-table-column>
                 </el-table>
-                <el-pagination v-if='pages>1' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
+                <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </div>
 
@@ -65,81 +65,23 @@
 </template>
 <script>
     import Common from '@/mixins/common.js'
-    import Clients from '@/api/clients.js'
     import Protocol from '@/api/protocol/protocol.js'
     export default {
         data() {
             return {
                 currentStatus:'',
-                pageNum:10,
+                currentPage:1,
+                pageSize:10,
+                pageTotal:0,
                 pages:0,
-                clients_total:16,
                 keyword:'',
                 currentType:0,
                 filter_name:'',
                 signDate:'',
                 protocolStatus:{},
-                currentPage:1,
                 deadline:'',
                 dialog_add_client:false,
-                list:[
-                    {
-                        index:'1',
-                        id:'ZRA20171019001',
-                        name:'应收帐款债权转让协议',
-                        signatory:'工程公司',
-                        signatoryOtherSide:'佛山项目公司'
-                    },
-                    {
-                        index:'2',
-                        id:'TZA20171019001',
-                        name:'应收帐款债权转让通知函',
-                        signatory:'工程公司',
-                        signatoryOtherSide:'佛山项目公司'
-                    },
-                    {
-                        index:'3',
-                        id:'QRA20171019001',
-                        name:'付款确认书',
-                        signatory:'工程公司',
-                        signatoryOtherSide:'佛山项目公司'
-                    },
-                    {
-                        index:'4',
-                        id:'QRB20171019001',
-                        name:'付款确认书',
-                        signatory:'碧桂园集团',
-                        signatoryOtherSide:''
-                    },
-                    {
-                        index:'5',
-                        id:'GJA20171019001',
-                        name:'股东会决议',
-                        signatory:'工程公司',
-                        signatoryOtherSide:''
-                    },
-                    {
-                        index:'6',
-                        id:'HZA20171019001',
-                        name:'合作协议',
-                        signatory:'高银保理',
-                        signatoryOtherSide:'碧桂园'
-                    },
-                    {
-                        index:'7',
-                        id:'ZMA20171019001',
-                        name:'基础资产买卖协议',
-                        signatory:'高银保理',
-                        signatoryOtherSide:'cms'
-                    },
-                    {
-                        index:'8',
-                        id:'FYA20171019001',
-                        name:'服务协议',
-                        signatory:'高银保理',
-                        signatoryOtherSide:'cms'
-                    }
-                ],
+                list:[],
                 protocolType:[
                     {label:'全部',value:0},
                     {label:'主合同',value:1},
@@ -160,12 +102,12 @@
             }
         },
         methods: {
-            clientsSizeChange(e){
-                this.pageNum = e;
+            pageSizeChange(e){
+                this.pageSize = e;
                 this.currentPage = 1;
                 this.getProtocolList({status:1});
             },
-            clientsCurrentChange(e){
+            pageCurrentChange(e){
                 this.currentPage = e;
                 this.getProtocolList({status:1});
             },
@@ -174,9 +116,6 @@
                 self.$router.push({path:'/pages/protocol_notsigned/views'});
             },
             clearFilter(type){
-                const self = this;
-            },
-            getclient(){
                 const self = this;
             },
             cancelAddClient(){
@@ -190,10 +129,9 @@
         watch: {
             
         },
-        mixins:[Common,Clients,Protocol],
+        mixins:[Common,Protocol],
         mounted() {
             const self = this;
-            // self.protocolStatus = STATUS.protocolStatus;
             self.getProtocolList({status:1});
         },
         computed: {

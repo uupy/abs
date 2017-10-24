@@ -8,7 +8,7 @@ export default {
     },
     methods: {
         // 登录超时函数
-        fnTimeOut(){
+        unauthorized(){
             const self = this;
             localStorage.clear();
             self.setState([
@@ -63,17 +63,13 @@ export default {
             self.$http(config).then((response) => {
                 const res = response.body;
                 if(res.code > 0){
-                    if(res.code == 9150){
-                        self.fnTimeOut();
-                    }else{
-                        if(res.token && res.token !== ''){
-                            self.saveStorageState({
-                                attr:'token',
-                                val:res.token
-                            });
-                        }
-                        Util.isFunction(successCallback) ? successCallback(res) : '';
+                    if(res.token && res.token !== ''){
+                        self.saveStorageState({
+                            attr:'token',
+                            val:res.token
+                        });
                     }
+                    Util.isFunction(successCallback) ? successCallback(res) : '';
                 }else{
                     self.$nprogress.done();
                     self.setState([
@@ -86,19 +82,23 @@ export default {
                     });
                 }
             }, (response) => {
-                if(Util.isFunction(errorCallback)){
-                    errorCallback(response)
+                if(response.status === 401){
+                    self.unauthorized();
                 }else{
-                    self.$nprogress.done();
-                    self.setState([
-                        {attr:'onLoading',val:false},
-                        {attr:'innerLoading',val:false}
-                    ]);
-                    self.$message({
-                        message: `请求结果：${response.ok}`,
-                        type: 'error'
-                    });
-                    console.error(`请求地址：${response.url} 请求结果：${response.ok}`, 'error');
+                    if(Util.isFunction(errorCallback)){
+                        errorCallback(response)
+                    }else{
+                        self.$nprogress.done();
+                        self.setState([
+                            {attr:'onLoading',val:false},
+                            {attr:'innerLoading',val:false}
+                        ]);
+                        self.$message({
+                            message: `请求结果：${response.ok}`,
+                            type: 'error'
+                        });
+                        console.error(`请求地址：${response.url} 请求结果：${response.ok}`, 'error');
+                    }
                 }
             });
         },
