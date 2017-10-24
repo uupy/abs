@@ -166,7 +166,7 @@
         mounted() {
             const self = this;
             self.getProtocolList({status:2});
-            self.protocolStatus = STATUS.protocolStatus;
+            // self.protocolStatus = STATUS.protocolStatus;
         },
         computed: {
             

@@ -27,9 +27,45 @@ export default {
                     val:false
                 });
                 if(response.code > 0){
-                    self.list = response.list;
-                    self.clients_total = response.total;
-                    self.pages = response.pages;
+                    self.list = response.data.list;
+                    self.pageTotal = response.data.total;
+                    self.pages = response.data.pages;
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //获取发票
+        getReceipts(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+            self.onHttp({
+                method:'GET',
+                path:'/invoice/list',
+                params:{
+                    curPage:self.currentPage,
+                    pageSize:self.pageNum,
+                    orderReceiptsId:options.orderReceiptsId?options.orderReceiptsId:''
+                }
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    self.list.forEach((val,index)=>{
+                        self.$set(val,'fp_list',response.data.list)
+                    })                    
                 }else{
                     self.$message({
                         message: response.msg,
