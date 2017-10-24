@@ -10,6 +10,7 @@ export default {
                 attr:'onLoading',
                 val:true
             });
+
             self.onHttp({
                 method:'GET',
                 path:'/protocol/list',

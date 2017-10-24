@@ -5,24 +5,24 @@
                 <el-tab-pane label="未融资数据" name="first">
                     <el-row class="toolbar toolbar-top">
                         <div class="f-right">
-                            <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
-                            <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>           
+                           <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
+                            <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>           
                             <el-button size="small" type='primary' @click='supply("first")'>签 约</el-button>
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="data_list" class='table-list table-expand'>
+                        <el-table :data="list" class='table-list table-expand'>
                             <el-table-column type="selection" width="40"></el-table-column>
-                            <el-table-column prop="single" label="应付单号" align='center' width="100"></el-table-column>
-                            <el-table-column prop="djdate" label="单据日期" align='center' width="110"></el-table-column>         
-                            <el-table-column prop="yfsum" label="应付金额（元）" align='center' width="130"></el-table-column>
-                            <el-table-column prop="supplier" label="供应商" align='center'></el-table-column>
-                            <el-table-column prop="company" label="项目公司" align='center'></el-table-column>
-                            <el-table-column prop="area" label="所属区域" align='center'></el-table-column>       
-                            <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>       
-                            <el-table-column prop="contract_name" label="合同名称" align='center'></el-table-column>         
-                            <el-table-column prop="contract_no" label="合同号" align='center'></el-table-column>         
-                            <el-table-column prop="fpsum" label="发票总金额（元）" align='center'></el-table-column> 
+                            <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
+                            <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>         
+                            <el-table-column prop="money" label="应付金额（元）" align='center' width="130"></el-table-column>
+                            <el-table-column prop="providerName" label="供应商" align='center'></el-table-column>
+                            <el-table-column prop="productCompanyName" label="项目公司" align='center'></el-table-column>
+                            <el-table-column prop="productCompanyArea" label="所属区域" align='center'></el-table-column>       
+                            <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
+                            <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>         
+                            <el-table-column prop="contractNo" label="合同号" align='center'></el-table-column>         
+                            <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
                             <el-table-column label="合同附件" align='center' width="110">
                                 <template slot-scope='scope'>
                                     <el-button size='small'>下载</el-button>
@@ -71,22 +71,22 @@
                 <el-tab-pane label="已融资数据" name="second">
                     <el-row class="toolbar toolbar-top">
                         <div class="f-right">
-                            <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
-                            <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>           
+                           <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>    
+                            <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>   
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="data_list" class='table-list table-expand'>
-                            <el-table-column prop="single" label="应付单号" align='center' width="100"></el-table-column>
-                            <el-table-column prop="djdate" label="单据日期" align='center' width="110"></el-table-column>         
-                            <el-table-column prop="yfsum" label="应付金额（元）" align='center' width="130"></el-table-column>
-                            <el-table-column prop="supplier" label="供应商" align='center'></el-table-column>
-                            <el-table-column prop="company" label="项目公司" align='center'></el-table-column>
-                            <el-table-column prop="area" label="所属区域" align='center'></el-table-column>       
-                            <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>       
-                            <el-table-column prop="contract_name" label="合同名称" align='center'></el-table-column>         
-                            <el-table-column prop="contract_no" label="合同号" align='center'></el-table-column>         
-                            <el-table-column prop="fpsum" label="发票总金额（元）" align='center'></el-table-column> 
+                        <el-table :data="list" class='table-list table-expand'>
+                            <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
+                            <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>
+                            <el-table-column prop="money" label="应付金额（元）" align='center' width="130"></el-table-column>
+                            <el-table-column prop="providerName" label="供应商" align='center'></el-table-column>
+                            <el-table-column prop="productCompanyName" label="项目公司" align='center'></el-table-column>
+                            <el-table-column prop="productCompanyArea" label="所属区域" align='center'></el-table-column>       
+                            <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
+                            <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>         
+                            <el-table-column prop="contractNo" label="合同号" align='center'></el-table-column>         
+                            <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
                             <el-table-column label="合同附件" align='center' width="110">
                                 <template slot-scope='scope'>
                                     <el-button size='small'>下载</el-button>
@@ -138,25 +138,25 @@
             <el-row class="toolbar toolbar-top">
                 <div class="f-right">
                     <template v-if="enterprise_type !== 4">
-                        <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" icon="circle-cross" @click="clearFilter"></el-input>  
-                        <el-button size="small" type="primary"><i class="el-icon-search"></i>查询</el-button>
+                        <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
+                        <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>
                     </template>
-                    <el-button size="small" type='primary' @click='supply("first")' v-if="enterprise_type === 2">确 认</el-button>
+                    <el-button size="small" type='primary' @click='supply("second")' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>
-                <el-table :data="data_list" class='table-list table-expand'>
+                <el-table @select='tableSelect' @select-all='tableSelectAll' :data="list" class='table-list table-expand' @expand='tableExpand'>
                     <el-table-column type="selection" width="40" v-if="enterprise_type === 2"></el-table-column>
-                    <el-table-column prop="single" label="应付单号" align='center'></el-table-column>
-                    <el-table-column prop="djdate" label="单据日期" align='center' width="120"></el-table-column>         
-                    <el-table-column prop="yfsum" label="应付金额（元）" align='center' width="130"></el-table-column>         
-                    <el-table-column prop="supplier" label="供应商" align='center'></el-table-column>
-                    <el-table-column prop="company" label="项目公司" align='center'></el-table-column>
-                    <el-table-column prop="area" label="所属区域" align='center'></el-table-column>       
-                    <el-table-column prop="project_name" label="项目名称" align='center'></el-table-column>       
-                    <el-table-column prop="contract_name" label="合同名称" align='center'></el-table-column>         
-                    <el-table-column prop="contract_no" label="合同号" align='center'></el-table-column>         
-                    <el-table-column prop="fpsum" label="发票总金额（元）" align='center'></el-table-column> 
+                    <el-table-column prop="orderReceiptsId" label="应付单号" align='center'></el-table-column>
+                    <el-table-column prop="receiptsTime" label="单据日期" align='center' width="120"></el-table-column>         
+                    <el-table-column prop="money" label="应付金额（元）" align='center' width="130"></el-table-column>         
+                    <el-table-column prop="providerName" label="供应商" align='center'></el-table-column>
+                    <el-table-column prop="productCompanyName" label="项目公司" align='center'></el-table-column>
+                    <el-table-column prop="productCompanyArea" label="所属区域" align='center'></el-table-column>       
+                    <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
+                    <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>         
+                    <el-table-column prop="contractNo" label="合同号" align='center'></el-table-column>         
+                    <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
                     <el-table-column label="应付单附件" align='center' width="110">
                         <template slot-scope='scope'>
                             <el-button size='small'>下载</el-button>
@@ -171,37 +171,41 @@
                                     <div class="cell" :style="`width:${100/3}%;`">发票日期</div>
                                 </li>
                                 <li v-for="(item,idx) in props.row.fp_list" :key="idx">
-                                    <div class="cell" :style="`width:${100/3}%;`">{{item.index}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.invoiceId}}</div>
                                     <div class="cell" :style="`width:${100/3}%;`">{{item.money}}</div>
-                                    <div class="cell" :style="`width:${100/3}%;`">{{item.date}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.createTime}}</div>
                                 </li>
                                 <li>
                                     <div class="cell" :style="`width:${100/3}%;`">合计</div>
-                                    <div class="cell" :style="`width:${100/3}%;`">{{props.row.fp_sum}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{props.row.invoiceTotalMoney}}</div>
                                     <div class="cell" :style="`width:${100/3}%;`">-</div>
                                 </li>
                             </ul>
                         </template>
                     </el-table-column>     
                 </el-table>
-                <el-pagination v-if='pages>1' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
+                 <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
         <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="120px">
                 <el-form-item label='1.付款确认书'>
-                    <el-button size='small' type='primary'>查看</el-button>
+                    <el-button size='small' type='primary' @click.native='filePreview("1")'>查看</el-button>
                     <el-button size='small' type='primary'>签订</el-button>
                 </el-form-item>
                 <el-form-item label='2.付款确认书'>
-                    <el-button size='small' type='primary'>查看</el-button>
+                    <el-button size='small' type='primary' @click.native='filePreview("2")'>查看</el-button>
                     <el-button size='small' type='primary'>签订</el-button>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary">确认融资</el-button>
+                <el-button type="primary" @click.native='confirm'>确认融资</el-button>
                 <el-button @click="cancelAddClient('add_form')">取 消</el-button>
             </div>
+        </el-dialog>
+
+        <el-dialog size="full" title="付款确认书" v-model="dialogDisable2" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
+            <img :src='fileImgUrl'/>
         </el-dialog>
     </section>
 </template>
@@ -211,9 +215,18 @@
     export default {
         data() {
             return {
+                currentStatus:'',
+                dialogDisable2:false,
+                currentPage:1,
+                fileImgUrl:'',
+                pageSize:10,
+                pageTotal:0,
+                pages:0,
+                keyword:'',
+                currentType:0,
                 filter_name:'',
                 currentCompany:'',
-                propertyStatus:{},
+                propertyStatus:ABS_STATUS['protocolStatus'] ? ABS_STATUS['protocolStatus'] : {},
                 currentPage:1,
                 pageNum:10,
                 pages:0,
@@ -223,6 +236,7 @@
                 dialogDisable:false,
                 dialogDisable2:false,
                 rules:{},
+                orderReceiptsIds:[],
                 companyList:[
                     {
                         label:'深圳xx公司',
@@ -233,9 +247,9 @@
                         value:'1',
                     }
                 ],
-                data_list:[
+                list:[
                     {
-                        single:'1',
+                        orderReceiptsId:'1',
                         supplier:'大疆集团',
                         company:'深圳宝宝公司',
                         area:'深圳宝安',
@@ -265,37 +279,7 @@
                         fp_sum:'4000'
                     },
                     {
-                        single:'2',
-                        supplier:'大疆集团',
-                        company:'深圳宝宝公司',
-                        area:'深圳宝安',
-                        project_name:'项目1',
-                        contract_name:'合同1',
-                        contract_no:'ht001',
-                        yfsum:'4000',
-                        djdate:'2017-10-17',
-                        fpsum:'4000',
-                        fp_list:[
-                            {
-                               index:'1' ,
-                               money:'1000' ,
-                               date:'2017-10-17' 
-                            },
-                            {
-                               index:'2' ,
-                               money:'1000' ,
-                               date:'2017-10-17' 
-                            },
-                            {
-                               index:'3' ,
-                               money:'2000' ,
-                               date:'2017-10-17' 
-                            },
-                        ],
-                        fp_sum:'4000'
-                    },
-                    {
-                        single:'3',
+                        orderReceiptsId:'2',
                         supplier:'大疆集团',
                         company:'深圳宝宝公司',
                         area:'深圳宝安',
@@ -336,6 +320,10 @@
             listCurrentChange(){},
             clearFilter(){},
             supply(type){
+                 if(this.orderReceiptsIds.length<=0){
+                    this.$message.warning('请勾选数据')
+                    return;
+                }
                 this.dialogDisable = true;
             },
             cancelAddClient(){
@@ -349,6 +337,51 @@
             },
             clientsCurrentChange(){
 
+            },
+            pageSizeChange(e){
+                this.pageSize = e;
+                this.currentPage = 1;
+                this.getAssetsList();
+            },
+            pageCurrentChange(e){
+                this.currentPage = e;
+                this.getAssetsList();
+            },
+            tableExpand(row,expanded){
+                console.log('id:',row.orderReceiptsId)
+                if(expanded){
+                    const self = this;
+                    if(row.orderReceiptsId&&row.orderReceiptsId!=''){
+                        self.getReceipts({orderReceiptsId:row.orderReceiptsId});
+                    }
+                }
+                    
+            },
+            search(){
+                const self = this;
+                self.getAssetsList({productCompanyName:self.filter_name})
+            },
+            filePreview(id){
+                const self = this;
+                self.dialogDisable2 = true;
+            },
+            tableSelect(selection,row){
+                const self = this;
+                self.orderReceiptsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                self.orderReceiptsIds = selection;
+            },
+            confirm(){
+                const self = this;
+                let ids = [];
+               
+                self.orderReceiptsIds.forEach(val=>{
+                    ids.push(val.orderReceiptsId)
+                });
+                
+                self.confirmFinancing({orderReceiptsIds:ids.join(',')});
             }
 
         },
@@ -362,8 +395,6 @@
                     item.querySelector('th.el-table__expand-column').innerHTML = '<div class="cell">展开</div>';
                 });
             });
-            this.propertyStatus = ABS_STATUS.propertyStatus;
-
             this.getAssetsList()
         },
         computed: {

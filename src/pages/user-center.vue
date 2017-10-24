@@ -54,7 +54,7 @@
             </el-tab-pane>           
         </el-tabs>
 
-        <el-tabs v-else  class='user-form' v-model="active_name2" @tab-click="tabChange">            
+        <el-tabs v-else  class='user-form' v-model="active_name2" @tab-click="enterpriseTabChange">            
             <el-tab-pane label="企业认证" name="tab-enterprise">
                 <el-form class='enterprise-form' label-width='220px' :rules="rules" :model="enterprise" ref="enterprise">
                 	<el-form-item label='企业注册号/统一社会信用代码' prop="code">
@@ -67,28 +67,40 @@
                 		<el-input v-model='enterprise.corporation_name' placeholder='请填写法人代表姓名'></el-input>
                 	</el-form-item>
                 	<el-form-item label='法人代表身份号' prop="corporation_id_number">
-                		<el-input v-model='enterprise.corporation_id_number' placeholder='请填写法人代表身份号'></el-input>
+                		<el-input v-model='enterprise.corporation_id_number' placeholder='请填写法人代表身份证号'></el-input>
                 	</el-form-item>
                 	<el-form-item label='营业执照上传' prop="path">
-                		<el-upload class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback">
+                		<el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback">
                             <el-input v-model='enterprise.path' placeholder='点击上传证件' readonly="readonly"></el-input>
                         </el-upload>
                 	</el-form-item>
                     <el-form-item>
-                        <el-button type="primary">认 证</el-button>
+                        <el-button type="primary" @click="addEnterpriseAuthentication('enterprise',enterprise)">认 证</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
             <el-tab-pane label="授权" name="tab-author" >
                 <el-table border :data='company'>
-                    <el-table-column label='序号' prop='index' width="90"></el-table-column>
+                    <el-table-column label='序号' type="index" width="90"></el-table-column>
                 	<el-table-column label='姓名' prop='name' align='center'></el-table-column>
-                	<el-table-column label='角色' prop='role' align='center'></el-table-column>
-                	<el-table-column label='权限' prop='author' align='center'></el-table-column>
-                	<el-table-column label='认证状态' prop='status' align='center'></el-table-column>
+                	<el-table-column label='角色' prop='roleType' align='center'>
+                        <template slot-scope="scope">
+                            <span>{{roleType[scope.row.roleType]}}</span>
+                        </template>
+                    </el-table-column>
+                	<el-table-column label='权限' prop='auditType' align='center'>
+                        <template slot-scope="scope">
+                            <span>{{auditType[scope.row.auditType]}}</span>
+                        </template>
+                    </el-table-column>
+                	<el-table-column label='认证状态' prop='status' align='center'>
+                        <template slot-scope="scope">
+                            <el-tag :type="scope.row.status ? 'success' : 'danger'" close-transition>{{scope.row.status ? '已认证' : '未认证'}}</el-tag>
+                        </template>   
+                    </el-table-column>
                 	<el-table-column label='操作' align='center'>
                 		<template slot-scope='scope'>
-                			<el-button type='primary' size='small'>授权</el-button>
+                            <el-button :type="scope.row.status ? 'primary' : 'default'" size='small' :disabled="!scope.row.status" >授权</el-button>
                 		</template>
                 	</el-table-column>
                 </el-table>
@@ -115,15 +127,9 @@
             		phone:'13430887445',
             		email:'12345678@qq.com'
             	},
-            	company:[
-            		{
-                        index:1,
-            			name:'王大锤',
-            			role:'管理员',
-            			author:'',
-            			status:'1'            			
-            		}
-            	],
+                roleType:ABS_ROLE['user'] ? ABS_ROLE['user'] : {},
+                auditType:ABS_ROLE['audit'] ? ABS_ROLE['audit'] : {},
+            	company:[],
                 enterprise:{
                     code:'',
                     enterprise_name:'',
@@ -155,11 +161,28 @@
            tabChange(){
 
            },
-           uploadSuccessCallback(response){
-            console.log(response)
-                // this.enterprise.path = response
+           enterpriseTabChange(type) {
+                sessionStorage.setItem('enterpriseTabName',this.active_name2);
+                if (this.active_name2 == 'tab-enterprise') {
+                    this.getEnterpriseInfo();
+                } else if (this.active_name2 == 'tab-author') {
+                    this.getUserList();
+                }
            },
-           handleRemove(){},
+           uploadSuccessCallback(response){
+                if(response.code > 0){
+                    if(response.data){
+                        this.$message({
+                            message: response.msg,
+                            type: 'success'
+                        });
+                        this.enterprise.path = response.data.url;
+                    }
+                }
+           },
+           handleRemove(){
+                this.enterprise.path = '';
+           },
            enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
@@ -171,7 +194,16 @@
         mounted() {
             const self = this;
             self.$nextTick(()=>{
-                self.getEnterpriseInfo();
+                if(sessionStorage.getItem('enterpriseTabName')){
+                    self.active_name2 = sessionStorage.getItem('enterpriseTabName');
+                    if(sessionStorage.getItem('enterpriseTabName') === 'tab-enterprise'){
+                        self.getEnterpriseInfo();
+                    }else{
+                        self.getUserList();
+                    }
+                }else{
+                    self.getEnterpriseInfo();
+                }
                 document.addEventListener("keyup", self.enterKeyup, false);
             });
         },
@@ -181,6 +213,7 @@
         destroyed() {
             document.removeEventListener("keyup", self.enterKeyup, false);
             sessionStorage.removeItem('enterprise_tname');
+            sessionStorage.removeItem('enterpriseTabName');
             this.setState({
                 attr:'enterprise_menu_type',
                 val:0
