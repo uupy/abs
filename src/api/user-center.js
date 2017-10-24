@@ -3,7 +3,39 @@ export default {
         return{}
     },
     methods: {
-        // 获取基本信息
+        // 获取授权用户列表
+        getUserList() {
+            const self = this;
+            self.$nprogress.start();
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+            self.onHttp({
+                method:'GET',
+                path:'/authenticate/enterpriseMemberList'
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    if (response.data) {
+                        if (Util.isArray(response.data.list)) {
+                            self.company = response.data.list;
+                        }
+                    }
+                } else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        // 获取企业认证信息
         getEnterpriseInfo () {
             const self = this;
             self.$nprogress.start();
@@ -23,7 +55,10 @@ export default {
                 if(response.code > 0){
                     if (response.data) {
                         self.enterprise.code = response.data.code || '';
-                        self.enterprise.enerprise_name = response.data.enterprise_name || '';
+                        self.enterprise.enterprise_name = response.data.enterprise_name || '';
+                        self.enterprise.corporation_id_number = response.data.corporationIdNumber || '';
+                        self.enterprise.corporation_name = response.data.corporationName || '';
+                        self.enterprise.path = response.data.path || '';
                     }
                 } else{
                     self.$message({
@@ -33,54 +68,44 @@ export default {
                 }
             });
         },
-        // 修改密码
-        resetPassword(formName,resetPwdForm){
+        // 企业认证
+        addEnterpriseAuthentication(formName,enterprise){
             const self = this;
             self.$refs[formName].validate((valid)=>{
                 if(!valid){return false}
-                if(resetPwdForm.newPassword !== resetPwdForm.confirmPassword){
-                    self.$message({
-                        message: '新密码与确认密码不一致！',
-                        type: 'error'
-                    });
-                }else{
+                self.$nprogress.start();
+                self.setState({
+                    attr:'onLoading',
+                    val:true
+                });
+                self.onHttp({
+                    method:'POST',
+                    path:'/authenticate/addEnterpriseAuthentication',
+                    params:{
+                        code:enterprise.code,
+                        enterprise_name:enterprise.enterprise_name,
+                        corporation_name:enterprise.corporation_name,
+                        corporation_id_number:enterprise.corporation_id_number,
+                        path:enterprise.path,
+                    }
+                },(response)=>{
+                    self.$nprogress.done();
                     self.setState({
-                        attr:'innerLoading',
-                        val:true
+                        attr:'onLoading',
+                        val:false
                     });
-                    self.onHttp({
-                        method:'POST',
-                        path:'/updatePassword',
-                        params:{
-                            oldPassword:resetPwdForm.oldPassword,
-                            newPassword:resetPwdForm.newPassword,
-                            confirmNewPassword:resetPwdForm.confirmPassword
-                        }
-                    },(response)=>{
-                        self.setState({
-                            attr:'innerLoading',
-                            val:false
+                    if(response.code > 0){
+                        self.$message({
+                            message: response.msg,
+                            type: 'success'
                         });
-                        if(response.code > 0){
-                            self.dialogFormVisible = false;
-                            self.$confirm('密码修改成功,请重新登录','提示',{
-                                confirmButtonText: '确定',
-                                closeOnClickModal:false,
-                                showCancelButton:false,
-                                type: 'warning',
-                                callback:function(){
-                                    localStorage.clear();
-                                    self.$router.push('/login');
-                                }
-                            });
-                        }else{
-                            self.$message({
-                                message: response.msg,
-                                type: 'error'
-                            });
-                        }
-                    });
-                }
+                    }else{
+                        self.$message({
+                            message: response.msg,
+                            type: 'error'
+                        });
+                    }
+                });
             });
         }
     }
