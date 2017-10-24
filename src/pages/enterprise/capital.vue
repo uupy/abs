@@ -102,31 +102,31 @@
                 }
             } 
         },
-        mixins:[Common],
+        mixins:[Common,Enterprise],
         methods: {
             // 列表当前页改变
             pageCurrentChange(val){
                 this.curPage = val;
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'3'});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'5,6'});
             },
             // 列表条数改变
             pageSizeChange(val){
                 this.pageSize = val;
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'3'});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'5,6'});
             },
             // 过滤列表
             filterEnterprise(){
                 if(this.curPage === 1){
-                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'3'});
+                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'5,6'});
                 }else{
                     this.curPage = 1;
-                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'3',filter:true});
+                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'5,6',filter:true});
                 }
             },
             // 清空查询
             clearFilter(type){
                 this.filterKeyword = '';
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'3'});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'5,6'});
             },
             checkView(row){
                 this.saveStorageState({
