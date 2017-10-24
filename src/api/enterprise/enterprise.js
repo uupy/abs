@@ -18,7 +18,7 @@ export default {
             };
             if(options){
                 (options.status && options.status !== 0) ? params.status = options.status : '';
-                (options.type && options.type !== 0) ? params.type = options.type : '';
+                options.type ? params.type = options.type : '';
                 options.filter ? params.curPage = 1 : '';
             }
             self.onHttp({
@@ -51,7 +51,7 @@ export default {
                 }
             });
         },
-        addEnterprise(formName){
+        addEnterprise(formName,options){
             const self = this;
             self.$refs[formName].validate((valid)=>{
                 if(!valid){return false}
@@ -62,6 +62,11 @@ export default {
                 let params = {
                     name:self.addForm.name,
                     type:self.addForm.role
+                }
+                if(options){
+                    if(Util.isNumber(options.role)){
+                        params.type = options.role;
+                    }
                 }
                 if(self.addForm.area !== ''){
                     params.area = self.addForm.area;

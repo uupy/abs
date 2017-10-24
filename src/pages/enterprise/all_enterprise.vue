@@ -8,7 +8,7 @@
                 </el-select>
                 <label style="padding-left:10px;">企业角色：</label>
                 <el-select size="small" v-model="enterpriseCurType" placeholder="请选择" @change="filterEnterprise">
-                    <el-option v-for="(item,index) in enterprise_types" :label="item.label" :value="item.value" :key="index"></el-option>
+                    <el-option v-for="(item,index) in enterpriseTypes" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>
             </div>
             <div class="f-right">
@@ -19,7 +19,7 @@
         </el-row>
         <el-row :span="24">
             <el-table :data="list" class="table-list">
-                <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                <el-table-column type="index" label="序号" width="90"></el-table-column>
                 <el-table-column prop="code" label="企业编号"></el-table-column>
                 <el-table-column prop="name" label="企业名称"></el-table-column>
                 <el-table-column prop="type" label="企业角色">
@@ -47,7 +47,7 @@
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="90px">
                 <el-form-item label="企业角色" prop="role">
                     <el-select v-model="addForm.role" placeholder="请选择企业角色">
-                        <el-option v-for="(item,index) in enterprise_types" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
+                        <el-option v-for="(item,index) in enterpriseTypes" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="企业名称" prop="name">
@@ -81,14 +81,13 @@
                 ],
                 enterpriseType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
                 enterpriseStatus:ABS_STATUS['enterprise'] ? ABS_STATUS['enterprise'] : {},
-                enterpriseCurType:0,
-                enterprise_types:[
-                    {label:'全部',value:0},
-                    {label:'集团公司',value:2},
-                    {label:'项目公司',value:4},
-                    {label:'融资客户',value:3},
-                    {label:'合作方（SPV）',value:5},
-                    {label:'合作方（其他）',value:6},
+                enterpriseCurType:'2,3,4,5,6',
+                enterpriseTypes:[
+                    {label:'全部',value:'2,3,4,5,6'},
+                    {label:'集团公司',value:'2'},
+                    {label:'项目公司',value:'4'},
+                    {label:'融资客户',value:'3'},
+                    {label:'合作方',value:'5,6'}
                 ],
                 curPage:1,
                 pageSize:10,
@@ -97,7 +96,7 @@
                 dialogVisibleAddNew:false,
                 addForm:{
                     name:'',
-                    role:2,
+                    role:'2',
                     area:'',
                     principal:'',
                     position:''
@@ -117,25 +116,26 @@
             // 列表当前页改变
             pageCurrentChange(val){
                 this.curPage = val;
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
             },
             // 列表条数改变
             pageSizeChange(val){
                 this.pageSize = val;
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
             },
             // 过滤列表
             filterEnterprise(){
                 if(this.curPage === 1){
-                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
+                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
                 }else{
                     this.curPage = 1;
+                    this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType,filter:true});
                 }
             },
             // 清空查询
             clearFilter(type){
                 this.filterKeyword = '';
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
             },
             // 查看详情
             checkView(row){
@@ -170,7 +170,7 @@
                     val:2,
                     type:'number'
                 });
-                self.getEnterpriseList();
+                self.getEnterpriseList({status:parseInt(self.enterprise_status),type:self.enterpriseCurType});
                 document.addEventListener("keyup", self.enterKeyup, false);
             });
         },

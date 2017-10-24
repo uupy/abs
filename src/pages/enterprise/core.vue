@@ -22,7 +22,7 @@
                     </el-row>
                     <el-row :span="24">
                         <el-table :data="list" class="table-list">
-                            <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                            <el-table-column type="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="code" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
                             <el-table-column prop="type" label="企业角色">
@@ -62,7 +62,7 @@
                     </el-row>
                     <el-row :span="24">
                         <el-table :data="list" class="table-list">
-                            <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                            <el-table-column type="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="id" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
                             <el-table-column prop="status" label="认证状态">
@@ -77,7 +77,7 @@
                                 </span>
                             </el-table-column>
                         </el-table>
-                        <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
+                        <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="项目公司" name="project_cp">
@@ -100,7 +100,7 @@
                     </el-row>
                     <el-row :span="24">
                         <el-table :data="list" class="table-list">
-                            <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                            <el-table-column type="index" label="序号" width="90"></el-table-column>
                             <el-table-column prop="id" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
                             <el-table-column prop="area" label="所属区域"></el-table-column>
@@ -116,7 +116,7 @@
                                 </span>
                             </el-table-column>
                         </el-table>
-                        <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
+                        <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
                     </el-row>
                 </el-tab-pane>
             </el-tabs>
@@ -141,14 +141,18 @@
             </el-row>
             <el-row :span="24">
                 <el-table :data="list" class="table-list">
-                    <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                    <el-table-column type="index" label="序号" width="90"></el-table-column>
                     <el-table-column prop="id" label="企业编号"></el-table-column>
                     <el-table-column prop="name" label="企业名称"></el-table-column>
-                    <el-table-column prop="role" label="企业角色"></el-table-column>
+                    <el-table-column prop="type" label="企业角色">
+                        <template slot-scope="scope">
+                            <span>{{enterpriseType[scope.row.type] ? enterpriseType[scope.row.type] : '未知'}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="area" label="所属区域"></el-table-column>
                     <el-table-column prop="status" label="认证状态">
                         <template slot-scope="scope">
-                            <el-tag :type="scope.row.status == '已认证' ? 'success' : (scope.row.status == '认证失败' ? 'danger':(scope.row.status == '创建中' ? 'warning':'default'))" close-transition>{{scope.row.status}}</el-tag>
+                            <el-tag :type="scope.row.status == 2 ? 'success' : (scope.row.status == 3 ? 'danger':(scope.row.status == 1 ? 'warning':'default'))" close-transition>{{enterpriseStatus[scope.row.status] ? enterpriseStatus[scope.row.status] : '未知'}}</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140">
@@ -158,7 +162,7 @@
                         </span>
                     </el-table-column>
                 </el-table>
-                <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page="currentPage" :page-size="pageSize" :total="pageTotal"></el-pagination>
+                <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page="currentPage" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
         <!-- 对话框 -->
@@ -166,13 +170,13 @@
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="90px">
                 <el-form-item label="企业角色" prop="role">
                     <el-select v-model="addForm.role" placeholder="请选择企业角色">
-                        <el-option v-for="(item,index) in addForm.enterpriseCurTypes" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
+                        <el-option v-for="(item,index) in addForm.enterpriseCurTypes" :label="item.label" :value="item.value" :key="index" v-if="item.value !== '2,4'"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="企业名称" prop="name">
                     <el-input v-model="addForm.name" placeholder="请输入企业名称"></el-input>
                 </el-form-item>
-                <el-form-item label="所属区域" prop="area" v-if="addForm.role === 4 && active_name !== 'head_cp'">
+                <el-form-item label="所属区域" prop="area" v-if="addForm.role === '4' && active_name !== 'head_cp'">
                     <el-input v-model="addForm.area" placeholder="请输入所属区域"></el-input>
                 </el-form-item>
             </el-form>
@@ -211,11 +215,11 @@
                     {label:'西南',value:5},
                     {label:'西北',value:6},
                 ],
-                enterpriseCurType:0,
+                enterpriseCurType:'2,4',
                 enterpriseCurTypes:[
-                    {label:'全部',value:0},
-                    {label:'集团公司',value:2},
-                    {label:'项目公司',value:4},
+                    {label:'全部',value:'2,4'},
+                    {label:'集团公司',value:'2'},
+                    {label:'项目公司',value:'4'},
                 ],
                 curPage:1,
                 currentPage:1,
@@ -244,7 +248,7 @@
             handleClickTab(type){
                 const self = this;
                 self.enterprise_status = 0;
-                self.enterpriseCurType = 0;
+                self.enterpriseCurType = '2,4';
                 self.curPage = 1;
                 self.currentPage = 1;
                 self.filterKeyword = '';
@@ -254,12 +258,12 @@
             // 列表当前页改变
             pageCurrentChange(val){
                 this.curPage = val;
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
             },
             // 列表条数改变
             pageSizeChange(val){
                 this.pageSize = val;
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType)});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType});
             },
             // 过滤列表
             filterEnterprise(){
@@ -272,21 +276,21 @@
                     case 'overviews':
                         break;
                     case 'head_cp':
-                        self.enterpriseCurType = 2;
+                        self.enterpriseCurType = '2';
                         break;
                     case 'project_cp':
-                        self.enterpriseCurType = 4;
+                        self.enterpriseCurType = '4';
                         break;
                     default :
                         break;
                 }
-                self.getEnterpriseList({status:parseInt(self.enterprise_status),type:parseInt(self.enterpriseCurType),filter:filter});
+                self.getEnterpriseList({status:parseInt(self.enterprise_status),type:self.enterpriseCurType,filter:filter});
             },
             // 清空查询
             clearFilter(type){
                 this.filterKeyword = '';
                 this.currentPage = 1;
-                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:parseInt(this.enterpriseCurType),filter:true});
+                this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType,filter:true});
             },
             checkView(row){
                 this.saveStorageState({
@@ -301,30 +305,30 @@
                     switch(this.active_name){
                         case 'overviews': 
                             this.addForm.enterpriseCurTypes = [
-                                {label:'集团公司',value:2},
-                                {label:'项目公司',value:4}
+                                {label:'集团公司',value:'2'},
+                                {label:'项目公司',value:'4'}
                             ];
-                            this.addForm.role = 2;
+                            this.addForm.role = '2';
                             break;
                         case 'head_cp': 
                             this.addForm.enterpriseCurTypes = [
-                                {label:'集团公司',value:2}
+                                {label:'集团公司',value:'2'}
                             ];
-                            this.addForm.role = 2;
+                            this.addForm.role = '2';
                             break;
                         case 'project_cp': 
                             this.addForm.enterpriseCurTypes = [
-                                {label:'项目公司',value:4}
+                                {label:'项目公司',value:'4'}
                             ];
-                            this.addForm.role = 4;
+                            this.addForm.role = '4';
                             break;
                     }
                 }else{
                     this.addForm.enterpriseCurTypes = [
-                        {label:'集团公司',value:2},
-                        {label:'项目公司',value:4}
+                        {label:'集团公司',value:'2'},
+                        {label:'项目公司',value:'4'}
                     ];
-                    this.addForm.role = 2;
+                    this.addForm.role = '2';
                 }
                 this.dialogVisibleAddNew = true;
             },
@@ -358,10 +362,10 @@
                         self.active_name = typeName;
                         self.enterpriseActiveNameSwitch(true);
                     }else{
-                        self.getEnterpriseList();
+                        self.getEnterpriseList({type:this.enterpriseCurType});
                     }
                 }else{
-                    self.getEnterpriseList();
+                    self.getEnterpriseList({type:this.enterpriseCurType});
                 }
                 document.addEventListener("keyup", self.enterKeyup, false);
             });
