@@ -105,7 +105,7 @@
         mixins:[Common],
         mounted() {
             const self = this;
-            self.propertyStatus = STATUS.propertyStatus;
+            self.propertyStatus = ABS_STATUS.propertyStatus;
             console.log(self.protocolStatus)
         },
         computed: {
