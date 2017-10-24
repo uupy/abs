@@ -35,6 +35,40 @@ export default {
             });
         },
 
+        // 获取用户认证信息
+        getUserInfo() {
+            const self = this;
+            self.$nprogress.start();
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+            self.onHttp({
+                method:'GET',
+                path:'/authenticate/userAuthentication'
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    if (response.data) {
+                        self.enterprise.code = response.data.code || '';
+                        self.enterprise.enterprise_name = response.data.enterprise_name || '';
+                        self.enterprise.corporation_id_number = response.data.corporationIdNumber || '';
+                        self.enterprise.corporation_name = response.data.corporationName || '';
+                        self.enterprise.path = response.data.path || '';
+                    }
+                } else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
         // 获取企业认证信息
         getEnterpriseInfo () {
             const self = this;
