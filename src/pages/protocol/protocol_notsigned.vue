@@ -73,6 +73,7 @@
                 currentPage:1,
                 pageSize:10,
                 pageTotal:0,
+                pages:0,
                 keyword:'',
                 currentType:0,
                 filter_name:'',

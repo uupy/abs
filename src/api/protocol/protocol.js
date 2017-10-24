@@ -36,6 +36,7 @@ export default {
                             });
                             self.list = data.list;
                             self.pageTotal = data.total;
+                            self.pages = data.pages;
                         }
                     }
                 }else{
