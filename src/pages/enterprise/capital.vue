@@ -73,8 +73,8 @@
                 enterprise_status:0,
                 enterprise_statuses:[
                     {label:'全部',value:0},
-                    {label:'已认证',value:1},
-                    {label:'创建中',value:2},
+                    {label:'创建中',value:1},
+                    {label:'已认证',value:2},
                 ],
                 enterprise_role:'0',
                 enterprise_roles:{
