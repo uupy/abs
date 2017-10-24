@@ -39,23 +39,23 @@
                     </span>
                 </el-table-column>
             </el-table>
-            <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+            <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
         </el-row>
         <!-- 对话框 -->
-        <el-dialog size="tiny" title="新增资金方" v-model="dialogVisibleAddNew" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
-            <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
+        <el-dialog size="tiny" title="新增资金方" v-model="dialogVisibleAddNew" @close="cancelAddEnterprise('addForm')" :close-on-click-modal="false">
+            <el-form :model="addForm" :rules="rules" ref="addForm" label-width="90px">
                 <el-form-item label="合作方类型" prop="role">
-                    <el-select v-model="add_form.role" placeholder="请选择企业角色">
+                    <el-select v-model="addForm.role" placeholder="请选择企业角色">
                         <el-option v-for="(item,value) in enterprise_roles" :label="item" :value="value" :key="value" v-if="value !== '0'"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="企业名称" prop="name">
-                    <el-input v-model="add_form.name" placeholder="请输入企业名称"></el-input>
+                    <el-input v-model="addForm.name" placeholder="请输入企业名称"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary">确 认</el-button>
-                <el-button @click="cancelAddClient('add_form')">取 消</el-button>
+                <el-button @click="cancelAddEnterprise('addForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
         </el-dialog>
@@ -136,7 +136,8 @@
                 });
                 this.$router.push({ path: '/pages/capital/views' });
             },
-            cancelAddClient(){
+            cancelAddEnterprise(formName){
+                this.$refs[formName].resetFields();
                 this.dialogVisibleAddNew = false;
             },
             enterKeyup(e){

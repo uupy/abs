@@ -33,7 +33,7 @@
             <el-pagination v-if="pageTotal > 0" class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-size="pageSize" :total="pageTotal"></el-pagination>
         </el-row>
         <!-- 对话框 -->
-        <el-dialog size="tiny" title="新增供应商" v-model="dialogVisibleAddNew" @close="cancelAddClient('addForm')" :close-on-click-modal="false">
+        <el-dialog size="tiny" title="新增供应商" v-model="dialogVisibleAddNew" @close="cancelAddEnterprise('addForm')" :close-on-click-modal="false">
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="90px">
                 <el-form-item label="企业名称" prop="name">
                     <el-input v-model="addForm.name" placeholder="请输入企业名称"></el-input>
@@ -41,7 +41,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary">确 认</el-button>
-                <el-button @click="cancelAddClient('addForm')">取 消</el-button>
+                <el-button @click="cancelAddEnterprise('addForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
         </el-dialog>
