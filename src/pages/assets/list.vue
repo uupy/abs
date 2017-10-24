@@ -219,66 +219,66 @@
                     }
                 ],
                 list:[
-                    {
-                        orderReceiptsId:'1',
-                        supplier:'大疆集团',
-                        company:'深圳宝宝公司',
-                        area:'深圳宝安',
-                        project_name:'项目1',
-                        contract_name:'合同1',
-                        contract_no:'ht001',
-                        yfsum:'4000',
-                        djdate:'2017-10-17',
-                        fpsum:'4000',
-                        fp_list:[
-                            {
-                               index:'1' ,
-                               money:'1000' ,
-                               date:'2017-10-17' 
-                            },
-                            {
-                               index:'2' ,
-                               money:'1000' ,
-                               date:'2017-10-17' 
-                            },
-                            {
-                               index:'3' ,
-                               money:'2000' ,
-                               date:'2017-10-17' 
-                            },
-                        ],
-                        fp_sum:'4000'
-                    },
-                    {
-                        orderReceiptsId:'2',
-                        supplier:'大疆集团',
-                        company:'深圳宝宝公司',
-                        area:'深圳宝安',
-                        project_name:'项目1',
-                        contract_name:'合同1',
-                        contract_no:'ht001',
-                        yfsum:'4000',
-                        djdate:'2017-10-17',
-                        fpsum:'4000',
-                        fp_list:[
-                            {
-                               index:'1' ,
-                               money:'1000' ,
-                               date:'2017-10-17' 
-                            },
-                            {
-                               index:'2' ,
-                               money:'1000' ,
-                               date:'2017-10-17' 
-                            },
-                            {
-                               index:'3' ,
-                               money:'2000' ,
-                               date:'2017-10-17' 
-                            },
-                        ],
-                        fp_sum:'4000'
-                    },
+                    // {
+                    //     orderReceiptsId:'1',
+                    //     supplier:'大疆集团',
+                    //     company:'深圳宝宝公司',
+                    //     area:'深圳宝安',
+                    //     project_name:'项目1',
+                    //     contract_name:'合同1',
+                    //     contract_no:'ht001',
+                    //     yfsum:'4000',
+                    //     djdate:'2017-10-17',
+                    //     fpsum:'4000',
+                    //     fp_list:[
+                    //         {
+                    //            index:'1' ,
+                    //            money:'1000' ,
+                    //            date:'2017-10-17' 
+                    //         },
+                    //         {
+                    //            index:'2' ,
+                    //            money:'1000' ,
+                    //            date:'2017-10-17' 
+                    //         },
+                    //         {
+                    //            index:'3' ,
+                    //            money:'2000' ,
+                    //            date:'2017-10-17' 
+                    //         },
+                    //     ],
+                    //     fp_sum:'4000'
+                    // },
+                    // {
+                    //     orderReceiptsId:'2',
+                    //     supplier:'大疆集团',
+                    //     company:'深圳宝宝公司',
+                    //     area:'深圳宝安',
+                    //     project_name:'项目1',
+                    //     contract_name:'合同1',
+                    //     contract_no:'ht001',
+                    //     yfsum:'4000',
+                    //     djdate:'2017-10-17',
+                    //     fpsum:'4000',
+                    //     fp_list:[
+                    //         {
+                    //            index:'1' ,
+                    //            money:'1000' ,
+                    //            date:'2017-10-17' 
+                    //         },
+                    //         {
+                    //            index:'2' ,
+                    //            money:'1000' ,
+                    //            date:'2017-10-17' 
+                    //         },
+                    //         {
+                    //            index:'3' ,
+                    //            money:'2000' ,
+                    //            date:'2017-10-17' 
+                    //         },
+                    //     ],
+                    //     fp_sum:'4000'
+                    // },
                 ],
                 list_pagenum:1,
                 list_pagesize:10,
