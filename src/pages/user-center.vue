@@ -5,21 +5,18 @@
                 <el-col>
                 	<el-form label-width='100px' class='user-form'>
                 		<el-form-item label='姓名'>
-                			<el-input placeholder='请输入您的姓名'></el-input>
+                			<el-input v-model='user.name' placeholder='请输入您的姓名'></el-input>
                 		</el-form-item>
                 		<el-form-item label='手机号码'>
-                			<el-input placeholder='请输入您的手机号码'></el-input>
+                			<el-input v-model='user.mobile' placeholder='请输入您的手机号码'></el-input>
                 		</el-form-item>
-                		<el-form-item label='身份证号'>
+                		<el-form-item v-model='user.id_number' label='身份证号'>
                 			<el-input placeholder='请输入您的身份证号码'></el-input>
                 		</el-form-item>
-                		<el-form-item label='上传身份证'>
-                			<el-upload
-                             	class="upload-demo"
-                            	action="https://jsonplaceholder.typicode.com/posts/"
-                              	:on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传证件</el-button>
-                          </el-upload>
+                		<el-form-item label='上传身份证' prop="path">
+                            <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback1">
+                                <el-input v-model='user.path' placeholder='点击上传证件' readonly="readonly"></el-input>
+                            </el-upload>
                 		</el-form-item>
                         <el-form-item>
                             <el-button type="primary">认 证</el-button>
@@ -130,6 +127,12 @@
                 roleType:ABS_ROLE['user'] ? ABS_ROLE['user'] : {},
                 auditType:ABS_ROLE['audit'] ? ABS_ROLE['audit'] : {},
             	company:[],
+                user: {
+                    name:'',
+                    mobile:'',
+                    id_number:'',
+                    path:''
+                },
                 enterprise:{
                     code:'',
                     enterprise_name:'',
@@ -177,6 +180,17 @@
                             type: 'success'
                         });
                         this.enterprise.path = response.data.url;
+                    }
+                }
+           },
+           uploadSuccessCallback1(response){
+                if(response.code > 0){
+                    if(response.data){
+                        this.$message({
+                            message: response.msg,
+                            type: 'success'
+                        });
+                        this.user.path = response.data.url;
                     }
                 }
            },
