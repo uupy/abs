@@ -17,8 +17,8 @@ export default {
                 params:{
                     curPage:self.currentPage,
                     pageSize:self.pageNum,
-                    productCompanyName:options.productCompanyName?options.productCompanyName:'',
-                    state:options.state?options.state:'',
+                    productCompanyName:options&&options.productCompanyName?options.productCompanyName:'',
+                    state:options&&options.state?options.state:'',
                 }
             },(response)=>{
                 self.$nprogress.done();

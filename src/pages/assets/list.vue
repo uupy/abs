@@ -335,7 +335,7 @@
             });
             this.propertyStatus = STATUS.propertyStatus;
 
-            this.getAssetsList({})
+            this.getAssetsList()
         },
         computed: {
             
