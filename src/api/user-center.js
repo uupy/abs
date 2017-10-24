@@ -3,37 +3,35 @@ export default {
         return{}
     },
     methods: {
-        // 退出登录
-        logout () {
+        // 获取基本信息
+        getEnterpriseInfo () {
             const self = this;
-            self.$confirm('确认退出吗?', '提示').then(() => {
-                localStorage.clear();
-                const self = this;
-                self.$nprogress.start();
+            self.$nprogress.start();
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+            self.onHttp({
+                method:'GET',
+                path:'/authenticate/enterpriseAuthenticationInfo'
+            },(response)=>{
+                self.$nprogress.done();
                 self.setState({
                     attr:'onLoading',
-                    val:true
+                    val:false
                 });
-                self.onHttp({
-                    method:'POST',
-                    path:'/logout'
-                },(response)=>{
-                    self.$nprogress.done();
-                    self.setState({
-                        attr:'onLoading',
-                        val:false
-                    });
-                    if(response.code > 0){
-                        localStorage.clear();
-                        self.$router.push('/login');
-                    } else{
-                        self.$message({
-                            message: response.msg,
-                            type: 'error'
-                        });
+                if(response.code > 0){
+                    if (response.data) {
+                        self.enterprise.code = response.data.code || '';
+                        self.enterprise.enerprise_name = response.data.enterprise_name || '';
                     }
-                });
-            }).catch(() => {});
+                } else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
         },
         // 修改密码
         resetPassword(formName,resetPwdForm){
