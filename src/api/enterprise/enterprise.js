@@ -4,21 +4,26 @@ export default {
     },
     methods: {
         // 获取所有企业列表
-        getAllEnterprise(){
+        getEnterpriseList(options){
             const self = this;
-            return false;
             self.$nprogress.start();
             self.setState({
                 attr:'onLoading',
                 val:true
             });
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize,
+                keyword:self.filterKeyword
+            };
+            if(options){
+                options.status ? params.status = options.status : '';
+                options.type ? params.type = options.type : '';
+            }
             self.onHttp({
                 method:'GET',
                 path:'/enterprise/list',
-                params:{
-                    curPage:self.clients_pagenum,
-                    pageSize:self.clients_pagesize
-                }
+                params:params
             },(response)=>{
                 self.$nprogress.done();
                 self.setState({
@@ -26,7 +31,17 @@ export default {
                     val:false
                 });
                 if(response.code > 0){
-                    console.log(response)
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            data.list.forEach((item,index)=>{
+                                item.index = (self.currentPage - 1)*self.pageSize + index + 1;
+                            });
+                            self.list = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }
                 } else{
                     self.$message({
                         message: response.msg,
