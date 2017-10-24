@@ -58,6 +58,11 @@ var ABS_STATUS = {
 	enterprise:{
 		1:'创建中',
 		2:'已认证'
+	},
+	enterpriseMemberStatus:{
+		1:'已认证',
+		2:'未认证',
+		3:'其他'
 	}
 }
 
