@@ -121,6 +121,7 @@ export default {
             'innerLoading',
             'user_type',
             'enterprise_type',
+            'enterprise_id',
             'nav_menu_type',
             'set_menu_type',
             'operate_authority'
