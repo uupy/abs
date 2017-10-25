@@ -3,6 +3,7 @@ export default {
         return{}
     },
     methods: {
+        //应付单据列表
         getAssetsList(options){
             const self = this;
             self.$nprogress.start();
@@ -115,6 +116,83 @@ export default {
                     });
                 }
             });
-        }
+        },
+
+        //台账列表
+        getStandingBookList(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize
+            }
+
+            if(options){
+                if(options.loanBeginTime){
+                    params.loanBeginTime = options.loanBeginTime
+                }
+
+                if(options.loanEndTime){
+                    params.loanEndTime = options.loanEndTime
+                }
+
+                if(options.receiveableMoneyBeginTime){
+                    params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
+                }
+
+                if(options.receiveableMoneyEndTime){
+                    params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
+                }
+
+                if(options.publishBeginTime){
+                    params.publishBeginTime = options.publishBeginTime
+                }
+
+                if(options.publishEndTime){
+                    params.publishEndTime = options.publishEndTime
+                }
+                if(options.status){
+                    params.status = options.status
+                }
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+            }
+                
+            self.onHttp({
+                method:'GET',
+                path:'/assets/list',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            self.propertyList = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }           
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+
     }
 }
