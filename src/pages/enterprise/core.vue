@@ -298,7 +298,7 @@
                     val:true,
                     type:'boolean'
                 });
-                this.$router.push({ path: '/pages/core/views/'+row.id,params:{enterpriseId:row.id}});
+                this.$router.push({ path: '/pages/core/views',query:{enterpriseId:row.id}});
             },
             openAddEnterpriseDialog(){
                 if(this.enterprise_type === 2){

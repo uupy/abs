@@ -1,7 +1,7 @@
 <template>
     <section class="panel-main" :style="styles">
         <template v-if="enterprise_type === 3">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tabs v-model="active_name" @tab-click="tabChange">
                 <el-tab-pane label="未融资数据" name="first">
                     <el-row class="toolbar toolbar-top">
                         <div class="f-right">
@@ -44,9 +44,9 @@
                                             <div class="cell" :style="`width:${100/5}%;`">操作</div>
                                         </li>
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.index}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.date}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -65,7 +65,7 @@
                                 </template>
                             </el-table-column>     
                         </el-table>
-                        <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="listSizeChange" @current-change="listCurrentChange" :page-size="list_pagesize" :total="list_total"></el-pagination>
+                        <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
                     </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="已融资数据" name="second">
@@ -108,9 +108,9 @@
                                             <div class="cell" :style="`width:${100/5}%;`">操作</div>
                                         </li>
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.index}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.date}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -129,7 +129,7 @@
                                 </template>
                             </el-table-column>     
                         </el-table>
-                        <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="listSizeChange" @current-change="listCurrentChange" :page-size="list_pagesize" :total="list_total"></el-pagination>
+                        <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
                     </el-row>
                 </el-tab-pane>
             </el-tabs>
@@ -230,7 +230,7 @@
                 currentPage:1,
                 pageNum:10,
                 pages:0,
-                activeName:'first',
+                active_name:'first',
                 dialog_add_client:false,
                 add_form:{},
                 dialogDisable:false,
@@ -387,18 +387,56 @@
                 
                 self.confirmFinancing({orderReceiptsIds:ids.join(',')});
             },
+            getData(active_name){
+                const self = this;
+                self.getAssetsList()
+                // if(active_name == 'first'){
+                   
+                // }else{
+                    
+                // }
+            },
+            loadEnterpriseContent(tname){
+                switch(tname){
+                    case 'base_information':
+                        // console.log('base_information')
+                    break;
+                    case 'data_management':
+                        // console.log('data_management')
+                    break;
+                    case 'contact_information':
+                        // console.log('contact_information')
+                    break;
+                }
+            },
+            //选项卡切换
+            tabChange(tab, event){
+                this.active_name = tab.name;
+                sessionStorage.setItem('assets_tname',tab.name);
+                this.loadEnterpriseContent(tab.name);
+                this.getData(this.active_name)
+            },
         },
         watch: {
             
         },
         mounted() {
-            this.$nextTick(()=>{
+            const self = this;
+            self.$nextTick(()=>{
                 const expandTables = document.querySelectorAll('.table-expand');
                 expandTables.forEach((item)=>{
                     item.querySelector('th.el-table__expand-column').innerHTML = '<div class="cell">展开</div>';
                 });
+
+                if(sessionStorage.getItem('assets_tname')){
+                    self.active_name = sessionStorage.getItem('assets_tname');
+                    self.getData(self.active_name); 
+                }else{
+                    self.getData('first')
+                }
+                self.loadEnterpriseContent(self.active_name);
             });
-            this.getAssetsList()
+            self.getAssetsList()
         },
         computed: {
             
