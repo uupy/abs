@@ -11,17 +11,29 @@ export default {
                 val:true
             });
 
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize,
+            }
+            if(options){
+                if(options.status){
+                    params.status = options.status
+                }
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+                if(options.begin){
+                    params.begin = options.begin
+                }
+                if(options.end){
+                    params.end = options.end
+                }
+
+            }
             self.onHttp({
                 method:'GET',
                 path:'/protocol/list',
-                params:{
-                    curPage:self.currentPage,
-                    pageSize:self.pageSize,
-                    status:options.status?options.status:'',
-                    keyword:options.keyword?options.keyword:'',
-                    begin:options.begin?options.begin:'',
-                    end:options.end?options.end:'',
-                }
+                params:params
             },(response)=>{
                 self.$nprogress.done();
                 self.setState({
