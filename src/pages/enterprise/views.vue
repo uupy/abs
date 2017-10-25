@@ -654,7 +654,7 @@
             },
             cancelEditContact(){
                 this.dialog_edit_contact = false;
-                this.getEnterpriseMembers({enterpriseId:this.$route.params.enterpriseId});
+                this.getEnterpriseMembers({enterpriseId:this.enterprise_id});
             },
             cancelAddContact(){
                 this.dialog_add_contact = false;
