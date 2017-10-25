@@ -75,7 +75,12 @@ export default {
                 });
                 if(response.code > 0){
                     self.list.forEach((val,index)=>{
-                        self.$set(val,'fp_list',response.data.list)
+                        self.$set(val,'fp_list',response.data.list);
+                        let fp_sum = 0;
+                        val.fp_list.forEach(val=>{
+                            fp_sum += val.money;
+                        })
+                        self.$set(val,'fp_sum',fp_sum);
                     })                    
                 }else{
                     self.$message({

@@ -177,7 +177,7 @@
                                 </li>
                                 <li>
                                     <div class="cell" :style="`width:${100/3}%;`">合计</div>
-                                    <div class="cell" :style="`width:${100/3}%;`">{{props.row.invoiceTotalMoney}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{props.row.fp_sum}}</div>
                                     <div class="cell" :style="`width:${100/3}%;`">-</div>
                                 </li>
                             </ul>
@@ -318,7 +318,10 @@
         methods: {
             listSizeChange(){},
             listCurrentChange(){},
-            clearFilter(){},
+            clearFilter(){
+                this.filter_name = '';
+                this.getAssetsList()
+            },
             supply(type){
                  if(this.orderReceiptsIds.length<=0){
                     this.$message.warning('请勾选数据')
@@ -383,8 +386,7 @@
                 });
                 
                 self.confirmFinancing({orderReceiptsIds:ids.join(',')});
-            }
-
+            },
         },
         watch: {
             
