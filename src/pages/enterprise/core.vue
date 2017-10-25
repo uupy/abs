@@ -39,7 +39,7 @@
                             <el-table-column inline-template :context="_self" label="操作" width="140">
                                 <span>
                                     <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                                    <span class="table-btn danger" v-if="enterprise_type === 2">删除</span>
+                                    <span class="table-btn danger" v-if="enterprise_type === 2" @click.stop="deleteEnterprise(row)">删除</span>
                                 </span>
                             </el-table-column>
                         </el-table>
@@ -73,7 +73,7 @@
                             <el-table-column inline-template :context="_self" label="操作" width="140">
                                 <span>
                                     <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                                    <span class="table-btn danger" v-if="enterprise_type === 2">删除</span>
+                                    <span class="table-btn danger" v-if="enterprise_type === 2" @click.stop="deleteEnterprise(row)">删除</span>
                                 </span>
                             </el-table-column>
                         </el-table>
@@ -112,7 +112,7 @@
                             <el-table-column inline-template :context="_self" label="操作" width="140">
                                 <span>
                                     <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                                    <span class="table-btn danger" v-if="enterprise_type === 2">删除</span>
+                                    <span class="table-btn danger" v-if="enterprise_type === 2" @click.stop="deleteEnterprise(row)">删除</span>
                                 </span>
                             </el-table-column>
                         </el-table>
@@ -158,7 +158,7 @@
                     <el-table-column inline-template :context="_self" label="操作" width="140">
                         <span>
                             <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                            <span class="table-btn danger" v-if="enterprise_type === 1 || enterprise_type === 2">删除</span>
+                            <span class="table-btn danger" v-if="enterprise_type === 1 || enterprise_type === 2" @click.stop="deleteEnterprise(row)">删除</span>
                         </span>
                     </el-table-column>
                 </el-table>

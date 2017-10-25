@@ -96,6 +96,46 @@ export default {
                 });
             });
         },
+        // 删除企业
+        deleteEnterprise(row) {
+            const self = this;
+            self.$confirm('操作不可逆，确认删除吗?', '提示', {
+                type: 'warning'
+            }).then(() => {
+                self.$nprogress.start();
+                self.setState({
+                    attr:'onLoading',
+                    val:true
+                });
+                self.onHttp({
+                    method:'GET',
+                    path:'/enterprise/deleteEnterprise',
+                    params:{
+                        enterpriseId:row.id
+                    }
+                },(response)=>{
+                    self.$nprogress.done();
+                    self.setState({
+                        attr:'onLoading',
+                        val:false
+                    });
+                    if(response.code > 0){
+                        self.$message({
+                            message: row.name+'，已成功删除！',
+                            type: 'success'
+                        });
+
+                        console.log(self.enterpriseCurType + ',111');
+                        self.getEnterpriseList({status:parseInt(self.enterprise_status),type:self.enterpriseCurType});
+                    }else{
+                        self.$message({
+                            message: response.msg,
+                            type: 'error'
+                        });
+                    }
+                });
+            }).catch(() => {});
+        },
         //获取企业联系方式
         getEnterpriseMembers(options){
             const self = this;

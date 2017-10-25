@@ -26,7 +26,7 @@
                 <el-table-column inline-template :context="_self" label="操作" width="140">
                     <span>
                         <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                        <span class="table-btn danger" v-if="enterprise_type === 1">删除</span>
+                        <span class="table-btn danger" v-if="enterprise_type === 1" @click.stop="deleteEnterprise(row)">删除</span>
                     </span>
                 </el-table-column>
             </el-table>
@@ -62,6 +62,7 @@
                     {label:'创建中',value:1},
                     {label:'已认证',value:2},
                 ],
+                enterpriseCurType:'3',
                 curPage:1,
                 pageSize:10,
                 pageTotal:10,
