@@ -86,7 +86,7 @@ export default {
                             type: 'success'
                         });
                         self.cancelAddEnterprise(formName);
-                        self.getEnterpriseList({type:parseInt(self.enterpriseCurType)});
+                        self.getEnterpriseList({type:self.enterpriseCurType});
                     } else{
                         self.$message({
                             message: response.msg,

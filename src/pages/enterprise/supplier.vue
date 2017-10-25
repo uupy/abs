@@ -40,7 +40,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary">确 认</el-button>
+                <el-button type="primary"  @click="addEnterprise('addForm')">确 认</el-button>
                 <el-button @click="cancelAddEnterprise('addForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
@@ -67,6 +67,7 @@
                 pageTotal:10,
                 list:[],
                 dialogVisibleAddNew:false,
+                enterpriseCurType:'3',
                 addForm:{
                     name:'',
                     role:3,
