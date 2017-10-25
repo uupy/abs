@@ -35,7 +35,7 @@
                 <el-table-column inline-template :context="_self" label="操作" width="140">
                     <span>
                         <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                        <span class="table-btn danger">删除</span>
+                        <span class="table-btn danger" @click.stop="deleteEnterprise(row)">删除</span>
                     </span>
                 </el-table-column>
             </el-table>
@@ -86,6 +86,7 @@
                     5:'互金',
                     6:'保理商',
                 },
+                enterpriseCurType:'5,6',
                 curPage:1,
                 pageSize:10,
                 pageTotal:10,
@@ -134,7 +135,7 @@
                     val:true,
                     type:'boolean'
                 });
-                this.$router.push({ path: '/pages/capital/views' });
+                this.$router.push({ path: '/pages/capital/views/'+row.id,params:{enterpriseId:row.id}});
             },
             cancelAddEnterprise(formName){
                 this.$refs[formName].resetFields();

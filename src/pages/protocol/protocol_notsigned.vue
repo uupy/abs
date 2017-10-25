@@ -21,7 +21,7 @@
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
                         <span>
                             <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
-                            <span class="table-btn danger">签约</span>
+                            <span class="table-btn danger" @click='check(row)'>签约</span>
                         </span>
                     </el-table-column>
                 </el-table>
@@ -127,7 +127,16 @@
             },
             search(){
                 const self = this;
+                if(self.filter_name.replace(/\s/g,"")==""){
+                    self.filter_name = self.filter_name.replace(/\s/g,"");
+                    return;
+                }
                 self.getProtocolList({status:1,keyword:self.filter_name});
+            },
+            check(row){   
+                const self = this;
+                console.log('protocolId:',row.id)
+                self.checkAssets({protocolId:row.id});
             }
         },
         watch: {

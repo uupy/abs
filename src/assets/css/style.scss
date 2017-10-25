@@ -578,8 +578,11 @@ i[class*=" im-icon-"]:after {
 		text-align: center;
 		h1{
 			margin: 0;
-			padding: 300px 0;
+			padding: 300px 0 30px 0;
 			font-size:30px;
+		}
+		a{
+			font-size:20px;
 		}
 	}
 	.el-message-box__close:hover{

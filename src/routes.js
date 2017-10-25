@@ -129,7 +129,7 @@ let routes = [
                         name: '集团列表',
                     },
                     {
-                        path: '/pages/core/views',
+                        path: '/pages/core/views/:enterpriseId',
                         component: EnterpriseViews,
                         name: '集团详情',
                         hidden: true
@@ -155,7 +155,7 @@ let routes = [
                         name: '融资客户列表',
                     },
                     {
-                        path: '/pages/supplier/views',
+                        path: '/pages/supplier/views/:enterpriseId',
                         component: EnterpriseViews,
                         name: '融资客户详情',
                         hidden: true
@@ -181,7 +181,7 @@ let routes = [
                         name: '合作方列表',
                     },
                     {
-                        path: '/pages/capital/views',
+                        path: '/pages/capital/views/:enterpriseId',
                         component: EnterpriseViews,
                         name: '合作方详情',
                         hidden: true

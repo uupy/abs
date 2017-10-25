@@ -78,7 +78,7 @@
                         status:'4',
                     },
                 ],
-                propertyStatus:{},
+                propertyStatus:ABS_STATUS.propertyStatus?ABS_STATUS.propertyStatus:{},
             }
         },
         methods: {

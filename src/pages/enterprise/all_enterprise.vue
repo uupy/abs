@@ -36,7 +36,7 @@
                 <el-table-column inline-template :context="_self" label="操作" width="140">
                     <span>
                         <span class="table-btn health" @click.stop="checkView(row)">企业详情</span>
-                        <span class="table-btn danger">删除</span>
+                        <span class="table-btn danger" @click.stop="deleteEnterprise(row)">删除</span>
                     </span>
                 </el-table-column>
             </el-table>
@@ -91,7 +91,7 @@
                 ],
                 curPage:1,
                 pageSize:10,
-                pageTotal:10,
+                pageTotal:0,
                 list:[],
                 dialogVisibleAddNew:false,
                 addForm:{

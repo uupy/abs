@@ -30,7 +30,7 @@
                         </span>
                     </el-table-column>
                 </el-table>
-                <el-pagination v-if='pages>1' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageNum" :total="clients_total"></el-pagination>
+                <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </div>
 
@@ -81,10 +81,12 @@
                 currentStatus:'',
                 clients_pagesize:10,
                 clients_total:2,
+                pageTotal:0,
                 pages:0,
                 currentType:0,
                 currentPage:1,
                 pageNum:10,
+                pageSize:10,
                 filter_name:'',
                 signDate:'',
                 protocolStatus:{},
@@ -157,7 +159,16 @@
             search(){
                 const self = this;
                 self.getProtocolList({status:2,keyword:self.filter_name})
-            }
+            },
+            pageSizeChange(e){
+                this.pageSize = e;
+                this.currentPage = 1;
+                this.getProtocolList({status:2});
+            },
+            pageCurrentChange(e){
+                this.currentPage = e;
+                this.getProtocolList({status:2});
+            },
         },
         watch: {
             
