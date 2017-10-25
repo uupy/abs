@@ -91,7 +91,7 @@
                 ],
                 curPage:1,
                 pageSize:10,
-                pageTotal:10,
+                pageTotal:0,
                 list:[],
                 dialogVisibleAddNew:false,
                 addForm:{
