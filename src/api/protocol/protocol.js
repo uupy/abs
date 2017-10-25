@@ -81,6 +81,53 @@ export default {
                     });
                 }
             });
+        },
+
+        //供应商复核（签约）
+        checkAssets(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = {                
+            }           
+
+            if(options){
+                if(options.protocolId){
+                    params.protocolId = options.protocolId
+                }
+            } 
+                
+            self.onHttp({
+                method:'POST',
+                path:'/protocol/providerCheckAssets',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            // self.propertyList = data.list;
+                            // self.pageTotal = data.total;
+                            // self.pages = data.pages;
+                        }
+                    }           
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
         }
     }
 }
