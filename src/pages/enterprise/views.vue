@@ -36,7 +36,7 @@
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">联系人列表</span>
-                        <span class="subtxt" @click="dialog_add_contact = true" v-if="operate_authority"><i class="im-icon-addbtn"></i>新增联系人</span>
+                        <span class="subtxt" @click="dialog_add_contact=true" v-if="operate_authority"><i class="im-icon-addbtn"></i>新增联系人</span>
                     </el-col>
                     <el-col :span="24">
                         <el-table :data="contact_persons" class="table-list">
@@ -295,7 +295,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary">保 存</el-button>
+                <el-button type="primary" @click.native='saveContact'>保 存</el-button>
                 <el-button @click="cancelEditContact('contact_form')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
@@ -303,13 +303,13 @@
         <!-- 对话框 -->
         <el-dialog size="tiny" title="新增联系人" v-model="dialog_add_contact" @close="cancelAddContact('addForm')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
-                <el-form-item label="角色" prop="role">
-                    <el-select v-model="addForm.role" placeholder="请选择签约角色">
+                <el-form-item label="角色" prop="roleType">
+                    <el-select v-model="addForm.roleType" placeholder="请选择签约角色">
                         <el-option v-for="(item,value) in contact_roles" :label="item" :value="value" :key="value"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="操作权限" prop="authority">
-                    <el-radio v-for="(item,value) in authorities" class="radio" v-model="addForm.authority" :label="value" :key="value">{{item}}</el-radio>
+                <el-form-item label="操作权限" prop="auditType">
+                    <el-radio v-for="(item,value) in authorities" class="radio" v-model="addForm.auditType" :label="value" :key="value">{{item}}</el-radio>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
                     <el-input v-model="addForm.name" placeholder="请输入联系人姓名"></el-input>
@@ -317,8 +317,8 @@
                 <el-form-item label="职位" prop="position">
                     <el-input v-model="addForm.position" placeholder="请输入联系人职位"></el-input>
                 </el-form-item>
-                <el-form-item label="手机号码" prop="tel">
-                    <el-input v-model="addForm.tel" placeholder="请输入联系人手机号码"></el-input>
+                <el-form-item label="手机号码" prop="mobile">
+                    <el-input v-model="addForm.mobile" placeholder="请输入联系人手机号码"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱地址" prop="email">
                     <el-input v-model="addForm.email" placeholder="请输入联系人邮箱地址"></el-input>
@@ -358,12 +358,6 @@
                 dialog_edit_contact:false,
                 dialog_add_data:false,
                 addForm:{
-                    name:'',
-                    role:'1',
-                    authority:'0',
-                    position:'',
-                    tel:'',
-                    email:'',
                 },
                 contact_form:{
                     // tel:'666666',
@@ -683,12 +677,16 @@
             dataSizeChange(){},
             dataCurrentChange(){},
             handleDelContact(){},
-            confirmAddContact(){},
+            confirmAddContact(){
+                this.dialog_add_contact = false;
+                this.addEnterpriseMember(this.addForm);
+            },
             editContactPerson(){
                 this.dialog_add_contact = true;
             },
             cancelEditContact(){
                 this.dialog_edit_contact = false;
+                this.getEnterpriseMembers({enterpriseId:this.$route.params.enterpriseId});
             },
             cancelAddContact(){
                 this.dialog_add_contact = false;
@@ -717,7 +715,12 @@
                 }else if(active_name == 'signed_information'){
                     //签约信息
                 }
+            },
+            saveContact(){
+                this.dialog_edit_contact = false;
+                this.updateEnterpriseBasicInfo(this.contact_form);
             }
+            
         },
         mounted() {
             const self = this;

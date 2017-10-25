@@ -227,13 +227,8 @@ export default {
                 attr:'onLoading',
                 val:true
             });
-            let params = {
-                telephone:options.telephone,
-                fax:options.fax,
-                website:options.website,
-                registerAddress:options.registerAddress,
-                contactAddress:options.contactAddress
-            };
+
+            let params = options;
             
             self.onHttp({
                 method:'POST',
@@ -247,17 +242,7 @@ export default {
                 });
 
                 if(response.code > 0){
-                    const data = response.data;
-                    if(data){
-                        self.business_infos = data.entBusinessInfo;
-                        self.shareholder_infos = data.entShareholderInfoList;
-                        self.main_staffs = data.entMainStaffList;
-                        self.branch_offices = data.entBranchOrgList;
-                        self.investment = data.entTowardsInvestmentList;
-                        self.properties = data.entIntellectualProperty;
-                        self.risk_infos = data.entRiskInformation;
-                        self.registers = data.entRegistrationInfoList;
-                    }
+                    self.$message.success('更新成功')
                 } else{
                     self.$message({
                         message: response.msg,
@@ -305,5 +290,40 @@ export default {
                 }
             });
         },
+
+
+        //新增企业联系人
+        addEnterpriseMember(options){
+            const self = this;
+            self.$nprogress.start();
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = options;
+            
+            self.onHttp({
+                method:'POST',
+                path:'/entMember/add',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+
+                if(response.code > 0){
+                    self.$message.success('新增成功')
+                } else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        }
+
     }
 }
