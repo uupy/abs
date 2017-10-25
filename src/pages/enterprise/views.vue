@@ -358,6 +358,7 @@
                 dialog_edit_contact:false,
                 dialog_add_data:false,
                 addForm:{
+                    auditType:'0'
                 },
                 contact_form:{
                     // tel:'666666',
@@ -365,6 +366,7 @@
                     // website:'https://www.baidu.com/',
                     // contact_addr:'深圳市福田区',
                     // reg_addr:'深圳市福田区',
+
                 },
                 edit_rules:{
 
@@ -400,48 +402,8 @@
                 ],
                 contact_pagenum:1,
                 contact_pagesize:10,
-                contact_total:10,
                 contact_persons:[
-                    {
-                        index:1,
-                        name:'张三',
-                        role:1,
-                        authority:0,
-                        position:'CEO',
-                        tel:'18812345678',
-                        email:'66666@qq.com',
-                        status:'已认证',
-                    },
-                    {
-                        index:2,
-                        name:'李四',
-                        role:2,
-                        authority:1,
-                        position:'CEO',
-                        tel:'18812345678',
-                        email:'66666@qq.com',
-                        status:'已认证'
-                    },
-                    {
-                        index:3,
-                        name:'王五',
-                        role:3,
-                        authority:2,
-                        position:'CEO',
-                        tel:'18812345678',
-                        email:'66666@qq.com',
-                        status:'未认证'
-                    },
-                    {
-                        index:4,
-                        name:'赵六',
-                        role:4,
-                        authority:2,
-                        position:'CEO',
-                        tel:'18812345678',
-                        email:'66666@qq.com',
-                        status:'未认证'
-                    }
+                    
                 ],
                 business_infos:[
                     {
@@ -678,8 +640,14 @@
             dataCurrentChange(){},
             handleDelContact(){},
             confirmAddContact(){
-                this.dialog_add_contact = false;
-                this.addEnterpriseMember(this.addForm);
+                const self =this;
+                self.dialog_add_contact = false;
+                if(self.addForm.auditType == '0'){
+                    delete(self.addForm.auditType);
+                }
+                console.log(self.addForm)
+                self.addForm.enterpriseType = self.enterprise_type;
+                self.addEnterpriseMember(self.addForm);
             },
             editContactPerson(){
                 this.dialog_add_contact = true;
@@ -703,15 +671,15 @@
                 if(active_name == 'contact_information'){
                     //联系方式：
                     self.getEnterpriseMembers({
-                        enterpriseId:self.$route.params.enterpriseId
+                        enterpriseId:self.$route.query.enterpriseId
                     });
                 }else if(active_name == 'base_information'){
                     //基本信息
-                    self.getEnterpriseBasicInfo({enterpriseId:self.$route.params.enterpriseId});
+                    self.getEnterpriseBasicInfo({enterpriseId:self.$route.query.enterpriseId});
 
                 }else if(active_name == 'data_management'){
                     //资料清单
-                    self.getMaterialsList({enterpriseId:self.$route.params.enterpriseId});
+                    self.getMaterialsList({enterpriseId:self.$route.query.enterpriseId});
                 }else if(active_name == 'signed_information'){
                     //签约信息
                 }

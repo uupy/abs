@@ -300,7 +300,8 @@ export default {
                 attr:'onLoading',
                 val:true
             });
-
+            
+            
             let params = options;
             
             self.onHttp({
