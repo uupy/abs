@@ -293,12 +293,11 @@
                 this.getEnterpriseList({status:parseInt(this.enterprise_status),type:this.enterpriseCurType,filter:true});
             },
             checkView(row){
-                this.saveStorageState({
-                    attr:'set_menu_type',
-                    val:true,
-                    type:'boolean'
-                });
-                this.$router.push({ path: '/pages/core/views',query:{enterpriseId:row.id}});
+                this.saveStorageState([
+                    {attr:'set_menu_type',val:true,type:'boolean'},
+                    {attr:'enterprise_id',val:row.id,type:'number'}
+                ]);
+                this.$router.push({ path: '/pages/core/views'});
             },
             openAddEnterpriseDialog(){
                 if(this.enterprise_type === 2){

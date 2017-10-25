@@ -49,7 +49,7 @@ export default {
                                 }else if(data.enterpriseType === 2){
                                     self.$router.push({ path: `/pages/core`});
                                 }else{  
-                                    self.$router.push({ path: `/pages/enterprise/views?enterpriseId=${self.enterprise_id}`});
+                                    self.$router.push({ path: `/pages/enterprise/views`});
                                 }
                             }
                         } else {

@@ -139,12 +139,11 @@
             },
             // 查看详情
             checkView(row){
-                this.saveStorageState({
-                    attr:'set_menu_type',
-                    val:true,
-                    type:'boolean'
-                });
-                this.$router.push({ path: '/pages/all_enterprise/views',query:{enterpriseId:row.id}});
+                this.saveStorageState([
+                    {attr:'set_menu_type',val:true,type:'boolean'},
+                    {attr:'enterprise_id',val:row.id,type:'number'}
+                ]);
+                this.$router.push({ path: '/pages/all_enterprise/views'});
             },
             cancelAddEnterprise(formName){
                 this.$refs[formName].resetFields();

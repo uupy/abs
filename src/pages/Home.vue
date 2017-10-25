@@ -109,7 +109,7 @@
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13){
-                	if(self.dialogFormVisible){
+                	if(self.dialogFormVisible && !self.innerLoading){
                 		self.resetPassword('resetPwdForm',self.resetPwdForm);
                 	}
                 }

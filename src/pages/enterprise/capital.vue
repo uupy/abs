@@ -130,12 +130,11 @@
                 this.getEnterpriseList({status:parseInt(this.enterprise_status),type:'5,6'});
             },
             checkView(row){
-                this.saveStorageState({
-                    attr:'set_menu_type',
-                    val:true,
-                    type:'boolean'
-                });
-                this.$router.push({ path: '/pages/capital/views',query:{enterpriseId:row.id}});
+                this.saveStorageState([
+                    {attr:'set_menu_type',val:true,type:'boolean'},
+                    {attr:'enterprise_id',val:row.id,type:'number'}
+                ]);
+                this.$router.push({ path: '/pages/capital/views' });
             },
             cancelAddEnterprise(formName){
                 this.$refs[formName].resetFields();

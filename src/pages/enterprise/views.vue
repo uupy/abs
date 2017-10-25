@@ -671,15 +671,15 @@
                 if(active_name == 'contact_information'){
                     //联系方式：
                     self.getEnterpriseMembers({
-                        enterpriseId:self.$route.query.enterpriseId
+                        enterpriseId:self.enterprise_id
                     });
                 }else if(active_name == 'base_information'){
                     //基本信息
-                    self.getEnterpriseBasicInfo({enterpriseId:self.$route.query.enterpriseId});
+                    self.getEnterpriseBasicInfo({enterpriseId:self.enterprise_id});
 
                 }else if(active_name == 'data_management'){
                     //资料清单
-                    self.getMaterialsList({enterpriseId:self.$route.query.enterpriseId});
+                    self.getMaterialsList({enterpriseId:self.enterprise_id});
                 }else if(active_name == 'signed_information'){
                     //签约信息
                 }
