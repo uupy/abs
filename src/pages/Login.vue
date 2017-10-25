@@ -28,9 +28,8 @@
     </section>
 </template>
 <script>
-    import Common from '../mixins/common.js'
-    // import Login from '../mixins/api/login.js'
-    import Login from '../api/login.js'
+    import Common from '@/mixins/common.js'
+    import Login from '@/api/login.js'
     export default {
         data() {
             return {
@@ -47,17 +46,13 @@
         },
         mixins:[Common,Login],
         methods: {
-            //取消创建
-            cancelAdd(formName) {
-                const self = this;
-                self.$refs[formName].resetFields();
-                self.dialogFormVisible = false;
-            },
             enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13){
-                    self.handleSubmit('loginForm');
+                    if(!self.innerLoading){
+                        self.handleSubmit('loginForm');
+                    }
                 }
             }
         },
