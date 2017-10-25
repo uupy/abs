@@ -72,7 +72,7 @@ let routes = [
         iconCls: 'im-icon-management',
         children: [
             {
-                path: '/pages/enterprise/views',
+                path: '/pages/enterprise/views/:enterpriseId',
                 component: EnterpriseViews,
                 name: '企业信息',
                 show:{
