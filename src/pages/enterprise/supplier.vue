@@ -111,7 +111,7 @@
                     val:true,
                     type:'boolean'
                 });
-                this.$router.push({ path: '/pages/supplier/views' });
+                this.$router.push({ path: '/pages/supplier/views/'+row.id,params:{enterpriseId:row.id}});
             },
             cancelAddEnterprise(formName){
                 this.$refs[formName].resetFields();

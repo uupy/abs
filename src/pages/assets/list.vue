@@ -339,12 +339,13 @@
 
             },
             pageSizeChange(e){
-                this.pageSize = e;
-                this.currentPage = 1;
+                this.pageNum = e;
+                this.currentPage = 1;                
                 this.getAssetsList();
             },
             pageCurrentChange(e){
                 this.currentPage = e;
+                this.pageNum = e;
                 this.getAssetsList();
             },
             tableExpand(row,expanded){
