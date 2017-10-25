@@ -35,9 +35,9 @@ export default {
                     const data = response.data;
                     if(data){
                         if(Util.isArray(data.list)){
-                            data.list.forEach((item,index)=>{
-                                item.index = (self.curPage - 1)*self.pageSize + index + 1;
-                            });
+                            // data.list.forEach((item,index)=>{
+                            //     item.index = (self.curPage - 1)*self.pageSize + index + 1;
+                            // });
                             self.list = data.list;
                             self.pageTotal = data.total;
                             self.pages = data.pages;
