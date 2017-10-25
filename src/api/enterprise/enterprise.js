@@ -51,6 +51,7 @@ export default {
                 }
             });
         },
+        // 新增企业
         addEnterprise(formName,options){
             const self = this;
             self.$refs[formName].validate((valid)=>{
@@ -174,7 +175,7 @@ export default {
             });
         },
 
-        //获取企业基本信息
+        // 获取企业基本信息
         getEnterpriseBasicInfo(options){
             const self = this;
             self.$nprogress.start();
@@ -189,6 +190,54 @@ export default {
             self.onHttp({
                 method:'GET',
                 path:'/enterprise/basicInformation',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        self.business_infos = data.entBusinessInfo;
+                        self.shareholder_infos = data.entShareholderInfoList;
+                        self.main_staffs = data.entMainStaffList;
+                        self.branch_offices = data.entBranchOrgList;
+                        self.investment = data.entTowardsInvestmentList;
+                        self.properties = data.entIntellectualProperty;
+                        self.risk_infos = data.entRiskInformation;
+                        self.registers = data.entRegistrationInfoList;
+                    }
+                } else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        // 更新企业基本信息
+        updateEnterpriseBasicInfo(options){
+            const self = this;
+            self.$nprogress.start();
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+            let params = {
+                telephone:options.telephone,
+                fax:options.fax,
+                website:options.website,
+                registerAddress:options.registerAddress,
+                contactAddress:options.contactAddress
+            };
+            
+            self.onHttp({
+                method:'POST',
+                path:'/enterprise/update',
                 params:params
             },(response)=>{
                 self.$nprogress.done();
