@@ -112,14 +112,12 @@ export default {
                     url = '/protocol/factorSignAssets';
                     break;
                 case 2:
+                case 4:
                     url = '/protocol/productAndCoreSign';
                     break;
                 case 3:
                     url = '/protocol/providerSignProtocol';
-                    break;
-                case 4:
-                    url = '/protocol/productAndCoreSign';
-                    break;
+                    break;                
             }
                 
             self.onHttp({
