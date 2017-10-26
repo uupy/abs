@@ -18,12 +18,16 @@
         <div class="panel-protocol">
             <el-row :span="24">
                 <el-table :data="list" class="table-list">
-                    <el-table-column prop="index" label="序号" width="90"></el-table-column>
-                    <el-table-column prop="id" label="协议编号"></el-table-column>
-                    <el-table-column prop="name" label="协议名称"></el-table-column>
-                    <el-table-column prop="signatory" label="协议签署方"></el-table-column>
-                    <el-table-column prop="signatoryOtherSide" label="协议签署对方"></el-table-column>
-                    <el-table-column prop="date" label="签署日期"></el-table-column>
+                    <el-table-column label="序号" width="90">
+                        <template slot-scope='scope'>
+                            {{scope.$index+1}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="protocolCode" label="协议编号"></el-table-column>
+                    <el-table-column prop="protocolName" label="协议名称"></el-table-column>
+                    <el-table-column prop="protocolEnterpriseName" label="协议签署方"></el-table-column>
+                    <el-table-column prop="protocolAnotherEnterpriseName" label="协议签署对方"></el-table-column>
+                    <el-table-column prop="signTime" label="签署日期"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
                         <span>
                             <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
