@@ -132,7 +132,8 @@
             checkView(row){
                 this.saveStorageState([
                     {attr:'set_menu_type',val:true,type:'boolean'},
-                    {attr:'enterprise_id',val:row.id,type:'number'}
+                    {attr:'enterpriseId',val:row.id,type:'number'},
+                    {attr:'enterpriseIdChange',val:true,type:'boolean'}
                 ]);
                 this.$router.push({ path: '/pages/capital/views' });
             },
