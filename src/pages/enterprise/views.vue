@@ -647,6 +647,7 @@
                 }
                 console.log(self.addForm)
                 self.addForm.enterpriseType = self.enterprise_type;
+                self.addForm.enterpriseId = this.enterprise_id;
                 self.addEnterpriseMember(self.addForm);
             },
             editContactPerson(){

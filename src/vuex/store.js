@@ -7,8 +7,8 @@ Vue.use(Vuex);
 // 应用的数据源
 const state = {
     //定义一些组件间通信的变量
-    // url: `http://127.0.0.1:8181/api`,
-    url: `http://115.28.0.94:8181/api`,
+     url: `http://127.0.0.1:8181/api`,
+    //url: `http://115.28.0.94:8181/api`,
     innerLoading: false,
     onLoading: false,
     isTimeOut: false,
