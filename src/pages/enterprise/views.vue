@@ -668,18 +668,23 @@
             },
             getData(active_name){
                 const self = this;
+                console.log('enterpriseId:',self.enterpriseId,self.enterpriseIdChange)
                 if(active_name == 'contact_information'){
                     //联系方式：
                     self.getEnterpriseMembers({
-                        enterpriseId:self.enterprise_id
+                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
                     });
                 }else if(active_name == 'base_information'){
                     //基本信息
-                    self.getEnterpriseBasicInfo({enterpriseId:self.enterprise_id});
+                    self.getEnterpriseBasicInfo({
+                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                    });
 
                 }else if(active_name == 'data_management'){
                     //资料清单
-                    self.getMaterialsList({enterpriseId:self.enterprise_id});
+                    self.getMaterialsList({
+                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                    });
                 }else if(active_name == 'signed_information'){
                     //签约信息
                 }
@@ -692,6 +697,7 @@
         },
         mounted() {
             const self = this;
+            console.log('enterpriseIdChange:',self.enterpriseIdChange)
             self.$nextTick(()=>{
                 if(!self.set_menu_type){
                     this.saveStorageState({
@@ -730,7 +736,12 @@
                     attr:'set_menu_type',
                     val:false,
                     type:'boolean' 
-                }
+                },
+                {
+                    attr:'enterpriseIdChange',
+                    val:false,
+                    type:'boolean' 
+                },                
             ]);
             this.updateOperateAuthority();
         }

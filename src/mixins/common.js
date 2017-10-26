@@ -124,7 +124,9 @@ export default {
             'enterprise_id',
             'nav_menu_type',
             'set_menu_type',
-            'operate_authority'
+            'operate_authority',
+            'enterpriseIdChange',
+            'enterpriseId',//列表=》详情时传
         ])
     },
     destroyed(){
