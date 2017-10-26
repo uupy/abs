@@ -344,10 +344,10 @@
                 active_name:'contact_information',
                 enterpriseMemberStatus:ABS_STATUS['enterpriseMemberStatus'] ? ABS_STATUS['enterpriseMemberStatus'] : {},
                 contact_roles:{
-                    1:'法人代表',
-                    2:'代理人1',
-                    3:'代理人2',
-                    4:'对接人'
+                    2:'法人代表',
+                    3:'代理人1',
+                    4:'代理人2',
+                    5:'对接人'
                 },
                 authorities:{
                     0:'无',
