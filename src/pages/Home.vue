@@ -25,7 +25,7 @@
 				<div id="panel-aside" class="optiscroll">
 					<el-menu :default-active="$route.path" class="el-menu-vertical-demo" :unique-opened="false" router>
 						<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
-							<el-submenu :index="index+''" v-if="!item.leaf">
+							<el-submenu :index="index+''" v-if="!item.leaf && item.show[enterprise_type]">
 								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
 								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[enterprise_type] && !child.hidden">{{child.name === '集团管理' ? (enterprise_type === 2 ? child.name : '集团客户管理') : (child.name === '融资客户管理' ? (enterprise_type !== 2 && enterprise_type !== 4 ? child.name : '供应商管理') : (child.name === '应付数据' ? (enterprise_type !== 3 ? child.name : '融资管理') : child.name))}}</el-menu-item>
 							</el-submenu>
