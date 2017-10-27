@@ -228,7 +228,15 @@ export default {
                 val:true
             });
 
-            let params = options;
+            // let params = options;
+            let params = {
+                id:options.id,
+                telephone:options.telephone,
+                fax:options.fax,
+                website:options.website,
+                registerAddress:options.registerAddress,
+                contactAddress:options.contactAddress,
+            }
             
             self.onHttp({
                 method:'POST',

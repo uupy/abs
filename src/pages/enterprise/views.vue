@@ -361,11 +361,11 @@
                     auditType:'0'
                 },
                 contact_form:{
-                    // tel:'666666',
-                    // fax:'222222',
-                    // website:'https://www.baidu.com/',
-                    // contact_addr:'深圳市福田区',
-                    // reg_addr:'深圳市福田区',
+                    telephone:'',
+                    fax:'',
+                    website:'',
+                    registerAddress:'',
+                    contactAddress:'',
 
                 },
                 edit_rules:{
@@ -685,8 +685,18 @@
                 }
             },
             saveContact(){
+                const self = this;
                 this.dialog_edit_contact = false;
-                this.updateEnterpriseBasicInfo(this.contact_form);
+                // this.updateEnterpriseBasicInfo(this.contact_form);
+
+                this.updateEnterpriseBasicInfo({
+                    id:self.enterprise_id,
+                    telephone:self.contact_form.telephone,
+                    fax:self.contact_form.fax,
+                    website:self.contact_form.website,
+                    registerAddress:self.contact_form.registerAddress,
+                    contactAddress:self.contact_form.contactAddress,
+                });
             }
             
         },
