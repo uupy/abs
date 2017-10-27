@@ -29,9 +29,9 @@
 								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
 								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[enterprise_type] && !child.hidden">{{child.name === '集团管理' ? (enterprise_type === 2 ? child.name : '集团客户管理') : (child.name === '融资客户管理' ? (enterprise_type !== 2 && enterprise_type !== 4 ? child.name : '供应商管理') : (child.name === '应付数据' ? (enterprise_type !== 3 ? child.name : '融资管理') : child.name))}}</el-menu-item>
 							</el-submenu>
-							<el-menu-item v-if="item.leaf && item.children.length > 0" :index="item.children[0].path">
+							<el-menu-item v-if="item.leaf && item.children.length > 0 && item.show[enterprise_type]" :index="item.children[0].path">
 								<i :class="item.iconCls"></i>{{item.children[0].name}}
-							</el-menu-item>
+							</el-menu-item>							
 						</template>
 					</el-menu>
 				</div>
@@ -139,26 +139,7 @@
 					oSide ? self.panelSideScroll = new Optiscroll(oSide) : '';
 	                oPanelCenter ? self.panelCenterScroll = new Optiscroll(oPanelCenter) : '';
 				},10);
-
-				
 			});
-
-			// self.$router.afterEach((to,from,next)=>{
-			// 	let menuId = document.querySelector('.is-opened').getAttribute('id');
-			// 	window.localStorage.setItem('menuId',menuId)
-			// })
-
-			// let menuId2 = window.localStorage.getItem('menuId');
-			// if(menuId2){
-			// 	let menu = this.$refs[menuId2];
-			// 	menu[0].$el.setAttribute('class','el-submenu is-opened')
-			// 	console.log(menu[0])
-			// 	menu[0].$el.childNodes[1].style = 'display:block'
-			// 	menu[0].$el.childNodes[1].setAttribute('data-old-padding-top','')
-			// 	menu[0].$el.childNodes[1].setAttribute('data-old-padding-bottom','')
-			// 	menu[0].$el.childNodes[1].setAttribute('data-old-overflow','')				
-			// }
-
 			document.addEventListener("keyup", self.enterKeyup, false);
 		},
 		destroyed() {
