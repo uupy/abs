@@ -13,23 +13,23 @@
                     <el-col class="info-box" style="margin-top:-8px;">
                         <p>
                             <label>固定电话：</label>
-                            <span>{{contact_form.telephone}}</span>
+                            <span>{{contact_form.telephone || ''}}</span>
                         </p>
                         <p>
                             <label>传真号码：</label>
-                            <span>{{contact_form.fax}}</span>
+                            <span>{{contact_form.fax || ''}}</span>
                         </p>
                         <p>
                             <label>官方网站：</label>
-                            <span>{{contact_form.website}}</span>
+                            <span>{{contact_form.website || ''}}</span>
                         </p>
                         <p>
                             <label>注册地址：</label>
-                            <span>{{contact_form.registerAddress}}</span>
+                            <span>{{contact_form.registerAddress || ''}}</span>
                         </p>
                         <p>
                             <label>联系地址：</label>
-                            <span>{{contact_form.contactAddress}}</span>
+                            <span>{{contact_form.contactAddress || ''}}</span>
                         </p>
                     </el-col>
                 </el-row>
@@ -235,16 +235,8 @@
                         <table class="table-info">
                             <tbody>
                                 <tr v-for="(item,index) in loan_account_infos" :key="index">
-                                    <template v-if="item.colspan">
-                                        <td class="label" width="18%">{{item.label}}</td> 
-                                        <td class="value" colspan="3">{{item.value}}</td>
-                                    </template>
-                                    <template v-else>
-                                        <td class="label" width="18%">{{item.label1}}</td> 
-                                        <td class="value">{{item.value1}}</td>
-                                        <td class="label" width="18%">{{item.label2}}</td> 
-                                        <td class="value">{{item.value2}}</td>  
-                                    </template>
+                                    <td class="label" width="18%">{{item.label}}</td> 
+                                    <td class="value" colspan="3">{{item.value}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -258,16 +250,8 @@
                         <table class="table-info">
                             <tbody>
                                 <tr v-for="(item,index) in settle_account_infos" :key="index">
-                                    <template v-if="item.colspan">
-                                        <td class="label" width="18%">{{item.label}}</td> 
-                                        <td class="value" colspan="3">{{item.value}}</td>
-                                    </template>
-                                    <template v-else>
-                                        <td class="label" width="18%">{{item.label1}}</td> 
-                                        <td class="value">{{item.value1}}</td>
-                                        <td class="label" width="18%">{{item.label2}}</td> 
-                                        <td class="value">{{item.value2}}</td>  
-                                    </template>
+                                    <td class="label" width="18%">{{item.label}}</td> 
+                                    <td class="value" colspan="3">{{item.value}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -358,7 +342,12 @@
                 dialog_edit_contact:false,
                 dialog_add_data:false,
                 addForm:{
-                    auditType:'0'
+                    roleType:'2',
+                    auditType:'0',
+                    name:'',
+                    position:'',
+                    mobile:'',
+                    email:''
                 },
                 contact_form:{
                     telephone:'',
@@ -369,10 +358,35 @@
 
                 },
                 edit_rules:{
-
+                    // telephone:[
+                    //     {required:true,message:'固定电话不能为空',trigger: 'change'}
+                    // ],
+                    // fax:[
+                    //     {required:true,message:'传真号码不能为空',trigger: 'change'}
+                    // ],
+                    // website:[
+                    //     {required:true,message:'官方网站不能为空',trigger: 'change'}
+                    // ],
+                    // registerAddress:[
+                    //     {required:true,message:'注册地址不能为空',trigger: 'change'}
+                    // ],
+                    // contactAddress:[
+                    //     {required:true,message:'联系地址不能为空',trigger: 'change'}
+                    // ]
                 },
                 rules:{
-                    
+                    name:[
+                        {required:true,message:'联系人姓名不能为空',trigger: 'change'}
+                    ],
+                    position:[
+                        {required:true,message:'联系人职位不能为空',trigger: 'change'}
+                    ],
+                    mobile:[
+                        {required:true,message:'联系人手机号码不能为空',trigger: 'change'}
+                    ],
+                    // email:[
+                    //     {required:true,message:'联系人邮箱地址不能为空',trigger: 'change'}
+                    // ]
                 },
                 data_pagenum:1,
                 data_pagesize:10,
@@ -381,22 +395,16 @@
                     {
                         index:1,
                         name:'企业法人营业执照',
-                        // range:'',
-                        // modus:'原件拍照/扫描',
                         status:'已上传'
                     },
                     {
                         index:2,
                         name:'法人身份证正反面',
-                        // range:'',
-                        // modus:'原件拍照/扫描',
                         status:'未上传'
                     },
                     {
                         index:3,
                         name:'代理人身份证正反面',
-                        // range:'法定代表人',
-                        // modus:'原件拍照/扫描',
                         status:'已上传'
                     }
                 ],
@@ -410,31 +418,36 @@
                         label1:'统一社会信用代码',
                         value1:'91440300728579238Y',
                         label2:'组织机构代码',
-                        value2:'72857923-8'
+                        value2:'72857923-8',
+                        colspan:false
                     },
                     {
                         label1:'注册号',
                         value1:'440301102812067',
                         label2:'经营状态',
-                        value2:'存续（在营、开业、在册）'
+                        value2:'存续（在营、开业、在册）',
+                        colspan:false
                     },
                     {
                         label1:'所属行业',
                         value1:'制造业',
                         label2:'公司类型',
-                        value2:'非上市股份有限公司'
+                        value2:'非上市股份有限公司',
+                        colspan:false
                     },
                     {
                         label1:'注册资本',
                         value1:'21710万元',
                         label2:'成立日期',
-                        value2:'2017-06-30'
+                        value2:'2017-06-30',
+                        colspan:false
                     },
                     {
                         label1:'营业期限',
                         value1:'2001-05-22 至 2051-05-22',
                         label2:'发照日期',
-                        value2:'2017-06-30'
+                        value2:'2017-06-30',
+                        colspan:false
                     },
                     {
                         label:'登记机关',
@@ -517,8 +530,8 @@
                     },
                 ],
                 properties:[
-                    {label1:'商标',value1:5,label2:'专利信息',value2:52},
-                    {label1:'著作权',value1:10,label2:'软件著作权',value2:30},
+                    {label1:'商标',value1:5,label2:'专利信息',value2:52,colspan:false},
+                    {label1:'著作权',value1:10,label2:'软件著作权',value2:30,colspan:false},
                     {label:'域名',value:'-',colspan:true},
                     {label:'资质认证',value:'-',colspan:true},
                 ],
@@ -595,14 +608,14 @@
                     },
                 ],
                 loan_account_infos:[
-                    {label:'户名',value:'张三',colspan:true},
-                    {label:'开户行',value:'中国工商银行',colspan:true},
-                    {label:'账号',value:'8888888888',colspan:true},
+                    {label:'户名',value:'张三'},
+                    {label:'开户行',value:'中国工商银行'},
+                    {label:'账号',value:'8888888888'},
                 ],
                 settle_account_infos:[
-                    {label:'户名',value:'张三',colspan:true},
-                    {label:'开户行',value:'中国工商银行',colspan:true},
-                    {label:'账号',value:'8888888888',colspan:true},
+                    {label:'户名',value:'张三'},
+                    {label:'开户行',value:'中国工商银行'},
+                    {label:'账号',value:'8888888888'},
                 ]
             } 
         },
@@ -612,21 +625,7 @@
             tabChange(tab, event){
                 this.active_name = tab.name;
                 sessionStorage.setItem('enterprise_tname',tab.name);
-                this.loadEnterpriseContent(tab.name);
                 this.getData(this.active_name)
-            },
-            loadEnterpriseContent(tname){
-                switch(tname){
-                    case 'base_information':
-                        // console.log('base_information')
-                    break;
-                    case 'data_management':
-                        // console.log('data_management')
-                    break;
-                    case 'contact_information':
-                        // console.log('contact_information')
-                    break;
-                }
             },
             getContact(){},
             // 清空查询
@@ -641,24 +640,28 @@
             handleDelContact(){},
             confirmAddContact(){
                 const self =this;
-                self.dialog_add_contact = false;
-                if(self.addForm.auditType == '0'){
-                    delete(self.addForm.auditType);
-                }
-                console.log(self.addForm)
-                self.addForm.enterpriseType = self.enterprise_type;
-                self.addForm.enterpriseId = self.enterpriseIdChange?self.enterpriseId:self.enterprise_id;
-                self.addEnterpriseMember(self.addForm);
+                self.$refs['addForm'].validate((valid)=>{
+                    if(valid){
+                        if(self.addForm.auditType == '0'){
+                            delete(self.addForm.auditType);
+                        }
+                        self.addForm.enterpriseType = self.enterprise_type;
+                        self.addForm.enterpriseId = self.enterpriseIdChange?self.enterpriseId:self.enterprise_id;
+                        self.addEnterpriseMember(self.addForm);
+                    }
+                });
             },
             editContactPerson(){
                 this.dialog_add_contact = true;
             },
             cancelEditContact(){
                 this.dialog_edit_contact = false;
-                this.getEnterpriseMembers({enterpriseId:this.enterprise_id});
+                this.getEnterpriseMembers({enterpriseId:(this.enterpriseIdChange?this.enterpriseId:this.enterprise_id)});
             },
             cancelAddContact(){
+                this.$refs['addForm'].resetFields();
                 this.dialog_add_contact = false;
+                this.getEnterpriseMembers({enterpriseId:(this.enterpriseIdChange?this.enterpriseId:this.enterprise_id)});
             },
             enterKeyup(e){
                 const self = this;
@@ -692,11 +695,8 @@
             },
             saveContact(){
                 const self = this;
-                this.dialog_edit_contact = false;
-                // this.updateEnterpriseBasicInfo(this.contact_form);
-
-                this.updateEnterpriseBasicInfo({
-                    id:self.enterpriseIdChange?self.enterpriseId:self.enterprise_id,
+                self.updateEnterpriseBasicInfo({
+                    id:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id),
                     telephone:self.contact_form.telephone,
                     fax:self.contact_form.fax,
                     website:self.contact_form.website,
@@ -724,7 +724,6 @@
                 }else{
                     self.getData('contact_information')
                 }
-                self.loadEnterpriseContent(self.active_name);
             });
             
         },

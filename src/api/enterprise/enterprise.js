@@ -223,13 +223,11 @@ export default {
         // 更新企业基本信息
         updateEnterpriseBasicInfo(options){
             const self = this;
-            self.$nprogress.start();
             self.setState({
-                attr:'onLoading',
+                attr:'innerLoading',
                 val:true
             });
 
-            // let params = options;
             let params = {
                 id:options.id,
                 telephone:options.telephone,
@@ -244,14 +242,14 @@ export default {
                 path:'/enterprise/update',
                 params:params
             },(response)=>{
-                self.$nprogress.done();
                 self.setState({
-                    attr:'onLoading',
+                    attr:'innerLoading',
                     val:false
                 });
 
                 if(response.code > 0){
-                    self.$message.success('更新成功')
+                    self.$message.success('更新成功！');
+                    self.cancelEditContact();
                 } else{
                     self.$message({
                         message: response.msg,
@@ -300,16 +298,13 @@ export default {
             });
         },
 
-
         //新增企业联系人
         addEnterpriseMember(options){
             const self = this;
-            self.$nprogress.start();
             self.setState({
-                attr:'onLoading',
+                attr:'innerLoading',
                 val:true
             });
-            
             
             let params = options;
             
@@ -318,15 +313,14 @@ export default {
                 path:'/entMember/add',
                 params:params
             },(response)=>{
-                self.$nprogress.done();
                 self.setState({
-                    attr:'onLoading',
+                    attr:'innerLoading',
                     val:false
                 });
 
                 if(response.code > 0){
                     self.$message.success('新增成功');
-                    self.getData('contact_information');
+                    self.cancelAddContact();
                 } else{
                     self.$message({
                         message: response.msg,
