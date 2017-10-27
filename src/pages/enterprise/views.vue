@@ -46,7 +46,7 @@
                             <el-table-column prop="name" label="联系人姓名"></el-table-column>
                             <el-table-column prop="roleType" label="角色">
                                 <template slot-scope="scope">
-                                    <span>{{contact_roles[scope.row.roleType]}}</span>
+                                    <span>{{entMemberType[scope.row.roleType]}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="auditType" label="系统权限">
@@ -64,7 +64,6 @@
                             <el-table-column inline-template :context="_self" label="操作" width="120" align='center' v-if="operate_authority">
                                 <span>
                                     <span class="table-btn health" v-if="row.role === 2 || row.role === 3" @click.stop="editContactPerson">编辑</span>
-                                    <span class="table-btn health" v-else></span>
                                     <span class="table-btn danger" @click.stop="handleDelContact(row)">删除</span>
                                 </span>
                             </el-table-column>
@@ -199,16 +198,11 @@
                     <el-row>
                         <el-col class="toolbar toolbar-top">
                             <span class="title">基础资料清单</span>
-                            <!-- <div class="f-right" v-if="operate_authority">
-                                <el-button size="small" type="primary" @click="dialog_add_data = true"><i class="el-icon-plus"></i>新增资料</el-button>
-                            </div> -->
                         </el-col>
                         <el-col :span="24">
                             <el-table :data="data_list" class="table-list">
                                 <el-table-column prop="index" label="序号" width="90"></el-table-column>
                                 <el-table-column prop="name" label="资料名称"></el-table-column>
-                                <!-- <el-table-column prop="range" label="收集范围"></el-table-column> -->
-                                <!-- <el-table-column prop="modus" label="提交形式"></el-table-column> -->
                                 <el-table-column prop="status" label="状态">
                                     <template slot-scope="scope">
                                         <el-tag :type="scope.row.status == '已上传' ? 'success' : (scope.row.status == '未上传' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
@@ -216,17 +210,15 @@
                                 </el-table-column>
                                 <el-table-column inline-template :context="_self" label="操作" width="160">
                                     <span>
-                                        <!-- <el-button size="small" v-if="operate_authority">上传</el-button> -->
                                         <el-button size="small">下载</el-button>
                                     </span>
                                 </el-table-column>
                             </el-table>
-                            <!-- <el-pagination layout="total, sizes, prev, pager, next, jumper" @size-change="dataSizeChange" @current-change="dataCurrentChange" :page-size="data_pagesize" :total="data_total"></el-pagination> -->
                         </el-col>
                     </el-row>
                 </el-col>
             </el-tab-pane>
-            <el-tab-pane label="账户信息" name="signed_information" v-if="enterprise_type === 3 || nav_menu_type === 4">
+            <el-tab-pane label="账户信息" name="account_information" v-if="enterprise_type === 3 || nav_menu_type === 4">
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">放款账户信息</span>
@@ -261,7 +253,7 @@
         </el-tabs>
         <!-- 对话框 -->
         <el-dialog size="tiny" title="编辑联系方式" v-model="dialog_edit_contact" @close="cancelEditContact('contact_form')" class="dialogForm" :close-on-click-modal="false">
-            <el-form :model="contact_form" :rules="edit_rules" ref="contact_form" label-width="80px">
+            <el-form :model="contact_form" ref="contact_form" label-width="80px">
                 <el-form-item label="固定电话" prop="telephone">
                     <el-input v-model="contact_form.telephone" placeholder="请输入固定电话"></el-input>
                 </el-form-item>
@@ -289,7 +281,7 @@
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
                 <el-form-item label="角色" prop="roleType">
                     <el-select v-model="addForm.roleType" placeholder="请选择签约角色">
-                        <el-option v-for="(item,value) in contact_roles" :label="item" :value="value" :key="value"></el-option>
+                        <el-option v-for="(item,value) in entMemberType" :label="item" :value="value" :key="value" v-if="value !== '1'"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="操作权限" prop="auditType">
@@ -318,8 +310,7 @@
 </template>
 <script>
     import Common from '../../mixins/common.js'
-    // import Logs from '../../mixins/api/logs.js'
-    import Enterprise from '@/api/enterprise/enterprise.js'
+    import EnterpriseDetail from '@/api/enterprise/enterprise_detail.js'
     export default {
         data() {
             return {
@@ -327,12 +318,7 @@
                 filter_name:'',
                 active_name:'contact_information',
                 enterpriseMemberStatus:ABS_STATUS['enterpriseMemberStatus'] ? ABS_STATUS['enterpriseMemberStatus'] : {},
-                contact_roles:{
-                    2:'法人代表',
-                    3:'代理人1',
-                    4:'代理人2',
-                    5:'对接人'
-                },
+                entMemberType:ABS_ROLE['user'] ? ABS_ROLE['user'] : {},
                 authorities:{
                     0:'无',
                     1:'经办',
@@ -340,7 +326,6 @@
                 },
                 dialog_add_contact:false,
                 dialog_edit_contact:false,
-                dialog_add_data:false,
                 addForm:{
                     roleType:'2',
                     auditType:'0',
@@ -357,23 +342,6 @@
                     contactAddress:'',
 
                 },
-                edit_rules:{
-                    // telephone:[
-                    //     {required:true,message:'固定电话不能为空',trigger: 'change'}
-                    // ],
-                    // fax:[
-                    //     {required:true,message:'传真号码不能为空',trigger: 'change'}
-                    // ],
-                    // website:[
-                    //     {required:true,message:'官方网站不能为空',trigger: 'change'}
-                    // ],
-                    // registerAddress:[
-                    //     {required:true,message:'注册地址不能为空',trigger: 'change'}
-                    // ],
-                    // contactAddress:[
-                    //     {required:true,message:'联系地址不能为空',trigger: 'change'}
-                    // ]
-                },
                 rules:{
                     name:[
                         {required:true,message:'联系人姓名不能为空',trigger: 'change'}
@@ -383,14 +351,8 @@
                     ],
                     mobile:[
                         {required:true,message:'联系人手机号码不能为空',trigger: 'change'}
-                    ],
-                    // email:[
-                    //     {required:true,message:'联系人邮箱地址不能为空',trigger: 'change'}
-                    // ]
+                    ]
                 },
-                data_pagenum:1,
-                data_pagesize:10,
-                data_total:10,
                 data_list:[
                     {
                         index:1,
@@ -408,8 +370,6 @@
                         status:'已上传'
                     }
                 ],
-                contact_pagenum:1,
-                contact_pagesize:10,
                 contact_persons:[
                     
                 ],
@@ -616,10 +576,21 @@
                     {label:'户名',value:'张三'},
                     {label:'开户行',value:'中国工商银行'},
                     {label:'账号',value:'8888888888'},
-                ]
+                ],
+
+                loanAccountInfo:{
+                    name:'',
+                    bank:'',
+                    account:''
+                },
+                settledAccountInfo:{
+                    name:'',
+                    bank:'',
+                    account:''
+                },
             } 
         },
-        mixins:[Common,Enterprise],
+        mixins:[Common,EnterpriseDetail],
         methods: {
             //选项卡切换
             tabChange(tab, event){
@@ -627,16 +598,6 @@
                 sessionStorage.setItem('enterprise_tname',tab.name);
                 this.getData(this.active_name)
             },
-            getContact(){},
-            // 清空查询
-            clearFilter(){
-                const self = this;
-                self.filter_name = '';
-            },
-            contactSizeChange(){},
-            contactCurrentChange(){},
-            dataSizeChange(){},
-            dataCurrentChange(){},
             handleDelContact(){},
             confirmAddContact(){
                 const self =this;
@@ -645,9 +606,11 @@
                         if(self.addForm.auditType == '0'){
                             delete(self.addForm.auditType);
                         }
-                        self.addForm.enterpriseType = self.enterprise_type;
-                        self.addForm.enterpriseId = self.enterpriseIdChange?self.enterpriseId:self.enterprise_id;
-                        self.addEnterpriseMember(self.addForm);
+                        let params = self.addForm;
+                        params.enterpriseType = self.enterprise_type;
+                        params.enterpriseId = self.enterpriseIdChange?self.enterpriseId:self.enterprise_id;
+                        params.roleType = parseInt(self.addForm.roleType);
+                        self.addEnterpriseMember(params);
                     }
                 });
             },
@@ -672,25 +635,33 @@
             },
             getData(active_name){
                 const self = this;
-                //console.log('enterpriseId:',self.enterpriseId,self.enterpriseIdChange)
-                if(active_name == 'contact_information'){
-                    //联系方式：
-                    self.getEnterpriseMembers({
-                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
-                    });
-                }else if(active_name == 'base_information'){
-                    //基本信息
-                    self.getEnterpriseBasicInfo({
-                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
-                    });
-
-                }else if(active_name == 'data_management'){
-                    //资料清单
-                    self.getMaterialsList({
-                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
-                    });
-                }else if(active_name == 'signed_information'){
-                    //签约信息
+                switch(active_name){
+                    case 'contact_information':
+                        //联系方式：
+                        self.getEnterpriseMembers({
+                            enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                        });
+                        break;
+                    case 'base_information':
+                        //基本信息
+                        self.getEnterpriseBasicInfo({
+                            enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                        });
+                        break;  
+                    case 'data_management':
+                        //资料清单
+                        self.getMaterialsList({
+                            enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                        });
+                        break; 
+                    case 'account_information':
+                        //账户信息
+                        self.getEnterpriseAccountInfo({
+                            enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                        });
+                        break;   
+                        default:
+                        break;
                 }
             },
             saveContact(){
@@ -708,7 +679,6 @@
         },
         mounted() {
             const self = this;
-            console.log('enterpriseIdChange:',self.enterprise_id,self.enterpriseIdChange)
             self.$nextTick(()=>{
                 if(!self.set_menu_type){
                     this.saveStorageState({
