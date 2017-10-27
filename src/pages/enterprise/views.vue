@@ -1,7 +1,7 @@
 <template>
     <section class="panel-main" :style="styles">
         <el-row class="toolbar">
-            <span class="title" style="font-size:16px;">{{enterprise_name}}</span>
+            <span class="title" style="font-size:16px;">{{enterpriseName}}</span>
         </el-row>
         <el-tabs v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="联系方式" name="contact_information">
@@ -226,7 +226,7 @@
                     </el-row>
                 </el-col>
             </el-tab-pane>
-            <el-tab-pane label="签约信息" name="signed_information" v-if="enterprise_type === 3 || nav_menu_type === 4">
+            <el-tab-pane label="账户信息" name="signed_information" v-if="enterprise_type === 3 || nav_menu_type === 4">
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">放款账户信息</span>
@@ -339,7 +339,7 @@
     export default {
         data() {
             return {
-                enterprise_name:'碧桂园控股有限公司',
+                enterpriseName:'',
                 filter_name:'',
                 active_name:'contact_information',
                 enterpriseMemberStatus:ABS_STATUS['enterpriseMemberStatus'] ? ABS_STATUS['enterpriseMemberStatus'] : {},
@@ -647,7 +647,7 @@
                 }
                 console.log(self.addForm)
                 self.addForm.enterpriseType = self.enterprise_type;
-                self.addForm.enterpriseId = this.enterpriseId;
+                self.addForm.enterpriseId = self.enterpriseIdChange?self.enterpriseId:self.enterprise_id;
                 self.addEnterpriseMember(self.addForm);
             },
             editContactPerson(){
@@ -669,7 +669,7 @@
             },
             getData(active_name){
                 const self = this;
-                console.log('enterpriseId:',self.enterpriseId,self.enterpriseIdChange)
+                //console.log('enterpriseId:',self.enterpriseId,self.enterpriseIdChange)
                 if(active_name == 'contact_information'){
                     //联系方式：
                     self.getEnterpriseMembers({
@@ -696,7 +696,7 @@
                 // this.updateEnterpriseBasicInfo(this.contact_form);
 
                 this.updateEnterpriseBasicInfo({
-                    id:self.enterprise_id,
+                    id:self.enterpriseIdChange?self.enterpriseId:self.enterprise_id,
                     telephone:self.contact_form.telephone,
                     fax:self.contact_form.fax,
                     website:self.contact_form.website,
@@ -708,7 +708,7 @@
         },
         mounted() {
             const self = this;
-            console.log('enterpriseIdChange:',self.enterpriseIdChange)
+            console.log('enterpriseIdChange:',self.enterprise_id,self.enterpriseIdChange)
             self.$nextTick(()=>{
                 if(!self.set_menu_type){
                     this.saveStorageState({

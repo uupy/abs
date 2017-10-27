@@ -1,5 +1,5 @@
 var WEBConfig = {
-	name:'ABS系统'
+	name:'高银保理金信系统'
 }
 
 var ABS_ROLE = {

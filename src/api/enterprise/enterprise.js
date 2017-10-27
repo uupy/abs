@@ -165,6 +165,7 @@ export default {
                     if(data){
                         self.contact_form = data.enterprise;
                         self.contact_persons = data.entMemberList;
+                        self.enterpriseName = data.enterprise.name;
                     }
                 } else{
                     self.$message({
@@ -324,7 +325,8 @@ export default {
                 });
 
                 if(response.code > 0){
-                    self.$message.success('新增成功')
+                    self.$message.success('新增成功');
+                    self.getData('contact_information');
                 } else{
                     self.$message({
                         message: response.msg,

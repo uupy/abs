@@ -2,10 +2,10 @@
     <section class="login-wrap">
         <div class="login-center">
             <h3 class="login-title">
-                <span class="login-title-con"><i>ABS</i>系统</span>
+                <span class="login-title-con"><i>高银保理金信</i>系统</span>
             </h3>
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-position="left" label-width="0px" class="loginform">
-                <p class="login-txt">Welcome to ABS</p>
+                <p class="login-txt">Welcome to goldin</p>
                 <el-form-item prop="account">
                     <el-input id="login_account" type="text" v-model="loginForm.account" auto-complete="off" placeholder="请输入账号">
                         <template slot="prepend">
