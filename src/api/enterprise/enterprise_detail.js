@@ -151,9 +151,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     if(data){
-                        if(Util.isArray(data.list)){
-                            
-                        }
+                        
                     }
                 } else{
                     self.$message({
