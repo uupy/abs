@@ -243,7 +243,7 @@ export default {
             
             self.onHttp({
                 method:'GET',
-                path:'/enterprise/bank/list',
+                path:'/enterprise/bank/account',
                 params:{
                     enterpriseId:options.enterpriseId
                 }
