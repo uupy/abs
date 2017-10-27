@@ -344,10 +344,10 @@
                 active_name:'contact_information',
                 enterpriseMemberStatus:ABS_STATUS['enterpriseMemberStatus'] ? ABS_STATUS['enterpriseMemberStatus'] : {},
                 contact_roles:{
-                    1:'法人代表',
-                    2:'代理人1',
-                    3:'代理人2',
-                    4:'对接人'
+                    2:'法人代表',
+                    3:'代理人1',
+                    4:'代理人2',
+                    5:'对接人'
                 },
                 authorities:{
                     0:'无',
@@ -647,6 +647,7 @@
                 }
                 console.log(self.addForm)
                 self.addForm.enterpriseType = self.enterprise_type;
+                self.addForm.enterpriseId = this.enterpriseId;
                 self.addEnterpriseMember(self.addForm);
             },
             editContactPerson(){
@@ -668,18 +669,23 @@
             },
             getData(active_name){
                 const self = this;
+                console.log('enterpriseId:',self.enterpriseId,self.enterpriseIdChange)
                 if(active_name == 'contact_information'){
                     //联系方式：
                     self.getEnterpriseMembers({
-                        enterpriseId:self.enterprise_id
+                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
                     });
                 }else if(active_name == 'base_information'){
                     //基本信息
-                    self.getEnterpriseBasicInfo({enterpriseId:self.enterprise_id});
+                    self.getEnterpriseBasicInfo({
+                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                    });
 
                 }else if(active_name == 'data_management'){
                     //资料清单
-                    self.getMaterialsList({enterpriseId:self.enterprise_id});
+                    self.getMaterialsList({
+                        enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)
+                    });
                 }else if(active_name == 'signed_information'){
                     //签约信息
                 }
@@ -702,6 +708,7 @@
         },
         mounted() {
             const self = this;
+            console.log('enterpriseIdChange:',self.enterpriseIdChange)
             self.$nextTick(()=>{
                 if(!self.set_menu_type){
                     this.saveStorageState({
@@ -740,7 +747,12 @@
                     attr:'set_menu_type',
                     val:false,
                     type:'boolean' 
-                }
+                },
+                {
+                    attr:'enterpriseIdChange',
+                    val:false,
+                    type:'boolean' 
+                },                
             ]);
             this.updateOperateAuthority();
         }

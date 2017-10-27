@@ -44,9 +44,10 @@ export default {
                     const data = response.data;
                     if(data){
                         if(Util.isArray(data.list)){
-                            // data.list.forEach((item,index)=>{
-                            //     item.index = (self.currentPage - 1)*self.pageSize + index + 1;
-                            // });
+                            data.list.forEach((item,index)=>{
+                                let date = new Date(item.signTime);                                
+                                item.signTime = date.Format('yyyy-MM-dd hh:mm:ss');                                
+                            });
                             self.list = data.list;
                             self.pageTotal = data.total;
                             self.pages = data.pages;
@@ -105,19 +106,24 @@ export default {
                 val:true
             });
 
-            let params = {                
-            }           
-
-            if(options){
-                if(options.protocolId){
-                    params.protocolId = options.protocolId
-                }
-            } 
+            let url = '';
+            switch(options.enterprise_type){
+                case 1:
+                    url = '/protocol/factorSignAssets';
+                    break;
+                case 2:
+                case 4:
+                    url = '/protocol/productAndCoreSign';
+                    break;
+                case 3:
+                    url = '/protocol/providerSignProtocol';
+                    break;                
+            }
                 
             self.onHttp({
                 method:'POST',
-                path:'/protocol/providerCheckAssets',
-                params:params
+                path:url,
+                params:{protocolId:options.protocolId}
             },(response)=>{
                 self.$nprogress.done();
                 self.setState({
@@ -126,13 +132,8 @@ export default {
                 });
                 if(response.code > 0){
                     const data = response.data;
-                    if(data){
-                        if(Util.isArray(data.list)){
-                            // self.propertyList = data.list;
-                            // self.pageTotal = data.total;
-                            // self.pages = data.pages;
-                        }
-                    }           
+                    self.$message.success('签约成功');
+                    self.getProtocolList({status:1});
                 }else{
                     self.$message({
                         message: response.msg,

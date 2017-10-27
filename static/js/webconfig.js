@@ -51,8 +51,8 @@ var ABS_STATUS = {
 		8:'已结算',
 	},
 	enterpriseStatus:{
-		1:'已认证',
-		2:'未认证',
+		1:'未认证',
+		2:'已认证',
 		3:'未知'
 	},
 	enterprise:{
@@ -60,9 +60,17 @@ var ABS_STATUS = {
 		2:'已认证'
 	},
 	enterpriseMemberStatus:{
-		1:'已认证',
-		2:'未认证',
+		1:'未认证',
+		2:'已认证',
 		3:'其他'
+	},
+	backMoney:{
+		1:'未匹配',
+		2:'已匹配'
+	},
+	overdue:{
+		1:'已逾期',
+		2:'已结清'
 	}
 }
 

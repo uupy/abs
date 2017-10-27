@@ -135,8 +135,7 @@
             },
             check(row){   
                 const self = this;
-                console.log('protocolId:',row.id)
-                self.checkAssets({protocolId:row.id});
+                self.checkAssets({protocolId:row.id,enterprise_type:self.enterprise_type});
             }
         },
         watch: {

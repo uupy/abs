@@ -63,7 +63,7 @@
                     <el-row :span="24">
                         <el-table :data="list" class="table-list">
                             <el-table-column type="index" label="序号" width="90"></el-table-column>
-                            <el-table-column prop="id" label="企业编号"></el-table-column>
+                            <el-table-column prop="code" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
                             <el-table-column prop="status" label="认证状态">
                                 <template slot-scope="scope">
@@ -101,7 +101,7 @@
                     <el-row :span="24">
                         <el-table :data="list" class="table-list">
                             <el-table-column type="index" label="序号" width="90"></el-table-column>
-                            <el-table-column prop="id" label="企业编号"></el-table-column>
+                            <el-table-column prop="code" label="企业编号"></el-table-column>
                             <el-table-column prop="name" label="企业名称"></el-table-column>
                             <el-table-column prop="area" label="所属区域"></el-table-column>
                             <el-table-column prop="status" label="认证状态">
@@ -142,7 +142,7 @@
             <el-row :span="24">
                 <el-table :data="list" class="table-list">
                     <el-table-column type="index" label="序号" width="90"></el-table-column>
-                    <el-table-column prop="id" label="企业编号"></el-table-column>
+                    <el-table-column prop="code" label="企业编号"></el-table-column>
                     <el-table-column prop="name" label="企业名称"></el-table-column>
                     <el-table-column prop="type" label="企业角色">
                         <template slot-scope="scope">
@@ -295,7 +295,8 @@
             checkView(row){
                 this.saveStorageState([
                     {attr:'set_menu_type',val:true,type:'boolean'},
-                    {attr:'enterprise_id',val:row.id,type:'number'}
+                    {attr:'enterpriseId',val:row.id,type:'number'},
+                    {attr:'enterpriseIdChange',val:true,type:'boolean'}
                 ]);
                 this.$router.push({ path: '/pages/core/views'});
             },
