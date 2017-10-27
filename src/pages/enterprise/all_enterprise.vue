@@ -24,7 +24,7 @@
                 <el-table-column prop="name" label="企业名称"></el-table-column>
                 <el-table-column prop="type" label="企业角色">
                     <template slot-scope="scope">
-                        <span>{{enterpriseType[scope.row.type] ? enterpriseType[scope.row.type] : '未知'}}</span>
+                        <span>{{entType[scope.row.type] ? entType[scope.row.type] : '未知'}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="area" label="所属区域"></el-table-column>
@@ -79,7 +79,7 @@
                     {label:'创建中',value:1},
                     {label:'已认证',value:2},
                 ],
-                enterpriseType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
+                entType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
                 enterpriseStatus:ABS_STATUS['enterprise'] ? ABS_STATUS['enterprise'] : {},
                 enterpriseCurType:'2,3,4,5,6',
                 enterpriseTypes:[

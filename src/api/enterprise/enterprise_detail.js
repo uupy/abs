@@ -3,7 +3,7 @@ export default {
         return{}
     },
     methods: {
-        //获取企业联系方式
+        // 获取企业联系方式
         getEnterpriseMembers(options){
             const self = this;
             self.$nprogress.start();
@@ -125,7 +125,7 @@ export default {
             });
         },
 
-        //获取资料清单
+        // 获取资料清单
         getMaterialsList(options){
             const self = this;
             self.$nprogress.start();
@@ -164,7 +164,7 @@ export default {
             });
         },
 
-        //新增企业联系人
+        // 新增企业联系人
         addEnterpriseMember(options){
             const self = this;
             self.setState({
@@ -194,7 +194,7 @@ export default {
             });
         },
 
-        //删除企业联系人
+        // 删除企业联系人
         deleteEnterpriseMember(row){
             const self = this;
             self.$confirm('操作不可逆，确认删除吗?', '提示', {
@@ -232,7 +232,7 @@ export default {
             }).catch(() => {});
         },
 
-        //获取企业账户信息
+        // 获取企业账户信息
         getEnterpriseAccountInfo(options){
             const self = this;
             self.$nprogress.start();

@@ -51,7 +51,7 @@
                             </el-table-column>
                             <el-table-column prop="auditType" label="系统权限">
                                 <template slot-scope="scope">
-                                    <span>{{authorities[scope.row.auditType]}}</span>
+                                    <span>{{entMemberAuthority[scope.row.auditType]}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="position" label="职位"></el-table-column>
@@ -279,13 +279,13 @@
         <!-- 对话框 -->
         <el-dialog size="tiny" title="新增联系人" v-model="dialog_add_contact" @close="cancelAddContact('addForm')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
+                <el-form-item label="操作权限" prop="auditType">
+                    <el-radio v-for="(item,index) in authorities" class="radio" v-model="addForm.auditType" :label="parseInt(item.value)" :key="index">{{item.label}}</el-radio>
+                </el-form-item>
                 <el-form-item label="角色" prop="roleType">
                     <el-select v-model="addForm.roleType" placeholder="请选择签约角色">
-                        <el-option v-for="(item,value) in entMemberType" :label="item" :value="value" :key="value" v-if="value !== '1'"></el-option>
+                        <el-option v-for="(item,index) in entMemberTypes" :label="item.label" :value="parseInt(item.value)" :key="index"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="操作权限" prop="auditType">
-                    <el-radio v-for="(item,value) in authorities" class="radio" v-model="addForm.auditType" :label="value" :key="value">{{item}}</el-radio>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
                     <el-input v-model="addForm.name" placeholder="请输入联系人姓名"></el-input>
@@ -319,16 +319,23 @@
                 active_name:'contact_information',
                 enterpriseMemberStatus:ABS_STATUS['enterpriseMemberStatus'] ? ABS_STATUS['enterpriseMemberStatus'] : {},
                 entMemberType:ABS_ROLE['user'] ? ABS_ROLE['user'] : {},
-                authorities:{
-                    0:'无',
-                    1:'经办',
-                    2:'复核'
-                },
+                entMemberAuthority:ABS_ROLE['audit'] ? ABS_ROLE['audit'] : {},
+                authorities:[
+                    {label:'无',value:0},
+                    {label:'经办',value:1},
+                    {label:'复核',value:2}
+                ],
+                entMemberTypes:[
+                    {label:'企业法人',value:2},
+                    {label:'代理人1',value:3},
+                    {label:'代理人2',value:4},
+                    {label:'对接人',value:5},
+                ],
                 dialog_add_contact:false,
                 dialog_edit_contact:false,
                 addForm:{
-                    roleType:'2',
-                    auditType:'0',
+                    roleType:2,
+                    auditType:0,
                     name:'',
                     position:'',
                     mobile:'',
@@ -340,7 +347,6 @@
                     website:'',
                     registerAddress:'',
                     contactAddress:'',
-
                 },
                 rules:{
                     name:[
@@ -351,7 +357,10 @@
                     ],
                     mobile:[
                         {required:true,message:'联系人手机号码不能为空',trigger: 'change'}
-                    ]
+                    ],
+                    // roleType:[
+                    //     {required:true,message:'请选择签约角色',trigger: 'change'}
+                    // ]
                 },
                 data_list:[
                     {
@@ -591,13 +600,14 @@
                 const self =this;
                 self.$refs['addForm'].validate((valid)=>{
                     if(valid){
-                        if(self.addForm.auditType == '0'){
-                            delete(self.addForm.auditType);
-                        }
-                        let params = self.addForm;
+                        let params = {};
                         params.enterpriseType = self.enterpriseIdChange?self.enterpriseType:self.enterprise_type;
                         params.enterpriseId = self.enterpriseIdChange?self.enterpriseId:self.enterprise_id;
-                        params.roleType = parseInt(self.addForm.roleType);
+                        for(let key in self.addForm){
+                            if(!params[key] && self.addForm[key]){
+                                params[key] = self.addForm[key];
+                            }
+                        }
                         self.addEnterpriseMember(params);
                     }
                 });
