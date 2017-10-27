@@ -20,14 +20,18 @@ const state = {
     // 用户角色 1>admin 2>企业法人 3>代理人1 4>代理人2 5>对接人  
     user_type:parseInt(localStorage.getItem('user_type') || '0'),
     
-    // 企业角色 1>保理商 2>核心企业 3>供应商 4>项目公司及子公司 5>合作方spv 6>合作方其他
+    // 1>保理商 2>核心企业 3>供应商 4>项目公司及子公司 5>合作方spv 6>合作方其他
+    // 当前登录企业角色 
     enterprise_type:parseInt(localStorage.getItem('enterprise_type') || '0'),
-    // 是否更换企业id
-    enterpriseIdChange:JSON.parse(localStorage.getItem('enterpriseIdChange') || false),
+    // 列表企业角色 
+    enterpriseType:parseInt(localStorage.getItem('enterpriseType') || '0'),
     // 列表企业id
     enterprise_id:parseInt(localStorage.getItem('enterprise_id') || '0'),
     // 当前登录企业id
     enterpriseId:parseInt(localStorage.getItem('enterpriseId') || '0'),
+    // 是否更换企业id
+    enterpriseIdChange:JSON.parse(localStorage.getItem('enterpriseIdChange') || false),
+    // 当前登录企业名称
     enterprise_name:localStorage.getItem('enterprise_name'),
     // 子菜单类型 1>企业信息 2>企业汇总 3>集团管理 4>融资客户管理 5>合作方管理 6>未签约协议 7>已签约协议 8>应付数据 9>待审核资产 10>应付数据 11>待分配资产 12>待放款资产 13>台账管理
     nav_menu_type:parseInt(localStorage.getItem('nav_menu_type') || '0'),

@@ -133,6 +133,7 @@
                 this.saveStorageState([
                     {attr:'set_menu_type',val:true,type:'boolean'},
                     {attr:'enterpriseId',val:row.id,type:'number'},
+                    {attr:'enterpriseType',val:row.type,type:'number'},
                     {attr:'enterpriseIdChange',val:true,type:'boolean'}
                 ]);
                 this.$router.push({ path: '/pages/capital/views' });

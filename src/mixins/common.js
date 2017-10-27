@@ -127,6 +127,7 @@ export default {
             'operate_authority',
             'enterpriseIdChange',
             'enterpriseId',//列表=》详情时传
+            'enterpriseType',//列表=》详情时传
             'enterprise_name',
         ])
     },

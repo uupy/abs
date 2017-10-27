@@ -194,6 +194,44 @@ export default {
             });
         },
 
+        //删除企业联系人
+        deleteEnterpriseMember(row){
+            const self = this;
+            self.$confirm('操作不可逆，确认删除吗?', '提示', {
+                type: 'warning'
+            }).then(()=>{
+                self.$nprogress.start();
+                self.setState({
+                    attr:'onLoading',
+                    val:true
+                });
+
+                self.onHttp({
+                    method:'POST',
+                    path:'/entMember/deleteMember',
+                    params:{
+                        enterpriseType:row.id
+                    }
+                },(response)=>{
+                    self.$nprogress.done();
+                    self.setState({
+                        attr:'onLoading',
+                        val:false
+                    });
+
+                    if(response.code > 0){
+                        self.$message.success(`成功删除联系人${row.name}`);
+                        self.getEnterpriseMembers({enterpriseId:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id)});
+                    } else{
+                        self.$message({
+                            message: response.msg,
+                            type: 'error'
+                        });
+                    }
+                });
+            }).catch(() => {});
+        },
+
         //获取企业账户信息
         getEnterpriseAccountInfo(options){
             const self = this;

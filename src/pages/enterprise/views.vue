@@ -64,7 +64,7 @@
                             <el-table-column inline-template :context="_self" label="操作" width="120" align='center' v-if="operate_authority">
                                 <span>
                                     <span class="table-btn health" v-if="row.role === 2 || row.role === 3" @click.stop="editContactPerson">编辑</span>
-                                    <span class="table-btn danger" @click.stop="handleDelContact(row)">删除</span>
+                                    <span class="table-btn danger" @click.stop="deleteEnterpriseMember(row)">删除</span>
                                 </span>
                             </el-table-column>
                         </el-table>
@@ -587,7 +587,6 @@
                 sessionStorage.setItem('enterprise_tname',tab.name);
                 this.getData(this.active_name)
             },
-            handleDelContact(){},
             confirmAddContact(){
                 const self =this;
                 self.$refs['addForm'].validate((valid)=>{
@@ -596,7 +595,7 @@
                             delete(self.addForm.auditType);
                         }
                         let params = self.addForm;
-                        params.enterpriseType = self.enterprise_type;
+                        params.enterpriseType = self.enterpriseIdChange?self.enterpriseType:self.enterprise_type;
                         params.enterpriseId = self.enterpriseIdChange?self.enterpriseId:self.enterprise_id;
                         params.roleType = parseInt(self.addForm.roleType);
                         self.addEnterpriseMember(params);
