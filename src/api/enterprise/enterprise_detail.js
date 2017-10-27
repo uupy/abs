@@ -171,7 +171,7 @@ export default {
                 attr:'innerLoading',
                 val:true
             });
-            
+
             self.onHttp({
                 method:'POST',
                 path:'/entMember/add',
@@ -219,7 +219,20 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     if(data){
-                        
+                        if(data.loanAccountInfo){
+                            self.loanAccountInfo = [
+                                {label:'户名',value:data.loanAccountInfo.bankAccountName || ''},
+                                {label:'开户行',value:data.loanAccountInfo.enterpriseBank || ''},
+                                {label:'账号',value:data.loanAccountInfo.enterpriseBankAccount || ''}
+                            ]
+                        }
+                        if(data.settledAccountInfo){
+                            self.settledAccountInfo = [
+                                {label:'户名',value:data.settledAccountInfo.bankAccountName || ''},
+                                {label:'开户行',value:data.settledAccountInfo.enterpriseBank || ''},
+                                {label:'账号',value:data.settledAccountInfo.enterpriseBankAccount || ''}
+                            ]
+                        }
                     }
                 } else{
                     self.$message({

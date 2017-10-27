@@ -226,7 +226,7 @@
                     <el-col :span="18">
                         <table class="table-info">
                             <tbody>
-                                <tr v-for="(item,index) in loan_account_infos" :key="index">
+                                <tr v-for="(item,index) in loanAccountInfo" :key="index">
                                     <td class="label" width="18%">{{item.label}}</td> 
                                     <td class="value" colspan="3">{{item.value}}</td>
                                 </tr>
@@ -241,7 +241,7 @@
                     <el-col :span="18">
                         <table class="table-info">
                             <tbody>
-                                <tr v-for="(item,index) in settle_account_infos" :key="index">
+                                <tr v-for="(item,index) in settledAccountInfo" :key="index">
                                     <td class="label" width="18%">{{item.label}}</td> 
                                     <td class="value" colspan="3">{{item.value}}</td>
                                 </tr>
@@ -567,27 +567,16 @@
                         etime:'2010-09-10'
                     },
                 ],
-                loan_account_infos:[
-                    {label:'户名',value:'张三'},
-                    {label:'开户行',value:'中国工商银行'},
-                    {label:'账号',value:'8888888888'},
+                loanAccountInfo:[
+                    {label:'户名',value:''},
+                    {label:'开户行',value:''},
+                    {label:'账号',value:''}
                 ],
-                settle_account_infos:[
-                    {label:'户名',value:'张三'},
-                    {label:'开户行',value:'中国工商银行'},
-                    {label:'账号',value:'8888888888'},
-                ],
-
-                loanAccountInfo:{
-                    name:'',
-                    bank:'',
-                    account:''
-                },
-                settledAccountInfo:{
-                    name:'',
-                    bank:'',
-                    account:''
-                },
+                settledAccountInfo:[
+                    {label:'户名',value:''},
+                    {label:'开户行',value:''},
+                    {label:'账号',value:''}
+                ]
             } 
         },
         mixins:[Common,EnterpriseDetail],
