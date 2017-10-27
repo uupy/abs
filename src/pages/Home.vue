@@ -23,9 +23,9 @@
 		<el-col :span="24" class="panel-center">
 			<aside class="panel-aside">
 				<div id="panel-aside" class="optiscroll">
-					<el-menu :default-active="$route.path" class="el-menu-vertical-demo" :unique-opened="false" router>
+					<el-menu :default-active="currentRoute" class="el-menu-vertical-demo" :unique-opened="false" router>
 						<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
-							<el-submenu :index="index+''" v-if="!item.leaf && item.show[enterprise_type]">
+							<el-submenu :ref='"menu_"+index' :id='"menu_"+index' :class='openMenu?"is-opened":""' :index="index+''" v-if="!item.leaf && item.show[enterprise_type]">
 								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
 								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[enterprise_type] && !child.hidden">{{child.name === '集团管理' ? (enterprise_type === 2 ? child.name : '集团客户管理') : (child.name === '融资客户管理' ? (enterprise_type !== 2 && enterprise_type !== 4 ? child.name : '供应商管理') : (child.name === '应付数据' ? (enterprise_type !== 3 ? child.name : '融资管理') : child.name))}}</el-menu-item>
 							</el-submenu>
@@ -76,6 +76,9 @@
 	export default {
 		data() {
 			return {
+				openMenu:false,
+				menuItemStyle:{},
+				currentRoute:'',
 				dialogFormVisible:false,
 				resetPwdForm:{
 					oldPassword:'',
@@ -120,6 +123,10 @@
 		},
 		mounted() {
 			const self = this;
+			self.currentRoute = self.$route.path;
+			if(self.$route.matched.length>=3){
+				self.currentRoute = self.$route.matched[1].path;
+			}
 			self.$nextTick(()=>{
 				self.updateOperateAuthority();
 				self.$router.beforeEach((to,from,next)=>{
@@ -132,7 +139,26 @@
 					oSide ? self.panelSideScroll = new Optiscroll(oSide) : '';
 	                oPanelCenter ? self.panelCenterScroll = new Optiscroll(oPanelCenter) : '';
 				},10);
+
+				
 			});
+
+			// self.$router.afterEach((to,from,next)=>{
+			// 	let menuId = document.querySelector('.is-opened').getAttribute('id');
+			// 	window.localStorage.setItem('menuId',menuId)
+			// })
+
+			// let menuId2 = window.localStorage.getItem('menuId');
+			// if(menuId2){
+			// 	let menu = this.$refs[menuId2];
+			// 	menu[0].$el.setAttribute('class','el-submenu is-opened')
+			// 	console.log(menu[0])
+			// 	menu[0].$el.childNodes[1].style = 'display:block'
+			// 	menu[0].$el.childNodes[1].setAttribute('data-old-padding-top','')
+			// 	menu[0].$el.childNodes[1].setAttribute('data-old-padding-bottom','')
+			// 	menu[0].$el.childNodes[1].setAttribute('data-old-overflow','')				
+			// }
+
 			document.addEventListener("keyup", self.enterKeyup, false);
 		},
 		destroyed() {
