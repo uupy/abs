@@ -38,18 +38,16 @@
             <div class="f-right" style="padding-top:40px;">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @keyup.native.enter='search' @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>导出</el-button>
+                <el-button size="small" type='primary'  :disabled='assetsIds.length<=0?true:false'>导出</el-button>
             </div>       
         </el-row>
 
         <el-row>
             <el-table
                 ref="multipleTable"
-                :data="propertyList"
-                border
+                :data="propertyList"                
                 tooltip-effect="dark"                
-                @selection-change="handleSelectionChange">
-
+                @selection-change="handleSelectionChange" @select='tableSelect' @select-all='tableSelectAll'>
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName' align='center' label='供应商'></el-table-column>
@@ -131,7 +129,8 @@
                 params:{
                     status:0
                 },
-                status:0
+                status:0,
+                assetsIds:[]
             }
         },
         methods: {
@@ -192,7 +191,15 @@
                 const self = this;
                 self.params.keyword = self.filter_name;
                 self.getStandingBookList(self.params);
-            }
+            },
+            tableSelect(selection,row){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                self.assetsIds = selection;
+            },
         },
         watch: {
             

@@ -60,6 +60,7 @@ export default {
                     params_arr.push(`${key}=${options.params[key]}`);
                 }
                 config.body = params_arr.join('&');
+                console.log('options----:',config.body)
             }
             
             if(options.async){

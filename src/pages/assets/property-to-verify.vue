@@ -22,11 +22,11 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>审核通过</el-button>
+                <el-button size="small" type='primary' @click.native='verifyHandle' :disabled='assetsIds.length<=0?true:false'>审核通过</el-button>
             </div>       
         </el-row>
         <el-row>
-            <el-table ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
+            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange" >
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
@@ -46,7 +46,7 @@
                 <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
                         <span class="table-btn health" @click.stop="checkView(scope.row)">详情</span>
-                        <span class="table-btn danger">审核通过</span>
+                        <span class="table-btn danger" @click='verifyHandle(scope.row)'>审核通过</span>
                         <span class="table-btn danger">回退</span>
                     </template>
                 </el-table-column>                
@@ -71,7 +71,8 @@
                 currentPage:1,
                 propertyList:[],
                 propertyStatus:{},
-                params:{}
+                params:{},
+                assetsIds:[]
             }
         },
         methods: {
@@ -119,7 +120,43 @@
                 }
 
                 self.getStandingBookList(self.params)  
-            }
+            },
+            verifyHandle(row){
+                const self = this;
+                let ids = [];
+                if(row.assetsId){
+                    ids = row.assetsId
+                }else{
+                    self.assetsIds.forEach(val=>{
+                        ids.push(val.assetsId)
+                    });
+                }                  
+
+                self.$confirm('确定通过审核吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    if(self.enterprise_type == '5'){
+                        //spv 审核
+                        self.spvCheckAssets({
+                            assetsIds:ids
+                        })     
+                    }else{
+                        self.assetsVerify({
+                            assetsIds:ids
+                        });
+                    }                        
+                }).catch(()=>{
+
+                });
+            },
+            tableSelect(selection,row){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                self.assetsIds = selection;
+            },
         },
         watch: {
             

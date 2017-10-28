@@ -7,11 +7,11 @@
                         <div class="f-right">
                            <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                             <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>           
-                            <el-button size="small" type='primary' @click='finacing'>融 资</el-button>
+                            <el-button size="small" type='primary'  :disabled='orderReceiptsIds.length<=0?true:false'  @click='finacing'>融 资</el-button>
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="list" class='table-list table-expand'>
+                        <el-table @select='tableSelect' :data="list" class='table-list table-expand' @select-all='tableSelectAll'  @expand='tableExpand'>
                             <el-table-column type="selection" width="40"></el-table-column>
                             <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
                             <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>         
@@ -76,7 +76,7 @@
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="list" class='table-list table-expand'>
+                        <el-table @select='tableSelect' :data="list" class='table-list table-expand'  @select-all='tableSelectAll'  @expand='tableExpand'>
                             <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
                             <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>
                             <el-table-column prop="money" label="应付金额（元）" align='center' width="130"></el-table-column>
@@ -141,7 +141,7 @@
                         <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                         <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
                     </template>
-                    <el-button size="small" type='primary' @click='supply' v-if="enterprise_type === 2">确 认</el-button>
+                    <el-button size="small" :disabled='orderReceiptsIds.length<=0?true:false' type='primary' @click='supply' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>
@@ -187,23 +187,6 @@
                  <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
-        <!-- <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
-            <el-form :model="add_form" :rules="rules" ref="add_form" label-width="120px">
-                <el-form-item label='1.付款确认书'>
-                    <el-button size='small' type='primary' @click.native='filePreview("1")'>查看</el-button>
-                    <el-button size='small' type='primary'>签订</el-button>
-                </el-form-item>
-                <el-form-item label='2.付款确认书'>
-                    <el-button size='small' type='primary' @click.native='filePreview("2")'>查看</el-button>
-                    <el-button size='small' type='primary'>签订</el-button>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click.native='confirm'>确认融资</el-button>
-                <el-button @click="cancelAddClient('add_form')">取 消</el-button>
-            </div>
-        </el-dialog> -->
-
         <el-dialog size="full" title="付款确认书" v-model="dialogDisable2" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <img :src='fileImgUrl'/>
         </el-dialog>
@@ -247,71 +230,11 @@
                         value:'1',
                     }
                 ],
-                list:[
-                    // {
-                    //     orderReceiptsId:'1',
-                    //     supplier:'大疆集团',
-                    //     company:'深圳宝宝公司',
-                    //     area:'深圳宝安',
-                    //     project_name:'项目1',
-                    //     contract_name:'合同1',
-                    //     contract_no:'ht001',
-                    //     yfsum:'4000',
-                    //     djdate:'2017-10-17',
-                    //     fpsum:'4000',
-                    //     fp_list:[
-                    //         {
-                    //            index:'1' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'2' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'3' ,
-                    //            money:'2000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //     ],
-                    //     fp_sum:'4000'
-                    // },
-                    // {
-                    //     orderReceiptsId:'2',
-                    //     supplier:'大疆集团',
-                    //     company:'深圳宝宝公司',
-                    //     area:'深圳宝安',
-                    //     project_name:'项目1',
-                    //     contract_name:'合同1',
-                    //     contract_no:'ht001',
-                    //     yfsum:'4000',
-                    //     djdate:'2017-10-17',
-                    //     fpsum:'4000',
-                    //     fp_list:[
-                    //         {
-                    //            index:'1' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'2' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'3' ,
-                    //            money:'2000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //     ],
-                    //     fp_sum:'4000'
-                    // },
-                ],
+                list:[],
                 list_pagenum:1,
                 list_pagesize:10,
                 list_total:10,
+                state:0,
             }
         },
         mixins:[Common,Assets],
@@ -324,24 +247,22 @@
             },
             supply(){      
                 const self = this; 
-                //确认      
-                if(self.orderReceiptsIds.length<=0){
-                    self.$message.warning('请选择数据')
-                    return;
-                }   
-
+                //确认     
                 self.$confirm('是否确认？','提示',{
                     type:'warning'
                 }).then(()=>{
                     //确认
+                    let ids = [];
+
+                    self.orderReceiptsIds.forEach(val=>{
+                        ids.push(val.id)
+                    });
                     self.orderReceiptsMakeSure({
-                        orderReceiptsIds:self.orderReceiptsIds
+                        orderReceiptsIds:ids
                     });
                 }).catch(()=>{
 
                 });
-
-
                     
                 this.dialogDisable = true;
             },
@@ -397,7 +318,7 @@
                 let ids = [];
                
                 self.orderReceiptsIds.forEach(val=>{
-                    ids.push(val.orderReceiptsId)
+                    ids.push(val.id)
                 });
                 
                 // self.confirmFinancing({orderReceiptsIds:ids.join(',')});
@@ -405,11 +326,6 @@
             getData(active_name){
                 const self = this;
                 self.getAssetsList()
-                // if(active_name == 'first'){
-                   
-                // }else{
-                    
-                // }
             },
             loadEnterpriseContent(tname){
                 switch(tname){
@@ -426,23 +342,28 @@
             },
             //选项卡切换
             tabChange(tab, event){
-                this.active_name = tab.name;
+                const self = this;
+                self.active_name = tab.name;               
+                self.state = tab.name=='first'?2:3;
+
                 sessionStorage.setItem('assets_tname',tab.name);
-                this.loadEnterpriseContent(tab.name);
-                this.getData(this.active_name)
+                self.loadEnterpriseContent(tab.name);
+                self.getData(self.active_name)
             },
             finacing(){
                 //融资
                 const self = this;
-                if(self.orderReceiptsIds.length<=0){
-                    self.$message.warning('请选择数据')
-                    return;
-                } 
+                
+                let ids = [];
+               
+                self.orderReceiptsIds.forEach(val=>{
+                    ids.push(val.id)
+                });
                 self.$confirm('确定融资吗？','提示',{
                     type:'warning'
                 }).then(()=>{
                     self.confirmFinancing({
-                        orderReceiptsIds:self.orderReceiptsIds
+                        orderReceiptsIds:ids
                     });
                 }).catch(()=>{
 
@@ -454,6 +375,7 @@
         },
         mounted() {
             const self = this;
+            self.state = self.enterprise_type==2?1:0
             self.$nextTick(()=>{
                 const expandTables = document.querySelectorAll('.table-expand');
                 expandTables.forEach((item)=>{

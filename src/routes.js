@@ -384,7 +384,7 @@ let routes = [
                 component: {template:'<router-view></router-view>'},
                 name: '待放款资产',
                 show:{
-                    1:false,     //保理商
+                    1:true,     //保理商
                     2:false,     //核心企业
                     3:false,     //供应商
                     4:false,     //项目公司及子公司
