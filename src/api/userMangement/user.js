@@ -32,6 +32,8 @@ export default {
                     if(data){
                         if(Util.isArray(data.list)){
                             self.list = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
                         }
                     }
                 }else{

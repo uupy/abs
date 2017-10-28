@@ -7,7 +7,7 @@
                         <div class="f-right">
                            <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                             <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>           
-                            <el-button size="small" type='primary' @click='supply("first")'>签 约</el-button>
+                            <el-button size="small" type='primary' @click='finacing'>融 资</el-button>
                         </div>
                     </el-row>
                     <el-row>
@@ -46,7 +46,7 @@
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -110,7 +110,7 @@
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -139,9 +139,9 @@
                 <div class="f-right">
                     <template v-if="enterprise_type !== 4">
                         <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
-                        <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>
+                        <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
                     </template>
-                    <el-button size="small" type='primary' @click='supply("second")' v-if="enterprise_type === 2">确 认</el-button>
+                    <el-button size="small" type='primary' @click='supply' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>
@@ -173,7 +173,7 @@
                                 <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                     <div class="cell" :style="`width:${100/3}%;`">{{item.invoiceId}}</div>
                                     <div class="cell" :style="`width:${100/3}%;`">{{item.money}}</div>
-                                    <div class="cell" :style="`width:${100/3}%;`">{{item.createTime}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.invoiceTime}}</div>
                                 </li>
                                 <li>
                                     <div class="cell" :style="`width:${100/3}%;`">合计</div>
@@ -187,7 +187,7 @@
                  <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
-        <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
+        <!-- <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="120px">
                 <el-form-item label='1.付款确认书'>
                     <el-button size='small' type='primary' @click.native='filePreview("1")'>查看</el-button>
@@ -202,7 +202,7 @@
                 <el-button type="primary" @click.native='confirm'>确认融资</el-button>
                 <el-button @click="cancelAddClient('add_form')">取 消</el-button>
             </div>
-        </el-dialog>
+        </el-dialog> -->
 
         <el-dialog size="full" title="付款确认书" v-model="dialogDisable2" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <img :src='fileImgUrl'/>
@@ -322,11 +322,27 @@
                 this.filter_name = '';
                 this.getAssetsList()
             },
-            supply(type){
-                 if(this.orderReceiptsIds.length<=0){
-                    this.$message.warning('请勾选数据')
+            supply(){      
+                const self = this; 
+                //确认      
+                if(self.orderReceiptsIds.length<=0){
+                    self.$message.warning('请选择数据')
                     return;
-                }
+                }   
+
+                self.$confirm('是否确认？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    //确认
+                    self.orderReceiptsMakeSure({
+                        orderReceiptsIds:self.orderReceiptsIds
+                    });
+                }).catch(()=>{
+
+                });
+
+
+                    
                 this.dialogDisable = true;
             },
             cancelAddClient(){
@@ -352,14 +368,13 @@
                 this.getAssetsList();
             },
             tableExpand(row,expanded){
-                console.log('id:',row.orderReceiptsId)
+                console.log('id:',row.id)
                 if(expanded){
                     const self = this;
                     if(row.orderReceiptsId&&row.orderReceiptsId!=''){
-                        self.getReceipts({orderReceiptsId:row.orderReceiptsId});
+                        self.getReceipts({orderReceiptsId:row.id});
                     }
-                }
-                    
+                }                    
             },
             search(){
                 const self = this;
@@ -385,7 +400,7 @@
                     ids.push(val.orderReceiptsId)
                 });
                 
-                self.confirmFinancing({orderReceiptsIds:ids.join(',')});
+                // self.confirmFinancing({orderReceiptsIds:ids.join(',')});
             },
             getData(active_name){
                 const self = this;
@@ -416,6 +431,23 @@
                 this.loadEnterpriseContent(tab.name);
                 this.getData(this.active_name)
             },
+            finacing(){
+                //融资
+                const self = this;
+                if(self.orderReceiptsIds.length<=0){
+                    self.$message.warning('请选择数据')
+                    return;
+                } 
+                self.$confirm('确定融资吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    self.confirmFinancing({
+                        orderReceiptsIds:self.orderReceiptsIds
+                    });
+                }).catch(()=>{
+
+                });
+            }
         },
         watch: {
             
@@ -436,7 +468,7 @@
                 }
                 self.loadEnterpriseContent(self.active_name);
             });
-            self.getAssetsList()
+            //self.getAssetsList()
         },
         computed: {
             

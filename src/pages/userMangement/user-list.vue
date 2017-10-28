@@ -169,7 +169,16 @@
             },
             search(){
                 
-            }
+            },
+            pageSizeChange(e){
+                this.pageSize = e;
+                this.currentPage = 1;                
+                this.getUserList();
+            },
+            pageCurrentChange(e){
+                this.currentPage = e;
+                this.getUserList();
+            },
         },
         watch: {
             
