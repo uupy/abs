@@ -46,7 +46,7 @@
                 <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
                         <span class="table-btn health" @click.stop="checkView(scope.row)">详情</span>
-                        <span class="table-btn danger">审核通过</span>
+                        <span class="table-btn danger" @click='verifyHandle(scope.row.id)'>审核通过</span>
                         <span class="table-btn danger">回退</span>
                     </template>
                 </el-table-column>                
@@ -122,7 +122,7 @@
                 self.getStandingBookList(self.params)  
             },
             verifyHandle(){
-
+                const self = this;
             }
         },
         watch: {
