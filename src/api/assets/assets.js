@@ -60,8 +60,8 @@ export default {
                 curPage:self.currentPage,
                 pageSize:self.pageNum
             }
-            if(options&&options.orderReceiptsIds){
-                params.orderReceiptsIds = options.orderReceiptsIds
+            if(options&&options.orderReceiptsId){
+                params.orderReceiptsId = options.orderReceiptsId
             }
             self.onHttp({
                 method:'GET',
