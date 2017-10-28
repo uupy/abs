@@ -117,7 +117,8 @@ export default {
                     val:false
                 });
                 if(response.code > 0){
-                    console.log('response:',response)                  
+                    self.$message.success('融资成功');
+                    self.getAssetsList();
                 }else{
                     self.$message({
                         message: response.msg,
