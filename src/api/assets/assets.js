@@ -14,8 +14,12 @@ export default {
             });
             let params = {
                 curPage:self.currentPage,
-                pageSize:self.pageNum,
+                pageSize:self.pageNum,                
             };
+
+            if(self.state > 0){
+                params.state = self.state
+            }
 
             if(options&&options.productCompanyName){
                 params.productCompanyName = options.productCompanyName;
@@ -228,7 +232,8 @@ export default {
                 });
                 if(response.code > 0){
                     const data = response.data;
-                    self.$message.success('已确认成功')         
+                    self.$message.success('已确认成功');
+                    self.getAssetsList();       
                 }else{
                     self.$message({
                         message: response.msg,

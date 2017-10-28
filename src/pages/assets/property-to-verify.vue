@@ -22,11 +22,11 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>审核通过</el-button>
+                <el-button size="small" type='primary' @click.native='verifyHandle'>审核通过</el-button>
             </div>       
         </el-row>
         <el-row>
-            <el-table ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
+            <el-table ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
@@ -71,7 +71,8 @@
                 currentPage:1,
                 propertyList:[],
                 propertyStatus:{},
-                params:{}
+                params:{},
+                assetsIds:''
             }
         },
         methods: {
@@ -119,6 +120,9 @@
                 }
 
                 self.getStandingBookList(self.params)  
+            },
+            verifyHandle(){
+
             }
         },
         watch: {

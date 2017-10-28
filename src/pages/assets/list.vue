@@ -187,23 +187,6 @@
                  <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
-        <!-- <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
-            <el-form :model="add_form" :rules="rules" ref="add_form" label-width="120px">
-                <el-form-item label='1.付款确认书'>
-                    <el-button size='small' type='primary' @click.native='filePreview("1")'>查看</el-button>
-                    <el-button size='small' type='primary'>签订</el-button>
-                </el-form-item>
-                <el-form-item label='2.付款确认书'>
-                    <el-button size='small' type='primary' @click.native='filePreview("2")'>查看</el-button>
-                    <el-button size='small' type='primary'>签订</el-button>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click.native='confirm'>确认融资</el-button>
-                <el-button @click="cancelAddClient('add_form')">取 消</el-button>
-            </div>
-        </el-dialog> -->
-
         <el-dialog size="full" title="付款确认书" v-model="dialogDisable2" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <img :src='fileImgUrl'/>
         </el-dialog>
@@ -247,71 +230,11 @@
                         value:'1',
                     }
                 ],
-                list:[
-                    // {
-                    //     orderReceiptsId:'1',
-                    //     supplier:'大疆集团',
-                    //     company:'深圳宝宝公司',
-                    //     area:'深圳宝安',
-                    //     project_name:'项目1',
-                    //     contract_name:'合同1',
-                    //     contract_no:'ht001',
-                    //     yfsum:'4000',
-                    //     djdate:'2017-10-17',
-                    //     fpsum:'4000',
-                    //     fp_list:[
-                    //         {
-                    //            index:'1' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'2' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'3' ,
-                    //            money:'2000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //     ],
-                    //     fp_sum:'4000'
-                    // },
-                    // {
-                    //     orderReceiptsId:'2',
-                    //     supplier:'大疆集团',
-                    //     company:'深圳宝宝公司',
-                    //     area:'深圳宝安',
-                    //     project_name:'项目1',
-                    //     contract_name:'合同1',
-                    //     contract_no:'ht001',
-                    //     yfsum:'4000',
-                    //     djdate:'2017-10-17',
-                    //     fpsum:'4000',
-                    //     fp_list:[
-                    //         {
-                    //            index:'1' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'2' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'3' ,
-                    //            money:'2000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //     ],
-                    //     fp_sum:'4000'
-                    // },
-                ],
+                list:[],
                 list_pagenum:1,
                 list_pagesize:10,
                 list_total:10,
+                state:0,
             }
         },
         mixins:[Common,Assets],
@@ -324,7 +247,6 @@
             },
             supply(){      
                 const self = this; 
-                console.log(self.orderReceiptsIds)
                 //确认      
                 if(self.orderReceiptsIds.length<=0){
                     self.$message.warning('请选择数据')
@@ -347,8 +269,6 @@
                 }).catch(()=>{
 
                 });
-
-
                     
                 this.dialogDisable = true;
             },
@@ -412,11 +332,6 @@
             getData(active_name){
                 const self = this;
                 self.getAssetsList()
-                // if(active_name == 'first'){
-                   
-                // }else{
-                    
-                // }
             },
             loadEnterpriseContent(tname){
                 switch(tname){
@@ -433,10 +348,13 @@
             },
             //选项卡切换
             tabChange(tab, event){
-                this.active_name = tab.name;
+                const self = this;
+                self.active_name = tab.name;               
+                self.state = tab.name=='first'?2:3;
+
                 sessionStorage.setItem('assets_tname',tab.name);
-                this.loadEnterpriseContent(tab.name);
-                this.getData(this.active_name)
+                self.loadEnterpriseContent(tab.name);
+                self.getData(self.active_name)
             },
             finacing(){
                 //融资
@@ -466,6 +384,7 @@
         },
         mounted() {
             const self = this;
+            self.state = self.enterprise_type==2?1:0
             self.$nextTick(()=>{
                 const expandTables = document.querySelectorAll('.table-expand');
                 expandTables.forEach((item)=>{

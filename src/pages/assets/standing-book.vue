@@ -45,8 +45,7 @@
         <el-row>
             <el-table
                 ref="multipleTable"
-                :data="propertyList"
-                border
+                :data="propertyList"                
                 tooltip-effect="dark"                
                 @selection-change="handleSelectionChange">
 
