@@ -2,7 +2,7 @@
 	<el-row class="panel">
 		<el-col :span="24" class="panel-top">
 			<el-col class="leftbar">
-				<span class="logo-txt"><i>LO</i>GO</span>
+				<span class="logo-txt">L<i>O</i>G<i>O</i></span>
 			</el-col>
 			<el-col class="rightbar">
 				<el-dropdown trigger="click">
