@@ -324,7 +324,7 @@
             },
             supply(){      
                 const self = this; 
-                //确认         
+                //确认      
                 if(self.orderReceiptsIds.length<=0){
                     self.$message.warning('请选择数据')
                     return;
@@ -334,6 +334,9 @@
                     type:'warning'
                 }).then(()=>{
                     //确认
+                    self.orderReceiptsMakeSure({
+                        orderReceiptsIds:self.orderReceiptsIds
+                    });
                 }).catch(()=>{
 
                 });
