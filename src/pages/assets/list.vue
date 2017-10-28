@@ -7,7 +7,7 @@
                         <div class="f-right">
                            <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                             <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>           
-                            <el-button size="small" type='primary' @click='supply("first")'>签 约</el-button>
+                            <el-button size="small" type='primary' @click='finacing'>融 资</el-button>
                         </div>
                     </el-row>
                     <el-row>
@@ -139,9 +139,9 @@
                 <div class="f-right">
                     <template v-if="enterprise_type !== 4">
                         <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
-                        <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>
+                        <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
                     </template>
-                    <el-button size="small" type='primary' @click='supply("second")' v-if="enterprise_type === 2">确 认</el-button>
+                    <el-button size="small" type='primary' @click='supply' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>
@@ -187,7 +187,7 @@
                  <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
-        <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
+        <!-- <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <el-form :model="add_form" :rules="rules" ref="add_form" label-width="120px">
                 <el-form-item label='1.付款确认书'>
                     <el-button size='small' type='primary' @click.native='filePreview("1")'>查看</el-button>
@@ -202,7 +202,7 @@
                 <el-button type="primary" @click.native='confirm'>确认融资</el-button>
                 <el-button @click="cancelAddClient('add_form')">取 消</el-button>
             </div>
-        </el-dialog>
+        </el-dialog> -->
 
         <el-dialog size="full" title="付款确认书" v-model="dialogDisable2" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <img :src='fileImgUrl'/>
@@ -322,11 +322,13 @@
                 this.filter_name = '';
                 this.getAssetsList()
             },
-            supply(type){
-                 if(this.orderReceiptsIds.length<=0){
-                    this.$message.warning('请勾选数据')
+            supply(){       
+                //确认         
+                if(this.orderReceiptsIds.length<=0){
+                    this.$message.warning('请选择数据')
                     return;
-                }
+                }   
+                    
                 this.dialogDisable = true;
             },
             cancelAddClient(){
@@ -358,8 +360,7 @@
                     if(row.orderReceiptsId&&row.orderReceiptsId!=''){
                         self.getReceipts({orderReceiptsId:row.orderReceiptsId});
                     }
-                }
-                    
+                }                    
             },
             search(){
                 const self = this;
@@ -385,7 +386,7 @@
                     ids.push(val.orderReceiptsId)
                 });
                 
-                self.confirmFinancing({orderReceiptsIds:ids.join(',')});
+                // self.confirmFinancing({orderReceiptsIds:ids.join(',')});
             },
             getData(active_name){
                 const self = this;
@@ -416,6 +417,23 @@
                 this.loadEnterpriseContent(tab.name);
                 this.getData(this.active_name)
             },
+            finacing(){
+                //融资
+                const self = this;
+                if(self.orderReceiptsIds.length<=0){
+                    self.$message.warning('请选择数据')
+                    return;
+                } 
+                self.$confirm('确定融资吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    self.confirmFinancing({
+                        orderReceiptsIds:self.orderReceiptsIds
+                    });
+                }).catch(()=>{
+
+                });
+            }
         },
         watch: {
             

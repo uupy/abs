@@ -128,7 +128,9 @@
                         }
                     ]
                 },
-                params:{}
+                params:{
+                    status:0
+                }
             }
         },
         methods: {
@@ -151,11 +153,11 @@
             pageSizeChange(e){
                 this.pageSize = e;
                 this.currentPage = 1;
-                this.getStandingBookList();
+                this.getStandingBookList(self.params);
             },
             pageCurrentChange(e){
                 this.currentPage = e;
-                this.getStandingBookList();
+                this.getStandingBookList(self.params);
             },
             dateChange(type,event){
                 const self = this;
@@ -163,6 +165,8 @@
 
                 let begin = event.split('至')[0];
                 let end = event.split('至')[1];
+
+                self.params.status = 0;
 
                 if(type == 'loanTime'){   
                     self.params.loanBeginTime = begin;
@@ -183,7 +187,6 @@
             statusChange(e){
                 const self = this;
                 self.params.status = e;
-                console.log(self.params)
                 self.getStandingBookList(self.params)
             },
             search(){
@@ -198,8 +201,7 @@
         mixins:[Common,Assets],
         mounted() {
             const self = this;
-            // self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.getStandingBookList();
+            self.getStandingBookList(self.params);
         },
         computed: {
             

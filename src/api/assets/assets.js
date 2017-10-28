@@ -169,6 +169,8 @@ export default {
                     params.keyword = options.keyword
                 }
             }
+
+            console.log('status:',params)
                 
             self.onHttp({
                 method:'GET',
