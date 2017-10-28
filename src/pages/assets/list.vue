@@ -11,7 +11,7 @@
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="list" class='table-list table-expand' @select-all='tableSelectAll'  @expand='tableExpand'>
+                        <el-table @select='tableSelect' :data="list" class='table-list table-expand' @select-all='tableSelectAll'  @expand='tableExpand'>
                             <el-table-column type="selection" width="40"></el-table-column>
                             <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
                             <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>         
@@ -76,7 +76,7 @@
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="list" class='table-list table-expand'  @select-all='tableSelectAll'  @expand='tableExpand'>
+                        <el-table @select='tableSelect' :data="list" class='table-list table-expand'  @select-all='tableSelectAll'  @expand='tableExpand'>
                             <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
                             <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>
                             <el-table-column prop="money" label="应付金额（元）" align='center' width="130"></el-table-column>
