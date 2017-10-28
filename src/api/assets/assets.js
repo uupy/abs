@@ -242,6 +242,106 @@ export default {
                     });
                 }
             });
+        },
+
+        //资产审核
+        assetsVerify(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'POST',
+                path:'/assets/factorCheckAndGenProtocol',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已通过审核');
+                    self.getStandingBookList({status:2});      
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //资产分配 
+        assetsDistribute(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+            
+            console.log('options:',options)
+            self.onHttp({
+                method:'POST',
+                path:'/assets/factorDistributeAssets',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已分配');
+                    self.getStandingBookList({status:3});      
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //资产发行
+        assetsPublish(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'POST',
+                path:'/assets/factorPublishAssets',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已发行');
+                    self.getStandingBookList({status:4});      
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
         }
     }
 }

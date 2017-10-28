@@ -59,6 +59,7 @@ export default {
                     params_arr.push(`${key}=${options.params[key]}`);
                 }
                 config.body = params_arr.join('&');
+                console.log('options----:',config.body)
             }
             self.$http(config).then((response) => {
                 const res = response.body;

@@ -22,12 +22,12 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>确认发行</el-button>
+                <el-button size="small" type='primary' :disabled='assetsIds.length<=0?true:false' @click.native='publishHandle'>确认发行</el-button>
             </div>       
         </el-row>
 
         <el-row>
-            <el-table ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
+            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
@@ -47,7 +47,7 @@
                 <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
                         <span class="table-btn health" @click.stop="checkView(scope.row)">资产详情</span>
-                        <span class="table-btn danger">确认发行</span>
+                        <span class="table-btn danger" @click='publishHandle(scope.row)'>确认发行</span>
                     </template>
                 </el-table-column>                
             </el-table>
@@ -85,6 +85,7 @@
                         status:'4',
                     },
                 ],
+                assetsIds:[],
                 propertyStatus:ABS_STATUS.propertyStatus?ABS_STATUS.propertyStatus:{},
             }
         },
@@ -133,6 +134,36 @@
                 }
 
                 self.getStandingBookList(self.params)  
+            },
+            tableSelect(selection,row){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            publishHandle(row){
+                const self = this;
+                let ids = [];
+
+                if(row.assetsId){
+                    ids = row.assetsId;
+                }else{
+                    self.assetsIds.forEach(val=>{
+                        ids.push(val.assetsId)
+                    });
+                }
+
+                self.$confirm('确定通过审核吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    self.assetsPublish({
+                        assetsId:ids
+                    });
+                }).catch(()=>{
+
+                });                    
             }
         },
         watch: {

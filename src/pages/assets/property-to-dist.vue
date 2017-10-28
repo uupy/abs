@@ -22,12 +22,12 @@
             <div class="f-right">
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>分配资金方</el-button>
+                <el-button size="small" type='primary' :disabled='assetsIds.length<=0?true:false' @click.native='distributeHandle'>分配资金方</el-button>
             </div>       
         </el-row>
 
         <el-row>
-            <el-table ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
+            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
@@ -47,7 +47,7 @@
                 <el-table-column align='center' label='操作' width="160">
                     <template slot-scope='scope'>
                         <span class="table-btn health" @click.stop="checkView(scope.row)">详情</span>
-                        <span class="table-btn danger">分配</span>
+                        <span class="table-btn danger" @click='distributeHandle(scope.row)'>分配</span>
                         <span class="table-btn danger">回退</span>
                     </template>
                 </el-table-column>                
@@ -72,7 +72,8 @@
                 clients_total:1,
                 propertyList:[],
                 propertyStatus:{},
-                params:{}
+                params:{},
+                assetsIds:[]
             }
         },
         methods: {
@@ -119,6 +120,35 @@
                 }
 
                 self.getStandingBookList(self.params)  
+            },
+            tableSelect(selection,row){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            distributeHandle(row){
+                const self = this;
+                let ids = [];
+                let names = [];
+                let params = {}
+
+                if(row.assetsId){                    
+                    ids.push(row.assetsId)
+                    names.push(row.capitalName);
+                }else{
+                    self.assetsIds.forEach(val=>{
+                        ids.push(val.assetsId);
+                        ids.push(val.capitalName)
+                    });    
+                } 
+
+                params.assetsId = ids.join(','); 
+                params.capitalName = names.join(',');
+                self.assetsDistribute(params);
+
             }
         },
         watch: {
