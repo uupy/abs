@@ -130,7 +130,8 @@
                 },
                 params:{
                     status:0
-                }
+                },
+                status:0
             }
         },
         methods: {
@@ -165,8 +166,6 @@
 
                 let begin = event.split('至')[0];
                 let end = event.split('至')[1];
-
-                self.params.status = 0;
 
                 if(type == 'loanTime'){   
                     self.params.loanBeginTime = begin;
