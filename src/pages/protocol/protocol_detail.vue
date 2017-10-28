@@ -212,7 +212,7 @@
 </template>
 <script>
     import Common from '@/mixins/common.js'
-    import NoImg from '@/assets/images/empty_box.png'
+    // import NoImg from '@/assets/images/empty_box.png'
     export default {
         data() {
             return {
