@@ -31,7 +31,7 @@ export default {
                     if(data){
                         self.contact_form = data.enterprise;
                         self.contact_persons = data.entMemberList;
-                        self.enterpriseName = data.enterprise.name;
+                        // self.enterpriseName = data.enterprise.name;
                     }
                 } else{
                     self.$message({
@@ -278,5 +278,30 @@ export default {
                 }
             });
         },
+
+        // 文件下载
+        downLoadFile(filePath){
+            const self = this;
+            self.$nprogress.start();
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            self.onHttp({
+                method:'GET',
+                path:'/file/downloadFile',
+                async:false,
+                params:{
+                    filePath:filePath
+                }
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+            });
+        }
     }
 }

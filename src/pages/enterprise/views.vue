@@ -1,14 +1,14 @@
 <template>
     <section class="panel-main" :style="styles">
         <el-row class="toolbar">
-            <span class="title" style="font-size:16px;">{{enterpriseName}}</span>
+            <span class="title" style="font-size:16px;">{{enterpriseIdChange ? enterpriseName : enterprise_name}}</span>
         </el-row>
         <el-tabs v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="联系方式" name="contact_information">
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">企业联系方式</span>
-                        <span class="subtxt" @click="dialog_edit_contact = true" v-if="operate_authority"><i class="im-icon-edit health"></i>编辑</span>
+                        <span class="subtxt" @click="dialogEditContact = true" v-if="operate_authority"><i class="im-icon-edit health"></i>编辑</span>
                     </el-col>
                     <el-col class="info-box" style="margin-top:-8px;">
                         <p>
@@ -36,7 +36,7 @@
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">联系人列表</span>
-                        <span class="subtxt" @click="dialog_add_contact=true" v-if="operate_authority"><i class="im-icon-addbtn"></i>新增联系人</span>
+                        <span class="subtxt" @click="dialogAddContact=true" v-if="operate_authority"><i class="im-icon-addbtn"></i>新增联系人</span>
                     </el-col>
                     <el-col :span="24">
                         <el-table :data="contact_persons" class="table-list">
@@ -51,19 +51,19 @@
                             </el-table-column>
                             <el-table-column prop="auditType" label="系统权限">
                                 <template slot-scope="scope">
-                                    <span>{{entMemberAuthority[scope.row.auditType]}}</span>
+                                    <span>{{entMemberAuthority[scope.row.auditType] ? entMemberAuthority[scope.row.auditType] : entMemberAuthority['0']}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="position" label="职位"></el-table-column>
                             <el-table-column prop="mobile" label="手机号码"></el-table-column>
                             <el-table-column prop="email" label="邮箱地址"></el-table-column>
-                            <el-table-column prop="status" label="认证状态" width="100">
+                            <el-table-column prop="status" label="认证状态" align="center" width="100">
                                 <template slot-scope="scope">
                                     <el-tag :type="scope.row.status == 2 ? 'success' : (scope.row.status == 3 ? 'danger':(scope.row.status == 1 ? 'warning':'default'))" close-transition>{{enterpriseMemberStatus[scope.row.status] ? enterpriseMemberStatus[scope.row.status] : '未知'}}</el-tag>                                </template>
                             </el-table-column>
-                            <el-table-column inline-template :context="_self" label="操作" width="120" align='center' v-if="operate_authority">
+                            <el-table-column inline-template :context="_self" label="操作" align="center" width="120" v-if="operate_authority">
                                 <span>
-                                    <span class="table-btn health" v-if="row.role === 2 || row.role === 3" @click.stop="editContactPerson">编辑</span>
+                                    <span class="table-btn health" @click.stop="editContactPerson(row)">编辑</span>
                                     <span class="table-btn danger" @click.stop="deleteEnterpriseMember(row)">删除</span>
                                 </span>
                             </el-table-column>
@@ -212,10 +212,12 @@
                                         </el-tag>
                                     </template>
                                 </el-table-column>
-                                <el-table-column inline-template :context="_self" label="操作" width="160">
-                                    <span>
-                                        <el-button size="small">下载</el-button>
-                                    </span>
+                                <el-table-column label="操作" width="160">
+                                    <template slot-scope='scope'>
+                                        <span>
+                                            <el-button size="small" @click="downLoadFile('/upload/image/6bca0e1e-6f35-46ce-a27e-3b39302ccbae.jpg')">下载</el-button>
+                                        </span>
+                                    </template>
                                 </el-table-column>
                             </el-table>
                         </el-col>
@@ -256,7 +258,7 @@
             </el-tab-pane>
         </el-tabs>
         <!-- 对话框 -->
-        <el-dialog size="tiny" title="编辑联系方式" v-model="dialog_edit_contact" @close="cancelEditContact('contact_form')" class="dialogForm" :close-on-click-modal="false">
+        <el-dialog size="tiny" title="编辑联系方式" v-model="dialogEditContact" @close="cancelEditContact('contact_form')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="contact_form" ref="contact_form" label-width="80px">
                 <el-form-item label="固定电话" prop="telephone">
                     <el-input v-model="contact_form.telephone" placeholder="请输入固定电话"></el-input>
@@ -281,7 +283,7 @@
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
         </el-dialog>
         <!-- 对话框 -->
-        <el-dialog size="tiny" title="新增联系人" v-model="dialog_add_contact" @close="cancelAddContact('addForm')" class="dialogForm" :close-on-click-modal="false">
+        <el-dialog size="tiny" :title="dialogContactTitle" v-model="dialogAddContact" @close="cancelAddContact('addForm')" class="dialogForm" :close-on-click-modal="false">
             <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
                 <el-form-item label="操作权限" prop="auditType">
                     <el-radio v-for="(item,index) in authorities" class="radio" v-model="addForm.auditType" :label="parseInt(item.value)" :key="index">{{item.label}}</el-radio>
@@ -292,13 +294,13 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
-                    <el-input v-model="addForm.name" placeholder="请输入联系人姓名"></el-input>
+                    <el-input v-model="addForm.name" placeholder="请输入联系人姓名" :disabled="inputReadonly"></el-input>
                 </el-form-item>
                 <el-form-item label="职位" prop="position">
                     <el-input v-model="addForm.position" placeholder="请输入联系人职位"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号码" prop="mobile">
-                    <el-input v-model="addForm.mobile" placeholder="请输入联系人手机号码"></el-input>
+                    <el-input v-model="addForm.mobile" placeholder="请输入联系人手机号码" :disabled="inputReadonly"></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱地址" prop="email">
                     <el-input v-model="addForm.email" placeholder="请输入联系人邮箱地址"></el-input>
@@ -318,8 +320,6 @@
     export default {
         data() {
             return {
-                enterpriseName:'',
-                filter_name:'',
                 active_name:'contact_information',
                 enterpriseMemberStatus:ABS_STATUS['enterpriseMemberStatus'] ? ABS_STATUS['enterpriseMemberStatus'] : {},
                 entMemberType:ABS_ROLE['user'] ? ABS_ROLE['user'] : {},
@@ -335,8 +335,8 @@
                     {label:'代理人2',value:4},
                     {label:'对接人',value:5},
                 ],
-                dialog_add_contact:false,
-                dialog_edit_contact:false,
+                dialogAddContact:false,
+                dialogEditContact:false,
                 addForm:{
                     roleType:2,
                     auditType:0,
@@ -345,6 +345,8 @@
                     mobile:'',
                     email:''
                 },
+                inputReadonly:false,
+                dialogContactTitle:'新增联系人',
                 contact_form:{
                     telephone:'',
                     fax:'',
@@ -361,17 +363,10 @@
                     ],
                     mobile:[
                         {required:true,message:'联系人手机号码不能为空',trigger: 'change'}
-                    ],
-                    // roleType:[
-                    //     {required:true,message:'请选择签约角色',trigger: 'change'}
-                    // ]
+                    ]
                 },
-                data_list:[
-                    
-                ],
-                contact_persons:[
-                    
-                ],
+                data_list:[],
+                contact_persons:[],
                 business_infos:[
                     {
                         label1:'统一社会信用代码',
@@ -580,12 +575,13 @@
         },
         mixins:[Common,EnterpriseDetail],
         methods: {
-            //选项卡切换
+            // 选项卡切换
             tabChange(tab, event){
                 this.active_name = tab.name;
                 sessionStorage.setItem('enterprise_tname',tab.name);
                 this.getData(this.active_name)
             },
+            // 确认添加联系人
             confirmAddContact(){
                 const self =this;
                 self.$refs['addForm'].validate((valid)=>{
@@ -602,25 +598,54 @@
                     }
                 });
             },
-            editContactPerson(){
-                this.dialog_add_contact = true;
+            // 打开编辑联系人对话框
+            editContactPerson(row){
+                this.addForm = {
+                    roleType:row.roleType,
+                    auditType:row.auditType || 0,
+                    name:row.name,
+                    position:row.position,
+                    mobile:row.mobile,
+                    email:row.email
+                };
+                this.dialogContactTitle = '编辑联系人';
+                this.inputReadonly = (row.status === 2 ? true : false);
+                this.dialogAddContact = true;
             },
+            // 取消编辑企业联系方式
             cancelEditContact(){
-                this.dialog_edit_contact = false;
+                this.dialogEditContact = false;
                 this.getEnterpriseMembers({enterpriseId:(this.enterpriseIdChange?this.enterpriseId:this.enterprise_id)});
             },
+            // 取消添加联系人
             cancelAddContact(){
                 this.$refs['addForm'].resetFields();
-                this.dialog_add_contact = false;
+                this.dialogAddContact = false;
+                this.inputReadonly = false;
+                this.dialogContactTitle = '新增联系人';
+                this.addForm = {
+                    roleType:2,
+                    auditType:0,
+                    name:'',
+                    position:'',
+                    mobile:'',
+                    email:''
+                };
                 this.getEnterpriseMembers({enterpriseId:(this.enterpriseIdChange?this.enterpriseId:this.enterprise_id)});
             },
+            // enter键事件
             enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13){
-                    
+                    if(self.dialogEditContact){
+                        self.saveContact();
+                    }else if(self.dialogAddContact){
+                        self.confirmAddContact();
+                    }
                 }
             },
+            // 获取tab数据
             getData(active_name){
                 const self = this;
                 switch(active_name){
@@ -652,6 +677,7 @@
                         break;
                 }
             },
+            // 保存编辑企业联系方式
             saveContact(){
                 const self = this;
                 self.updateEnterpriseBasicInfo({
@@ -663,7 +689,6 @@
                     contactAddress:self.contact_form.contactAddress,
                 });
             }
-            
         },
         mounted() {
             const self = this;

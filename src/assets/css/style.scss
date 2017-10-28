@@ -261,11 +261,14 @@ ul{
 	transition:0.4s;
 	background: $baseColor;
 	border-color: $baseColor;
-	&:hover{
+	&:hover,&:focus{
 		color: #fff;
 		background: $baseColorHover;
 		border-color: $baseColorHover;
 	}
+}
+.el-message-box__headerbtn:focus .el-message-box__close, .el-message-box__headerbtn:hover .el-message-box__close{
+	color: $baseColorHover;
 }
 .el-dialog__close{
 	color: $baseColor;
@@ -548,12 +551,13 @@ ul{
 .login-center{
 	position:relative;
 	width: 28%;
+	min-width:380px;
 	margin: 0 auto;
 	padding-top: 8%;
 	z-index: 100;
 }
 .loginform {
-	min-width:300px;
+	
 	padding: 40px;
 	text-align: center;
 	.el-input-group__prepend,.el-input__inner{
@@ -572,7 +576,7 @@ ul{
 	}
 	.el-input__inner{
 		height: 46px;
-		padding-left: 0;
+		padding-left: 6px;
 	}
 	.el-form-item__error{
 		left: 50px;
@@ -598,7 +602,7 @@ ul{
 	}
 	.placeholder-txt{
 		position:absolute;
-		left:50px;
+		left:56px;
 		top:0px;
 		line-height:46px;
 		color:#ddd;

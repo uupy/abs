@@ -6,7 +6,9 @@ export default {
         // 退出登录
         logout () {
             const self = this;
-            self.$confirm('确认退出吗?', '提示').then(() => {
+            self.$confirm('确认退出吗?', '提示',{
+                type: 'warning'
+            }).then(() => {
                 localStorage.clear();
                 const self = this;
                 self.$nprogress.start();

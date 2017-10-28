@@ -33,6 +33,8 @@ const state = {
     enterpriseIdChange:JSON.parse(localStorage.getItem('enterpriseIdChange') || false),
     // 当前登录企业名称
     enterprise_name:localStorage.getItem('enterprise_name'),
+    // 列表企业名称
+    enterpriseName:localStorage.getItem('enterpriseName'),
     // 子菜单类型 1>企业信息 2>企业汇总 3>集团管理 4>融资客户管理 5>合作方管理 6>未签约协议 7>已签约协议 8>应付数据 9>待审核资产 10>应付数据 11>待分配资产 12>待放款资产 13>台账管理
     nav_menu_type:parseInt(localStorage.getItem('nav_menu_type') || '0'),
     set_menu_type:localStorage.getItem('set_menu_type') ? JSON.parse(localStorage.getItem('set_menu_type')) : '',
