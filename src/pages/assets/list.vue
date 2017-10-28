@@ -46,7 +46,7 @@
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -110,7 +110,7 @@
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -173,7 +173,7 @@
                                 <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                     <div class="cell" :style="`width:${100/3}%;`">{{item.invoiceId}}</div>
                                     <div class="cell" :style="`width:${100/3}%;`">{{item.money}}</div>
-                                    <div class="cell" :style="`width:${100/3}%;`">{{item.createTime}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.invoiceTime}}</div>
                                 </li>
                                 <li>
                                     <div class="cell" :style="`width:${100/3}%;`">合计</div>
