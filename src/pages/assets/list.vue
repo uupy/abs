@@ -7,7 +7,7 @@
                         <div class="f-right">
                            <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                             <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>           
-                            <el-button size="small" type='primary' @click='finacing'>融 资</el-button>
+                            <el-button size="small" type='primary'  :disabled='orderReceiptsIds.length<=0?true:false'  @click='finacing'>融 资</el-button>
                         </div>
                     </el-row>
                     <el-row>
@@ -141,7 +141,7 @@
                         <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                         <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
                     </template>
-                    <el-button size="small" type='primary' @click='supply' v-if="enterprise_type === 2">确 认</el-button>
+                    <el-button size="small" :disabled='orderReceiptsIds.length<=0?true:false' type='primary' @click='supply' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>
@@ -247,12 +247,7 @@
             },
             supply(){      
                 const self = this; 
-                //确认      
-                if(self.orderReceiptsIds.length<=0){
-                    self.$message.warning('请选择数据')
-                    return;
-                }   
-
+                //确认     
                 self.$confirm('是否确认？','提示',{
                     type:'warning'
                 }).then(()=>{
@@ -358,10 +353,7 @@
             finacing(){
                 //融资
                 const self = this;
-                if(self.orderReceiptsIds.length<=0){
-                    self.$message.warning('请选择数据')
-                    return;
-                } 
+                
                 let ids = [];
                
                 self.orderReceiptsIds.forEach(val=>{

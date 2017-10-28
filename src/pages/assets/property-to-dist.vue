@@ -145,10 +145,16 @@
                     });    
                 } 
 
-                params.assetsId = ids.join(','); 
+                params.assetsIds = ids.join(','); 
                 params.capitalName = names.join(',');
-                self.assetsDistribute(params);
 
+                self.$confirm('确定分配资产吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    self.assetsDistribute(params);
+                }).catch(()=>{
+
+                }); 
             }
         },
         watch: {
