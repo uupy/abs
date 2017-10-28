@@ -322,12 +322,23 @@
                 this.filter_name = '';
                 this.getAssetsList()
             },
-            supply(){       
+            supply(){      
+                const self = this; 
                 //确认         
-                if(this.orderReceiptsIds.length<=0){
-                    this.$message.warning('请选择数据')
+                if(self.orderReceiptsIds.length<=0){
+                    self.$message.warning('请选择数据')
                     return;
                 }   
+
+                self.$confirm('是否确认？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    //确认
+                }).catch(()=>{
+
+                });
+
+
                     
                 this.dialogDisable = true;
             },
