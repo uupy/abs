@@ -334,8 +334,14 @@
                     type:'warning'
                 }).then(()=>{
                     //确认
+                    let ids = [];
+               
+                    self.orderReceiptsIds.forEach(val=>{
+                        ids.push(val.id)
+                    });
+                    console.log(ids);
                     self.orderReceiptsMakeSure({
-                        orderReceiptsIds:self.orderReceiptsIds
+                        orderReceiptsIds:ids
                     });
                 }).catch(()=>{
 
@@ -397,7 +403,7 @@
                 let ids = [];
                
                 self.orderReceiptsIds.forEach(val=>{
-                    ids.push(val.orderReceiptsId)
+                    ids.push(val.id)
                 });
                 
                 // self.confirmFinancing({orderReceiptsIds:ids.join(',')});
