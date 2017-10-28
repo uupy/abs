@@ -135,9 +135,16 @@
                 self.$confirm('确定通过审核吗？','提示',{
                     type:'warning'
                 }).then(()=>{
-                    self.assetsVerify({
-                        assetsIds:ids
-                    });
+                    if(self.enterprise_type == '5'){
+                        //spv 审核
+                        self.spvCheckAssets({
+                            assetsIds:ids
+                        })     
+                    }else{
+                        self.assetsVerify({
+                            assetsIds:ids
+                        });
+                    }                        
                 }).catch(()=>{
 
                 });

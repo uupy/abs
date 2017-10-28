@@ -286,8 +286,7 @@ export default {
                 attr:'onLoading',
                 val:true
             });            
-            
-            console.log('options:',options)
+
             self.onHttp({
                 method:'POST',
                 path:'/assets/factorDistributeAssets',
@@ -342,6 +341,106 @@ export default {
                     });
                 }
             });
-        }
+        },
+
+        //资产审核 => spv
+        spvCheckAssets(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'POST',
+                path:'/assets/spvCheckAssets',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已通过审核');
+                    self.getStandingBookList({status:2});      
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //确认放款 => spv 资金方
+        capitalLoan(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'POST',
+                path:'/assets/capitalLoan',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已放款成功');
+                    self.getStandingBookList({status:6});      
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //确认放款 => 保理商
+        baoliLoan(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'POST',
+                path:'/assets/baoliLoan',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已放款成功');
+                    self.getStandingBookList({status:6});      
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
     }
 }

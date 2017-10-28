@@ -159,7 +159,7 @@
                     type:'warning'
                 }).then(()=>{
                     self.assetsPublish({
-                        assetsId:ids
+                        assetsIds:ids
                     });
                 }).catch(()=>{
 

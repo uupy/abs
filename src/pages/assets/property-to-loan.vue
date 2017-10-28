@@ -27,7 +27,7 @@
         </el-row>
 
         <el-row>
-            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
+            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
@@ -144,7 +144,7 @@
                 const self = this;
                 self.assetsIds = selection;
             },
-            loanHandle(){
+            loanHandle(row){
                 const self = this;
                 let ids = [];
 
@@ -159,7 +159,13 @@
                 self.$confirm('确定放款吗？','提示',{
                     type:'warning'
                 }).then(()=>{
-                    
+                    if(self.enterprise_type == 1){
+                        //保理商放款
+                        self.baoliLoan({assetsIds:ids});
+                    }else{
+                        //资金方放款
+                        self.capitalLoan({assetsIds:ids});
+                    }
                 }).catch(()=>{
 
                 }); 
