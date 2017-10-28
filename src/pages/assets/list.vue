@@ -324,6 +324,7 @@
             },
             supply(){      
                 const self = this; 
+                console.log(self.orderReceiptsIds)
                 //确认      
                 if(self.orderReceiptsIds.length<=0){
                     self.$message.warning('请选择数据')
@@ -444,11 +445,16 @@
                     self.$message.warning('请选择数据')
                     return;
                 } 
+                let ids = [];
+               
+                self.orderReceiptsIds.forEach(val=>{
+                    ids.push(val.id)
+                });
                 self.$confirm('确定融资吗？','提示',{
                     type:'warning'
                 }).then(()=>{
                     self.confirmFinancing({
-                        orderReceiptsIds:self.orderReceiptsIds
+                        orderReceiptsIds:ids
                     });
                 }).catch(()=>{
 
