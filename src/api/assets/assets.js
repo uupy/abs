@@ -162,13 +162,21 @@ export default {
                 if(options.publishEndTime){
                     params.publishEndTime = options.publishEndTime
                 }
+
+                if(options.submitBeginTime){
+                    params.submitBeginTime = options.submitBeginTime
+                }
+                if(options.submitEndTime){
+                    params.submitEndTime = options.submitEndTime
+                }
+                
                 if(options.keyword){
                     params.keyword = options.keyword
                 }
                 params.status = options.status
             }
 
-            console.log('status:',params,options.status)
+            console.log('status:',options)
                 
             self.onHttp({
                 method:'GET',

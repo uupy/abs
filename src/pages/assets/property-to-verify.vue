@@ -112,7 +112,7 @@
                     self.params.receiveableMoneyBeginTime = begin
                     self.params.receiveableMoneyEndTime = end;
                                                
-                }else if(type == 'submitTime'){
+                }else{
                     self.params.submitBeginTime = begin
                     self.params.submitEndTime = end; 
                         
