@@ -352,11 +352,11 @@
                 this.getAssetsList();
             },
             tableExpand(row,expanded){
-                console.log('id:',row.orderReceiptsId)
+                console.log('id:',row.id)
                 if(expanded){
                     const self = this;
                     if(row.orderReceiptsId&&row.orderReceiptsId!=''){
-                        self.getReceipts({orderReceiptsId:row.orderReceiptsId});
+                        self.getReceipts({orderReceiptsId:row.id});
                     }
                 }
                     
@@ -436,7 +436,7 @@
                 }
                 self.loadEnterpriseContent(self.active_name);
             });
-            self.getAssetsList()
+            //self.getAssetsList()
         },
         computed: {
             
