@@ -201,11 +201,15 @@
                         </el-col>
                         <el-col :span="24">
                             <el-table :data="data_list" class="table-list">
-                                <el-table-column prop="index" label="序号" width="90"></el-table-column>
+                                <el-table-column prop="index" label="序号" width="90">
+                                    <template slot-scope='scope'>{{scope.$index+1}}</template>
+                                </el-table-column>
                                 <el-table-column prop="name" label="资料名称"></el-table-column>
                                 <el-table-column prop="status" label="状态">
                                     <template slot-scope="scope">
-                                        <el-tag :type="scope.row.status == '已上传' ? 'success' : (scope.row.status == '未上传' ? 'warning':'default')" close-transition>{{scope.row.status}}</el-tag>
+                                        <el-tag :type="(scope.row.fileUrl != '' && scope.row.fileUrl != null) ? 'success' : 'warning'" close-transition>
+                                            {{(scope.row.fileUrl != '' && scope.row.fileUrl != null) ? '已上传' : '未上传'}}
+                                        </el-tag>
                                     </template>
                                 </el-table-column>
                                 <el-table-column inline-template :context="_self" label="操作" width="160">
@@ -363,21 +367,7 @@
                     // ]
                 },
                 data_list:[
-                    {
-                        index:1,
-                        name:'企业法人营业执照',
-                        status:'已上传'
-                    },
-                    {
-                        index:2,
-                        name:'法人身份证正反面',
-                        status:'未上传'
-                    },
-                    {
-                        index:3,
-                        name:'代理人身份证正反面',
-                        status:'已上传'
-                    }
+                    
                 ],
                 contact_persons:[
                     

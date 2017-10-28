@@ -151,7 +151,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     if(data){
-                        
+                        self.data_list = data;
                     }
                 } else{
                     self.$message({
