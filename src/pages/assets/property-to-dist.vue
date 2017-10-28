@@ -46,7 +46,7 @@
                 </el-table-column>
                 <el-table-column align='center' label='操作' width="160">
                     <template slot-scope='scope'>
-                        <span class="table-btn health" @click.stop="checkView(row)">详情</span>
+                        <span class="table-btn health" @click.stop="checkView(scope.row)">详情</span>
                         <span class="table-btn danger">分配</span>
                         <span class="table-btn danger">回退</span>
                     </template>

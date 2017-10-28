@@ -162,13 +162,21 @@ export default {
                 if(options.publishEndTime){
                     params.publishEndTime = options.publishEndTime
                 }
+
+                if(options.submitBeginTime){
+                    params.submitBeginTime = options.submitBeginTime
+                }
+                if(options.submitEndTime){
+                    params.submitEndTime = options.submitEndTime
+                }
+                
                 if(options.keyword){
                     params.keyword = options.keyword
                 }
                 params.status = options.status
             }
 
-            console.log('status:',params,options.status)
+            console.log('status:',options)
                 
             self.onHttp({
                 method:'GET',
@@ -198,6 +206,36 @@ export default {
             });
         },
 
+        //应付单据确认
+        orderReceiptsMakeSure(options){
+            const self = this;
+            self.$nprogress.start();
 
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'POST',
+                path:'/orderReceipts/makeSure',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已确认成功')         
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        }
     }
 }
