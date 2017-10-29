@@ -2,7 +2,7 @@
     <section class="panel-main" :style="styles">
         <el-row class="toolbar toolbar-top">
             <div class="f-left">
-                <label>企业状态：</label>
+                <label>认证状态：</label>
                 <el-select size="small" v-model="enterprise_status" placeholder="请选择" @change="filterEnterprise">
                     <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>

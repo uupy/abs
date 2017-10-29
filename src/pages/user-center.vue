@@ -2,32 +2,30 @@
     <section class="panel-main" :style="styles">
         <el-tabs v-if='user_type !== 1' v-model="active_name" @tab-click="presonTabChange">
             <el-tab-pane label="个人认证" name="contact_information">
-                <el-col>
-                	<el-form label-width='100px' class='user-form' :rules="user_rules" :model="user" ref="user">
-                		<el-form-item label='姓名' prop='name'>
-                			<el-input v-model='user.name' placeholder='请输入您的姓名'></el-input>
-                		</el-form-item>
-                		<el-form-item label='手机号码' prop='mobile'>
-                			<el-input v-model='user.mobile' placeholder='请输入您的手机号码'></el-input>
-                		</el-form-item>
-                		<el-form-item label='身份证号' prop='id_number'>
-                			<el-input v-model='user.id_number' placeholder='请输入您的身份证号码'></el-input>
-                		</el-form-item>
-                		<el-form-item label='身份证正面' prop="front_path">
-                            <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback1">
-                                <el-input v-model='user.front_path' placeholder='点击上传证件正面' readonly="readonly"></el-input>
-                            </el-upload>
-                		</el-form-item>
-                        <el-form-item label='身份证反面' prop="back_path">
-                            <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback2">
-                                <el-input v-model='user.back_path' placeholder='点击上传证件反面' readonly="readonly"></el-input>
-                            </el-upload>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="addUserAuthentication('user', user)">认 证</el-button>
-                        </el-form-item>
-                	</el-form>
-                </el-col>
+            	<el-form label-width='100px' class='user-form' :rules="user_rules" :model="user" ref="user">
+            		<el-form-item label='姓名' prop='name'>
+            			<el-input v-model='user.name' placeholder='请输入您的姓名'></el-input>
+            		</el-form-item>
+            		<el-form-item label='手机号码' prop='mobile'>
+            			<el-input v-model='user.mobile' placeholder='请输入您的手机号码'></el-input>
+            		</el-form-item>
+            		<el-form-item label='身份证号' prop='id_number'>
+            			<el-input v-model='user.id_number' placeholder='请输入您的身份证号码'></el-input>
+            		</el-form-item>
+            		<el-form-item label='身份证正面' prop="front_path">
+                        <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback1">
+                            <el-input v-model='user.front_path' placeholder='点击上传证件正面' readonly="readonly"></el-input>
+                        </el-upload>
+            		</el-form-item>
+                    <el-form-item label='身份证反面' prop="back_path">
+                        <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback2">
+                            <el-input v-model='user.back_path' placeholder='点击上传证件反面' readonly="readonly"></el-input>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="addUserAuthentication('user', user)">认 证</el-button>
+                    </el-form-item>
+            	</el-form>
             </el-tab-pane>
             <el-tab-pane label="资料详情" name="base_information" >
                 <el-form label-width='100px' class='user-form' :model="profile" ref="profile">
@@ -68,6 +66,9 @@
                 	<el-form-item label='法人代表姓名' prop="corporation_name">
                 		<el-input v-model='enterprise.corporation_name' placeholder='请填写法人代表姓名'></el-input>
                 	</el-form-item>
+                    <el-form-item label='法人手机号码' prop='mobile'>
+                        <el-input v-model='enterprise.mobile' placeholder='请输入法人的手机号码'></el-input>
+                    </el-form-item>
                 	<el-form-item label='法人代表身份号' prop="corporation_id_number">
                 		<el-input v-model='enterprise.corporation_id_number' placeholder='请填写法人代表身份证号'></el-input>
                 	</el-form-item>
@@ -144,13 +145,17 @@
                     enterprise_name:'',
                     corporation_name:'',
                     corporation_id_number:'',
-                    path:''
+                    path:'',
+                    mobile:''
                 },
                 rules:{
                     code:[
                         { required: true,message: '该选项不能为空', trigger: 'change' }
                     ],
                     enterprise_name:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    mobile:[
                         { required: true, message: '该选项不能为空', trigger: 'change' }
                     ],
                     corporation_name:[

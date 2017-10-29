@@ -4,7 +4,7 @@
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-position="left" label-width="0px" class="loginform">
                 <el-form-item>
                     <h2 class="login-title">高银保理金信系统</h2>
-                    <div class="login-txt">Welcome to goldin</div>
+                    <!-- <div class="login-txt">Welcome to goldin</div> -->
                 </el-form-item>
                 <el-form-item prop="account" class="login-input">
                     <el-input id="login_account" type="text" v-model="loginForm.account" auto-complete="off">

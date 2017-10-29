@@ -11,7 +11,7 @@
                 </div>
             </el-row>
             <el-row>
-                <el-table :data='list'>
+                <el-table :data='list' class="table-list">
                     <el-table-column label="序号" width='90' align='center'>
                         <template slot-scope='scope'>{{scope.$index+1}}</template>
                     </el-table-column>

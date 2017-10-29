@@ -101,11 +101,11 @@
                     </el-col>
                     <el-col :span="18">
                         <el-table :data="shareholder_infos" border>
-                            <el-table-column prop="type" label="股东类型"></el-table-column>
-                            <el-table-column prop="name" label="股东"></el-table-column>
-                            <el-table-column prop="subscribe" label="认缴出资（万元人民币）"></el-table-column>
-                            <el-table-column prop="pay" label="实缴出资（万元人民币）"></el-table-column>
-                            <el-table-column prop="scale" label="出资比例"></el-table-column>
+                            <el-table-column prop="shareholder_type" label="股东类型"></el-table-column>
+                            <el-table-column prop="shareholder" label="股东"></el-table-column>
+                            <el-table-column prop="subscribe_for_funding" label="认缴出资（万元人民币）"></el-table-column>
+                            <el-table-column prop="paid_in_capital" label="实缴出资（万元人民币）"></el-table-column>
+                            <el-table-column prop="funded_ratio" label="出资比例"></el-table-column>
                         </el-table>
                     </el-col>
                 </el-row>
@@ -127,7 +127,7 @@
                     <el-col :span="18">
                         <el-table :data="branch_offices" border>
                             <el-table-column prop="name" label="公司名称"></el-table-column>
-                            <el-table-column prop="principal" label="负责人"></el-table-column>
+                            <el-table-column prop="person_in_charge" label="负责人"></el-table-column>
                         </el-table>
                     </el-col>
                 </el-row>
@@ -137,10 +137,10 @@
                     </el-col>
                     <el-col :span="18">
                         <el-table :data="investment" border>
-                            <el-table-column prop="name" label="公司名称"></el-table-column>
-                            <el-table-column prop="legal" label="法定代表人"></el-table-column>
-                            <el-table-column prop="date" label="成立年限"></el-table-column>
-                            <el-table-column prop="capital" label="注册资本（万元人民币）"></el-table-column>
+                            <el-table-column prop="company_name" label="公司名称"></el-table-column>
+                            <el-table-column prop="legal_representative" label="法定代表人"></el-table-column>
+                            <el-table-column prop="establish_period" label="成立年限"></el-table-column>
+                            <el-table-column prop="registered_capital" label="注册资本（万元人民币）"></el-table-column>
                         </el-table>
                     </el-col>
                 </el-row>
@@ -173,9 +173,9 @@
                     </el-col>
                     <el-col :span="18">
                         <el-table :data="risk_infos" border>
-                            <el-table-column prop="name" label="风险信息"></el-table-column>
-                            <el-table-column prop="count" label="累积数量"></el-table-column>
-                            <el-table-column prop="desc" label="核查内容"></el-table-column>
+                            <el-table-column prop="risk_info" label="风险信息"></el-table-column>
+                            <el-table-column prop="cumulative_quantity" label="累积数量"></el-table-column>
+                            <el-table-column prop="verification_content" label="核查内容"></el-table-column>
                         </el-table>
                     </el-col>
                 </el-row>
@@ -185,10 +185,10 @@
                     </el-col>
                     <el-col :span="18">
                         <el-table :data="registers" border>
-                            <el-table-column prop="name" label="登记机构名称"></el-table-column>
-                            <el-table-column prop="rtime" label="登记时间"></el-table-column>
-                            <el-table-column prop="etime" label="到期时间"></el-table-column>
-                            <el-table-column prop="oname" label="登记资产买方名称"></el-table-column>
+                            <el-table-column prop="registered_institution_name" label="登记机构名称"></el-table-column>
+                            <el-table-column prop="registy_time" label="登记时间"></el-table-column>
+                            <el-table-column prop="overdue_time" label="到期时间"></el-table-column>
+                            <el-table-column prop="reg_asset_buyer_name" label="登记资产买方名称"></el-table-column>
                         </el-table>
                     </el-col>
                 </el-row>
@@ -330,7 +330,7 @@
                     {label:'复核',value:2}
                 ],
                 entMemberTypes:[
-                    {label:'企业法人',value:2},
+                    {label:'法定代表人',value:2},
                     {label:'代理人1',value:3},
                     {label:'代理人2',value:4},
                     {label:'对接人',value:5},
@@ -346,6 +346,7 @@
                     email:''
                 },
                 inputReadonly:false,
+                isEditPerson:false,
                 dialogContactTitle:'新增联系人',
                 contact_form:{
                     telephone:'',
@@ -363,6 +364,9 @@
                     ],
                     mobile:[
                         {required:true,message:'联系人手机号码不能为空',trigger: 'change'}
+                    ],
+                    email:[
+                        {required:true,message:'联系人邮箱不能为空',trigger: 'change'}
                     ]
                 },
                 data_list:[],
@@ -370,197 +374,67 @@
                 business_infos:[
                     {
                         label1:'统一社会信用代码',
-                        value1:'91440300728579238Y',
+                        value1:'',
                         label2:'组织机构代码',
-                        value2:'72857923-8',
+                        value2:'',
                         colspan:false
                     },
                     {
                         label1:'注册号',
-                        value1:'440301102812067',
+                        value1:'',
                         label2:'经营状态',
-                        value2:'存续（在营、开业、在册）',
+                        value2:'',
                         colspan:false
                     },
                     {
                         label1:'所属行业',
-                        value1:'制造业',
+                        value1:'',
                         label2:'公司类型',
-                        value2:'非上市股份有限公司',
+                        value2:'',
                         colspan:false
                     },
                     {
                         label1:'注册资本',
-                        value1:'21710万元',
+                        value1:'',
                         label2:'成立日期',
-                        value2:'2017-06-30',
+                        value2:'',
                         colspan:false
                     },
                     {
                         label1:'营业期限',
-                        value1:'2001-05-22 至 2051-05-22',
+                        value1:'',
                         label2:'发照日期',
-                        value2:'2017-06-30',
+                        value2:'',
                         colspan:false
                     },
                     {
                         label:'登记机关',
-                        value:'深圳市市场监督管理局',
+                        value:'',
                         colspan:true
                     },
                     {
                         label:'企业地址',
-                        value:'深圳市福田区卓越梅林中心广场北区2栋16层',
+                        value:'',
                         colspan:true
                     },
                     {
                         label:'经营范围',
-                        value:'建筑及防水新型材料、保温装饰材料和屋面虹吸雨水排放系统的技术开发、研究，国内商业、物资供销业（不含专营、专卖、专控商品及限制项目）；兴办实业（具体项目另行申报）。经营进出口业务。防水材料、保温装饰材料和屋面虹吸雨水排放系统的生产和销售（生产场地另行申报）；建筑防水工程专业承包（凭建设主管部门颁发的资质证书经营）。',
+                        value:'',
                         colspan:true
                     },
                 ],
-                shareholder_infos:[
-                    {
-                        type:'自然人',
-                        name:'张三',
-                        subscribe:899.9052,
-                        pay:899.9052,
-                        scale:'-',
-                    },
-                    {
-                        type:'自然人',
-                        name:'李四',
-                        subscribe:899.9052,
-                        pay:899.9052,
-                        scale:'-',
-                    }
-                ],
-                main_staffs:[
-                    {
-                        name:'张三',
-                        position:'监事'
-                    },
-                    {
-                        name:'李四',
-                        position:'监事'
-                    },
-                    {
-                        name:'王五',
-                        position:'总经理'
-                    },
-                ],
-                branch_offices:[
-                    {
-                        principal:'张三',
-                        name:'深圳市卓宝科技股份有限公司深圳分公司'
-                    },
-                    {
-                        principal:'李四',
-                        name:'深圳市卓宝科技股份有限公司防水材料厂'
-                    },
-                    {
-                        principal:'王五',
-                        name:'深圳市卓宝科技股份有限公司保定分公司'
-                    },
-                ],
-                investment:[
-                    {
-                        name:'深圳市卓宝科技股份有限公司保定分公司',
-                        legal:'张三',
-                        date:'2007-10-10',
-                        capital:1000
-                    },
-                    {
-                        name:'深圳市卓宝科技股份有限公司防水材料厂',
-                        legal:'李四',
-                        date:'2007-10-10',
-                        capital:1000
-                    },
-                    {
-                        name:'深圳市卓宝科技股份有限公司保定分公司',
-                        legal:'王五',
-                        date:'2007-10-10',
-                        capital:500
-                    },
-                ],
+                shareholder_infos:[],
+                main_staffs:[],
+                branch_offices:[],
+                investment:[],
                 properties:[
-                    {label1:'商标',value1:5,label2:'专利信息',value2:52,colspan:false},
-                    {label1:'著作权',value1:10,label2:'软件著作权',value2:30,colspan:false},
-                    {label:'域名',value:'-',colspan:true},
-                    {label:'资质认证',value:'-',colspan:true},
+                    {label1:'商标',value1:'',label2:'专利信息',value2:'',colspan:false},
+                    {label1:'著作权',value1:'',label2:'软件著作权',value2:'',colspan:false},
+                    {label:'域名',value:'',colspan:true},
+                    {label:'资质认证',value:'',colspan:true},
                 ],
-                risk_infos:[
-                    {
-                        name:'失信被执行人信息',
-                        desc:'排查历史上是否有记录',
-                        count:0
-                    },
-                    {
-                        name:'被执行人信息',
-                        desc:'排查半年内是否有执行记录',
-                        count:0
-                    },
-                    {
-                        name:'裁判文书',
-                        desc:'是否与金融机构发生的诉讼/是否作为被告的刑事案件',
-                        count:0
-                    },
-                    {
-                        name:'开庭公告',
-                        desc:'是否与金融机构发生的诉讼/是否作为被告的刑事案件',
-                        count:0
-                    },
-                    {
-                        name:'法院公告',
-                        desc:'是否与金融机构发生的诉讼/是否作为被告的刑事案件',
-                        count:0
-                    },
-                    {
-                        name:'司法拍卖',
-                        desc:'排查历史上是否有记录',
-                        count:0
-                    },
-                    {
-                        name:'经营异常',
-                        desc:'排查近一年是否有记录',
-                        count:0
-                    },
-                    {
-                        name:'欠税信息',
-                        desc:'排查近一年是否有记录',
-                        count:0
-                    },
-                    {
-                        name:'股权出质',
-                        desc:'当前是否有股权出质状态',
-                        count:0
-                    },
-                    {
-                        name:'动产抵押',
-                        desc:'当前是否有动产抵押状态',
-                        count:0
-                    },
-                ],
-                registers:[
-                    {
-                        name:'深圳市市场监督管理局',
-                        oname:'深圳市市场监督管理局',
-                        rtime:'2010-09-10',
-                        etime:'2010-09-10'
-                    },
-                    {
-                        name:'深圳市市场监督管理局',
-                        oname:'深圳市市场监督管理局',
-                        rtime:'2010-09-10',
-                        etime:'2010-09-10'
-                    },
-                    {
-                        name:'深圳市市场监督管理局',
-                        oname:'深圳市市场监督管理局',
-                        rtime:'2010-09-10',
-                        etime:'2010-09-10'
-                    },
-                ],
+                risk_infos:[],
+                registers:[],
                 loanAccountInfo:[
                     {label:'户名',value:''},
                     {label:'开户行',value:''},
@@ -581,7 +455,7 @@
                 sessionStorage.setItem('enterprise_tname',tab.name);
                 this.getData(this.active_name)
             },
-            // 确认添加联系人
+            // 确认添加或编辑联系人
             confirmAddContact(){
                 const self =this;
                 self.$refs['addForm'].validate((valid)=>{
@@ -594,7 +468,11 @@
                                 params[key] = self.addForm[key];
                             }
                         }
-                        self.addEnterpriseMember(params);
+                        if(self.isEditPerson){
+                            self.updateEnterpriseMember(params);
+                        }else{
+                            self.addEnterpriseMember(params);
+                        }
                     }
                 });
             },
@@ -606,10 +484,12 @@
                     name:row.name,
                     position:row.position,
                     mobile:row.mobile,
-                    email:row.email
+                    email:row.email,
+                    id:row.id
                 };
                 this.dialogContactTitle = '编辑联系人';
                 this.inputReadonly = (row.status === 2 ? true : false);
+                this.isEditPerson = true;
                 this.dialogAddContact = true;
             },
             // 取消编辑企业联系方式
@@ -622,6 +502,7 @@
                 this.$refs['addForm'].resetFields();
                 this.dialogAddContact = false;
                 this.inputReadonly = false;
+                this.isEditPerson = false;
                 this.dialogContactTitle = '新增联系人';
                 this.addForm = {
                     roleType:2,

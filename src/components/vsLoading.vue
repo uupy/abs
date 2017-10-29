@@ -7,6 +7,7 @@
             <span class="rect4"></span>
             <span class="rect5"></span>
          </div>
+         <!-- <i class="el-icon-loading"></i> -->
 	</div>
 </template>
 <script>
