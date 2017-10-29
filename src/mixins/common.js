@@ -43,7 +43,6 @@ export default {
             if(self.isTimeOut || !Util.isObject(options)){return false;}
             // 默认使用GET请求
             options.method = (options.method ? options.method.toUpperCase() : null) || 'GET';
-            options.async = ((options.async === null || options.async === undefined) ? true : Boolean(options.async));
             let config = {
                 method: options.method,
                 url: `${self.url}${options.path}`,
@@ -60,19 +59,11 @@ export default {
                     params_arr.push(`${key}=${options.params[key]}`);
                 }
                 config.body = params_arr.join('&');
-                console.log('options----:',config.body)
             }
-            
-            if(options.async){
-                self.$http(config).then((response) => {
+            self.$http(config).then((response) => {
+                if(!options.fileFlow){
                     const res = response.body;
                     if(res.code > 0){
-                        if(res.token && res.token !== ''){
-                            self.saveStorageState({
-                                attr:'token',
-                                val:res.token
-                            });
-                        }
                         Util.isFunction(successCallback) ? successCallback(res) : '';
                     }else{
                         self.$nprogress.done();
@@ -85,71 +76,29 @@ export default {
                             type: 'error'
                         });
                     }
-                }, (response) => {
-                    if(response.status === 401){
-                        self.unauthorized();
+                }else{
+                    Util.isFunction(successCallback) ? successCallback(response) : '';
+                }
+            }, (response) => {
+                self.$nprogress.done();
+                self.setState([
+                    {attr:'onLoading',val:false},
+                    {attr:'innerLoading',val:false}
+                ]);
+                if(response.status === 401){
+                    self.unauthorized();
+                }else{
+                    if(Util.isFunction(errorCallback)){
+                        errorCallback(response)
                     }else{
-                        if(Util.isFunction(errorCallback)){
-                            errorCallback(response)
-                        }else{
-                            self.$nprogress.done();
-                            self.setState([
-                                {attr:'onLoading',val:false},
-                                {attr:'innerLoading',val:false}
-                            ]);
-                            self.$message({
-                                message: `请求结果：${response.ok}`,
-                                type: 'error'
-                            });
-                            console.error(`请求地址：${response.url} 请求结果：${response.ok}`, 'error');
-                        }
+                        self.$message({
+                            message: `请求结果：${response.ok}`,
+                            type: 'error'
+                        });
+                        console.error(`请求地址：${response.url} 请求结果：${response.ok}`, 'error');
                     }
-                });
-            }else{
-                var xmlhttp = null;  
-                try{  
-                     //尝试创建 XMLHttpRequest 对象，除 IE 外的浏览器都支持这个方法。  
-                    xmlhttp = new XMLHttpRequest();  
-                }catch(e){  
-                    try{  
-                         //使用较新版本的 IE 创建 IE 兼容的对象（Msxml2.XMLHTTP）。  
-                         xmlhttp = ActiveXobject("Msxml12.XMLHTTP");  
-                    }catch(e1){  
-                        try{  
-                             //使用较老版本的 IE 创建 IE 兼容的对象（Microsoft.XMLHTTP）。  
-                             xmlhttp = ActiveXobject("Microsoft.XMLHTTP");  
-                        }catch(e2){  
-                             console.error(e2);
-                        }   
-                    }  
                 }
-                if(options.method === 'GET'){
-                    var s_params = [];
-                    if(options.params){
-                        for(let key in options.params){
-                            s_params.push(`${key}=${options.params[key]}`);
-                        }
-                    }
-                    // 第三个参数 false 代表设置同步请求
-                    xmlhttp.open(options.method, `${self.url}${options.path}?${s_params.join('&')}`, false); 
-                }else if(options.method === 'POST'){
-                    // 第三个参数 false 代表设置同步请求
-                    xmlhttp.open(options.method, `${self.url}${options.path}`, false); 
-                }
-                
-                xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-                xmlhttp.setRequestHeader('x-auth-token', `${self.token}`);
-                if(options.method === 'GET'){
-                    xmlhttp.send(null);
-                }else if(options.method === 'POST'){
-                    xmlhttp.send(JSON.stringify(options.params));
-                }
-                if (xmlhttp.status === 200) {
-                    console.log('success')
-                } else {
-                    console.error('error')
-                }
-            }
+            });
         },
         ...mapActions([
             'setState',
