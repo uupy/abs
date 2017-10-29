@@ -92,8 +92,10 @@
         methods: {
             clearFilter(){
                 const self = this;
-                self.filter_name = '';
-                self.getStandingBookList({status:4});
+                if(self.filter_name!=''){
+                    self.filter_name = '';
+                    self.getStandingBookList({status:4});
+                }
             },
             handleSelectionChange(){
  
