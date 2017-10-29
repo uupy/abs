@@ -87,10 +87,10 @@
  
             },
             clientsSizeChange(){
- 
+                
             },
             clientsCurrentChange(){
- 
+                
             },
             checkView(row){
                 const self = this;

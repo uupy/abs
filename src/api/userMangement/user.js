@@ -16,6 +16,12 @@ export default {
                 curPage:self.currentPage,
                 pageSize:self.pageSize,
             }
+
+            if(options){
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+            }
             
             self.onHttp({
                 method:'GET',

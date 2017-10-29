@@ -136,7 +136,11 @@
         mixins:[Common,Users],
         methods: {            
             clearFilter(){
-                this.filter_name = '';
+                const self = this;
+                if(self.filter_name != ''){
+                    self.filter_name = '';
+                    self.getUserList();
+                }                    
             },
             cancelAddClient(){
                 this.dialogDisable = false
@@ -168,7 +172,12 @@
                 this.dialogDisable = false
             },
             search(){
-                
+                const self = this;
+                self.filter_name = self.filter_name.replace(/\s+/g,"");
+                if(self.filter_name == ''){
+                    return;
+                }
+                self.getUserList({keyword:self.filter_name});
             },
             pageSizeChange(e){
                 this.pageSize = e;
