@@ -8,8 +8,8 @@ Vue.use(Vuex);
 const state = {
     //定义一些组件间通信的变量
      // url: `http://127.0.0.1:8181/api`,
-    url: `http://115.28.0.94:8181/api`,
-    // url: `http://120.78.174.219:80/api`,
+    // url: `http://115.28.0.94:8181/api`,
+    url: `http://120.78.174.219:80/api`,
     innerLoading: false,
     onLoading: false,
     isTimeOut: false,

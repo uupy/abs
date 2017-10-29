@@ -135,7 +135,9 @@
         },
         methods: {
             clearFilter(){
- 
+                const self = this;
+                self.filter_name = '';
+                self.getStandingBookList(self.params);
             },
             handleSelectionChange(){
  
@@ -189,6 +191,10 @@
             },
             search(){
                 const self = this;
+                self.filter_name = self.filter_name.replace(/\s+/g,"");
+                if(self.filter_name == ''){
+                    return;
+                }
                 self.params.keyword = self.filter_name;
                 self.getStandingBookList(self.params);
             },

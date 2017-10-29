@@ -212,7 +212,7 @@
     </section>
 </template>
 <script>
-    import Common from '@/mixins/common.js'       
+    import Common from '@/mixins/common.js'         
     export default {
         data() {
             return {
@@ -324,7 +324,7 @@
                 ],
                 propertyTransferInfo:{
                     assignFile:'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf',
-                    transferFile:'http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg',
+                    transferFile:'http://dl.download.csdn.net/down10/20120426/beb6100216430e63822e5a3cbf5861f4.doc?response-content-disposition=attachment%3Bfilename%3D%22%E5%AD%A6%E6%9C%AF%E4%B8%8D%E7%AB%AF%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F%E8%AF%95%E7%94%A8%E5%8D%8F%E8%AE%AE.doc%22&OSSAccessKeyId=9q6nvzoJGowBj4q1&Expires=1509269834&Signature=v3wh3zA3Q9efxozH3GJvD%2BBy8BE%3D&user=qq_39795732&sourceid=4257684',
                     notifyFile:'http://pic2.ooopic.com/12/22/94/37bOOOPICc7_1024.jpg',
                     paymentProject:'http://www.taopic.com/uploads/allimg/140107/234764-14010F0310582.jpg',
                     paymentBase:'http://pic.58pic.com/58pic/13/74/51/99d58PIC6vm_1024.jpg',
@@ -349,13 +349,13 @@
            cancelReset(){},
            getFile(url){
                 const self = this;
-                self.fileType =  url.substr((url.lastIndexOf('.'))+1);
-                console.log('fileType:',self.fileType)
+                self.fileType =  (url.substr((url.lastIndexOf('.'))+1)).toLowerCase();
+                
                 //图片文件                
                 if(self.fileType == 'jpg' || self.fileType == 'jpeg' || self.fileType == 'png' || self.fileType == 'gif' ){
                     self.dialogFormVisible = true;
                     self.filePath = url;
-                }else if(self.fileType=='pdf'){
+                }else if(self.fileType=='pdf' || self.fileType=='docx'){
                     self.$nprogress.start();
                     self.setState({
                         attr:'onLoading',
@@ -403,7 +403,7 @@
                             attr:'onLoading',
                             val:false
                         });
-                    },300)
+                    },500)
                 }                    
            },
            imgError(){

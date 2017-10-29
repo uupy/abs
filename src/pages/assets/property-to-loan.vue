@@ -20,8 +20,8 @@
                 </el-date-picker>
             </div>  
             <div class="f-right">
-                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
+                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search" ></i> 查询</el-button>
                 <el-button size="small" type='primary' :disabled='assetsIds.length<=0?true:false' @click.native='loanHandle'>确认放款</el-button>
             </div>       
         </el-row>
@@ -91,7 +91,9 @@
         },
         methods: {
             clearFilter(){
- 
+                const self = this;
+                self.filter_name = '';
+                self.getStandingBookList({status:6});
             },
             handleSelectionChange(){
  
@@ -169,7 +171,17 @@
                 }).catch(()=>{
 
                 }); 
-            }
+            },
+            search(){
+                const self = this;
+                self.filter_name = self.filter_name.replace(/\s+/g,"");
+                console.log('filter_name:',self.filter_name)
+                if(self.filter_name == ''){
+                    return;
+                }
+                self.params.keyword = self.filter_name;
+                self.getStandingBookList({status:6,keyword:self.filter_name});
+            },
         },
         watch: {
             
