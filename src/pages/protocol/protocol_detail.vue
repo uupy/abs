@@ -96,7 +96,7 @@
                 <el-form :model='propertyTransferInfo' label-width='180px' class='item-list'>
                     <el-form-item label='中登网登记文件' class='item-inner'>
                         <div class="float-left info">
-                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.assignFile)'>点击查看</el-button>
+                            <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.pdfFile)'>点击查看</el-button>
                         </div>
                         <div class="float-left">
                             <el-upload
@@ -205,19 +205,20 @@
                 </el-form>
             </el-tab-pane>           
         </el-tabs>     
-        <el-dialog size="full" title="编辑联系方式" v-model="dialogFormVisible" class="file-img">
-            <img :src='fileImgUrl'/>
-        </el-dialog>
+        <el-dialog class='preview-dialog file-img' size="normal" top='60px' title="文件预览" v-model="dialogFormVisible">
+            <img :src='filePath' v-show='fileType=="jpg"||fileType=="jpeg"||fileType=="png"||fileType=="gif"'/> 
+            <canvas v-show='fileType=="pdf"' id="the-canvas"></canvas>           
+        </el-dialog>        
     </section>
 </template>
 <script>
-    import Common from '@/mixins/common.js'
+    import Common from '@/mixins/common.js'       
     export default {
         data() {
             return {
                 dialogFormVisible:false,
                 fileType:'',
-                fileImgUrl:'',
+                filePath:'',
                 tableData5: [{
                   id: '12987122',
                   name: '好滋好味鸡蛋仔',
@@ -322,14 +323,15 @@
                     }
                 ],
                 propertyTransferInfo:{
-                    assignFile:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508689556093&di=9f946fc7aa1515d2c2bcf8e8902e9e9e&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F9a504fc2d5628535b9bcc6329aef76c6a7ef6340.jpg',
-                    transferFile:'http://img5.imgtn.bdimg.com/it/u=3191256922,1392369155&fm=27&gp=0.jpg',
-                    notifyFile:'http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg',
-                    paymentProject:'http://img1.50tu.com/meinv/xinggan/2013-11-16/e65e7cd83f37eed87067299266152807.jpg',
-                    paymentBase:'http://a3.topitme.com/f/d1/4b/11292760524e84bd1fo.jpg',
-                    partnerFile:'http://img1.imgtn.bdimg.com/it/u=4235859327,2792662286&fm=214&gp=0.jpg',
-                    baseFile:'http://pic5.nipic.com/20100302/2177138_084003138452_2.jpg',
+                    assignFile:'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf',
+                    transferFile:'http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg',
+                    notifyFile:'http://pic2.ooopic.com/12/22/94/37bOOOPICc7_1024.jpg',
+                    paymentProject:'http://www.taopic.com/uploads/allimg/140107/234764-14010F0310582.jpg',
+                    paymentBase:'http://pic.58pic.com/58pic/13/74/51/99d58PIC6vm_1024.jpg',
+                    partnerFile:'http://pic71.nipic.com/file/20150610/13549908_104823135000_2.jpg',
+                    baseFile:'http://img01.tooopen.com/Downs/images/2010/4/8/sy_20100408112256193519.jpg',
                     serverFile:'http://www.danielpeng.me/file/ABS资产管理.rar',
+                    pdfFile:'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf'
                 }   
             }
         },
@@ -343,18 +345,65 @@
            tabChange(){
            },
            handleChange(key){
-                console.log(key)
            },
            cancelReset(){},
            getFile(url){
                 const self = this;
                 self.fileType =  url.substr((url.lastIndexOf('.'))+1);
-                //图片文件
+                console.log('fileType:',self.fileType)
+                //图片文件                
                 if(self.fileType == 'jpg' || self.fileType == 'jpeg' || self.fileType == 'png' || self.fileType == 'gif' ){
                     self.dialogFormVisible = true;
-                    self.fileImgUrl = url;
-                }else{
-                    window.open(url)
+                    self.filePath = url;
+                }else if(self.fileType=='pdf'){
+                    self.$nprogress.start();
+                    self.setState({
+                        attr:'onLoading',
+                        val:true
+                    });
+                    var url = url;
+                    PDFJS.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+                    
+                    var loadingTask = PDFJS.getDocument(url);
+                    loadingTask.promise.then(function(pdf) {
+                      console.log('PDF loaded');
+                      
+                      // Fetch the first page
+                      var pageNumber = 1;
+                      pdf.getPage(pageNumber).then(function(page) {
+                        console.log('Page loaded');
+                        
+                        var scale = 1.5;
+                        var viewport = page.getViewport(scale);
+
+                        // Prepare canvas using PDF page dimensions
+                        var canvas = document.getElementById('the-canvas');
+                        var context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+
+                        // Render PDF page into canvas context
+                        var renderContext = {
+                          canvasContext: context,
+                          viewport: viewport
+                        };
+                        var renderTask = page.render(renderContext);
+                        renderTask.then(function () {
+                          console.log('Page rendered');
+                        });
+                      });
+                    }, function (reason) {
+                      // PDF loading error
+                      console.error(reason);
+                    });
+                    setTimeout(function(){
+                        self.dialogFormVisible = true;
+                        self.$nprogress.done();
+                        self.setState({
+                            attr:'onLoading',
+                            val:false
+                        });
+                    },300)
                 }                    
            },
            imgError(){
@@ -368,6 +417,8 @@
         mounted() {
             const self = this;
             console.log('protocolId:',self.$route.params.protocolId)
+
+            
         },
         computed: {
             
@@ -378,10 +429,11 @@
     }
 </script>
 
-<style scoped>
+<style>
     .title{border-bottom: 1px solid #e0e0e0;display: inline-block;padding-bottom: 5px;text-align: left;margin-bottom: 15px;margin-top: 15px;padding-left: 10px;padding-right: 10px;}
     .item-list>div{margin-bottom: 5px !important}
     .item-list .el-form-item__content{display: flex;}
     .float-left{float: left;margin-left: 15px;}
     .item-inner .info{width:80px;}
+    .preview-dialog .el-dialog__body{text-align: center;}
 </style>
