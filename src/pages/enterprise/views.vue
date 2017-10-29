@@ -215,7 +215,7 @@
                                 <el-table-column label="操作" width="160">
                                     <template slot-scope='scope'>
                                         <span>
-                                            <el-button size="small" @click="downLoadFile('/upload/image/6bca0e1e-6f35-46ce-a27e-3b39302ccbae.jpg')">下载</el-button>
+                                            <el-button size="small" @click="downLoadFile({relation_id:scope.row.id,fileUrl:scope.row.fileUrl})" :disabled="scope.row.fileUrl == '' || scope.row.fileUrl == null">下载</el-button>
                                         </span>
                                     </template>
                                 </el-table-column>

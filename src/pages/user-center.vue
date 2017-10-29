@@ -29,28 +29,28 @@
             </el-tab-pane>
             <el-tab-pane label="资料详情" name="base_information" >
                 <el-form label-width='100px' class='user-form' :model="profile" ref="profile">
-                		<el-form-item label='姓名'>
-                			<el-input v-model='profile.name' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='角色'>
-                			<el-input v-model='profile.role' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='系统权限'>
-                			<el-input v-model='profile.author' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='职位'>
-                			<el-input v-model='profile.position' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='手机号码'>
-                			<el-input v-model='profile.phone' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='邮箱地址'>
-                			<el-input v-model='profile.email'></el-input>
-                		</el-form-item>
-                		<el-form-item>
-                			<el-button type='primary' @click="updateUserEmail('profile', profile)">修改</el-button>
-                		</el-form-item>
-                	</el-form>
+            		<el-form-item label='姓名'>
+            			<el-input v-model='profile.name' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='角色'>
+            			<el-input v-model='profile.role' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='系统权限'>
+            			<el-input v-model='profile.author' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='职位'>
+            			<el-input v-model='profile.position' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='手机号码'>
+            			<el-input v-model='profile.phone' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='邮箱地址'>
+            			<el-input v-model='profile.email'></el-input>
+            		</el-form-item>
+            		<el-form-item>
+            			<el-button type='primary' @click="updateUserEmail('profile', profile)">修改</el-button>
+            		</el-form-item>
+            	</el-form>
             </el-tab-pane>           
         </el-tabs>
 
@@ -212,7 +212,7 @@
                             message: response.msg,
                             type: 'success'
                         });
-                        this.enterprise.path = response.data.url;
+                        this.enterprise.path = response.data.fileUrl;
                     }
                 }
            },
@@ -223,7 +223,7 @@
                             message: response.msg,
                             type: 'success'
                         });
-                        this.user.front_path = response.data.url;
+                        this.user.front_path = response.data.fileUrl;
                     }
                 }
            },
@@ -234,7 +234,7 @@
                             message: response.msg,
                             type: 'success'
                         });
-                        this.user.back_path = response.data.url;
+                        this.user.back_path = response.data.fileUrl;
                     }
                 }
            },

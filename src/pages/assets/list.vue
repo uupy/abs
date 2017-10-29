@@ -19,8 +19,8 @@
                             <el-table-column prop="providerName" label="供应商" align='center'></el-table-column>
                             <el-table-column prop="productCompanyName" label="项目公司" align='center'></el-table-column>
                             <el-table-column prop="productCompanyArea" label="所属区域" align='center'></el-table-column>       
-                            <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
-                            <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>         
+                            <!-- <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>        -->
+                            <!-- <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>          -->
                             <el-table-column prop="contractNo" label="合同号" align='center'></el-table-column>         
                             <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
                             <el-table-column label="合同附件" align='center' width="110">
