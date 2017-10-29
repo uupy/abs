@@ -16,8 +16,8 @@
                     </el-table-column>
                     <el-table-column prop="protocolCode" label="协议编号"></el-table-column>
                     <el-table-column prop="protocolName" label="协议名称"></el-table-column>
-                    <el-table-column prop="protocolEnterpriseId" label="协议签署方"></el-table-column>
-                    <el-table-column prop="protocolAnotherEnterpriseId" label="协议签署对方"></el-table-column>
+                    <el-table-column prop="protocolEnterpriseName" label="协议签署方"></el-table-column>
+                    <el-table-column prop="protocolAnotherEnterpriseName" label="协议签署对方"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
                         <span>
                             <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
