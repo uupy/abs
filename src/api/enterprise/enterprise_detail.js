@@ -411,8 +411,9 @@ export default {
                     val:false
                 });
                 var aEle = document.createElement("a");
-                // aEle.src = window.URL.createObjectURL(response);
-                console.log(response)
+                //aEle.src = window.URL.createObjectURL(response.body);
+               
+
             });
         }
     }
