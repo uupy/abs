@@ -155,6 +155,7 @@ export default {
                         corporation_name:enterprise.corporation_name,
                         corporation_id_number:enterprise.corporation_id_number,
                         path:enterprise.path,
+                        mobile:enterprise.mobile
                     }
                 },(response)=>{
                     self.$nprogress.done();

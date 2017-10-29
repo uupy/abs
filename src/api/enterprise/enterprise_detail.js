@@ -401,7 +401,7 @@ export default {
 
             self.onHttp({
                 method:'GET',
-                path:'/file/downloadFile',
+                path:'/file/downloadAuthenFile',
                 fileFlow:true,
                 params:params
             },(response)=>{
@@ -411,8 +411,8 @@ export default {
                     val:false
                 });
                 var aEle = document.createElement("a");
-                aEle.src = window.URL.createObjectURL(response);
-                console.log(aEle)
+                // aEle.src = window.URL.createObjectURL(response);
+                console.log(response)
             });
         }
     }
