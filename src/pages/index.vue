@@ -185,6 +185,9 @@
             echartsInit(id,option){
             	var myChart = echarts.init(document.getElementById(id));		      
 		        myChart.setOption(option);
+            },
+            todoDetail(){
+            	
             }
         },
         watch: {
