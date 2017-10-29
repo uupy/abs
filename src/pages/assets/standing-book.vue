@@ -39,7 +39,7 @@
                 <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @keyup.native.enter='search' @click="clearFilter"></el-input>
                 <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
                 <el-button size="small" type='primary'  :disabled='assetsIds.length<=0?true:false' @click.native="downloadExl">导出</el-button>
-                <el-button size="small" @click.native="downloadExl">导出</el-button>
+                <!-- <el-button size="small" @click.native="downloadExl">导出</el-button> -->
             </div>       
         </el-row>
 
