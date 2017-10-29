@@ -43,7 +43,7 @@ export default {
             if(self.isTimeOut || !Util.isObject(options)){return false;}
             // 默认使用GET请求
             options.method = (options.method ? options.method.toUpperCase() : null) || 'GET';
-            options.async = ((options.async === null || options.async === undefined) ? true : Boolean(options.async));
+            // options.fileFlow = ((options.fileFlow === null || options.fileFlow === undefined) ? false : Boolean(options.fileFlow));
             let config = {
                 method: options.method,
                 url: `${self.url}${options.path}`,
@@ -60,10 +60,9 @@ export default {
                     params_arr.push(`${key}=${options.params[key]}`);
                 }
                 config.body = params_arr.join('&');
-                console.log('options----:',config.body)
             }
             
-            if(options.async){
+            if(!options.fileFlow){
                 self.$http(config).then((response) => {
                     const res = response.body;
                     if(res.code > 0){
@@ -89,14 +88,14 @@ export default {
                     if(response.status === 401){
                         self.unauthorized();
                     }else{
+                        self.$nprogress.done();
+                        self.setState([
+                            {attr:'onLoading',val:false},
+                            {attr:'innerLoading',val:false}
+                        ]);
                         if(Util.isFunction(errorCallback)){
                             errorCallback(response)
                         }else{
-                            self.$nprogress.done();
-                            self.setState([
-                                {attr:'onLoading',val:false},
-                                {attr:'innerLoading',val:false}
-                            ]);
                             self.$message({
                                 message: `请求结果：${response.ok}`,
                                 type: 'error'
@@ -145,9 +144,16 @@ export default {
                     xmlhttp.send(JSON.stringify(options.params));
                 }
                 if (xmlhttp.status === 200) {
-                    console.log('success')
+                    var blob = this.response;
+                    console.log('blob:',blob)
+                    Util.isFunction(successCallback) ? successCallback(blob) : '';
                 } else {
-                    console.error('error')
+                    self.$nprogress.done();
+                    self.setState([
+                        {attr:'onLoading',val:false},
+                        {attr:'innerLoading',val:false}
+                    ]);
+                    console.error('error code:',xmlhttp.status)
                 }
             }
         },

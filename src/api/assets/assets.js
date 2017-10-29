@@ -180,8 +180,6 @@ export default {
                 }
                 params.status = options.status
             }
-
-            console.log('status:',options)
                 
             self.onHttp({
                 method:'GET',

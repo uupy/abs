@@ -20,8 +20,8 @@
                 </el-date-picker>
             </div>  
             <div class="f-right">
-                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
+                <el-input size="small" v-model="filter_name" @keyup.native.enter='search' placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search" ></i> 查询</el-button>
                 <el-button size="small" type='primary' @click.native='verifyHandle' :disabled='assetsIds.length<=0?true:false'>审核通过</el-button>
             </div>       
         </el-row>
@@ -77,7 +77,11 @@
         },
         methods: {
             clearFilter(){
- 
+                const self = this;
+                if(self.filter_name!=''){
+                    self.filter_name = '';
+                    self.getStandingBookList({status:2}); 
+                }                    
             },
             handleSelectionChange(){
  
@@ -156,6 +160,16 @@
             tableSelectAll(selection){
                 const self = this;
                 self.assetsIds = selection;
+            },
+            search(){
+                const self = this;
+                console.log('filter_name:',self.filter_name)
+                self.filter_name = self.filter_name.replace(/\s+/g,"");
+                if(self.filter_name == ''){
+                    return;
+                }
+                self.params.keyword = self.filter_name;
+                self.getStandingBookList({status:2,keyword:self.filter_name});
             },
         },
         watch: {

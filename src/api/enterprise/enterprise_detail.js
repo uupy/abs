@@ -391,7 +391,7 @@ export default {
         },
 
         // 文件下载
-        downLoadFile(filePath){
+        downLoadFile(params){
             const self = this;
             self.$nprogress.start();
             self.setState({
@@ -402,16 +402,17 @@ export default {
             self.onHttp({
                 method:'GET',
                 path:'/file/downloadFile',
-                async:false,
-                params:{
-                    filePath:filePath
-                }
+                fileFlow:true,
+                params:params
             },(response)=>{
                 self.$nprogress.done();
                 self.setState({
                     attr:'onLoading',
                     val:false
                 });
+                var aEle = document.createElement("a");
+                aEle.src = window.URL.createObjectURL(response);
+                console.log(aEle)
             });
         }
     }

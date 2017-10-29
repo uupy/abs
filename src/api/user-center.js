@@ -88,8 +88,8 @@ export default {
                 if(response.code > 0){
                     if (response.data) {
                         self.profile.name = response.data.name || '';
-                        self.profile.role = response.data.roleType || '';
-                        self.profile.author = response.data.authorType || '';
+                        self.profile.role = self.roleType[response.data.roleType] || '未知';
+                        self.profile.author = self.auditType[response.data.auditType] || '无';
                         self.profile.position = response.data.position || '';
                         self.profile.phone = response.data.mobile || '';
                         self.profile.email = response.data.email || '';
