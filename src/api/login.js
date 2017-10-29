@@ -45,13 +45,15 @@ export default {
                                     {attr:'enterprise_id',val:data.enterpriseId,type:'number'},
                                     {attr:'enterprise_name',val:data.enterprise.name}
                                 ]);
-                                if(data.enterpriseType === 1){
-                                    self.$router.push({ path: '/pages/all_enterprise' });
-                                }else if(data.enterpriseType === 2){
-                                    self.$router.push({ path: `/pages/core`});
-                                }else{  
-                                    self.$router.push({ path: `/pages/enterprise/views`});
-                                }
+                                // if(data.enterpriseType === 1){
+                                //     self.$router.push({ path: '/pages/all_enterprise' });
+                                // }else if(data.enterpriseType === 2){
+                                //     self.$router.push({ path: `/pages/core`});
+                                // }else{  
+                                //     self.$router.push({ path: `/pages/enterprise/views`});
+                                // }
+
+                                self.$router.push({path:'/pages/index'})
                             }
                         } else {
                             self.$message({

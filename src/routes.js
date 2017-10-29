@@ -35,6 +35,9 @@ const SettlementSettledDetail = resolve => require(['./pages/settlement/settled_
 
 //用户管理
 const UserMangementList = resolve => require(['./pages/userMangement/user-list.vue'],resolve)
+
+const Index = resolve => require(['./pages/index.vue'],resolve)
+
 //企业角色 1>保理商 2>核心企业 3>供应商 4>项目公司及子公司 5>合作方spv 6>合作方其他
 let routes = [
     {
@@ -72,6 +75,37 @@ let routes = [
                 }
             }
         ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '默认首页',
+        iconCls: 'im-icon-management',
+        leaf:true,
+        show:{
+            1:true,     //保理商
+            2:true,     //核心企业
+            3:true,     //供应商
+            4:true,     //项目公司及子公司
+            5:true,     //合作方spv
+            6:true      //合作方其他
+        },
+        children:[
+            {
+                path: '/pages/index',
+                component: Index,
+                name: '首页',
+                show:{
+                    1:true,     //保理商
+                    2:true,     //核心企业
+                    3:true,     //供应商
+                    4:true,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:true      //合作方其他
+                }
+            },
+        ]
+        
     },
     {
         path: '/',
@@ -603,7 +637,7 @@ let routes = [
             },
         ]
         
-    },
+    },    
     {
         path: '*',
         leaf:true,
