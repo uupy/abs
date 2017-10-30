@@ -224,14 +224,7 @@ export default {
             }
 
             if(options){
-                if(options.loanBeginTime){
-                    params.loanBeginTime = options.loanBeginTime
-                }
-
-                if(options.loanEndTime){
-                    params.loanEndTime = options.loanEndTime
-                }
-
+                
                 if(options.receiveableMoneyBeginTime){
                     params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
                 }
@@ -239,15 +232,6 @@ export default {
                 if(options.receiveableMoneyEndTime){
                     params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
                 }
-
-                if(options.publishBeginTime){
-                    params.publishBeginTime = options.publishBeginTime
-                }
-
-                if(options.publishEndTime){
-                    params.publishEndTime = options.publishEndTime
-                }
-
                 if(options.submitBeginTime){
                     params.submitBeginTime = options.submitBeginTime
                 }
@@ -258,7 +242,6 @@ export default {
                 if(options.keyword){
                     params.keyword = options.keyword
                 }
-                params.status = options.status
             }
                 
             self.onHttp({
@@ -304,14 +287,7 @@ export default {
                 pageSize:self.pageSize
             }
 
-            if(options){
-                if(options.loanBeginTime){
-                    params.loanBeginTime = options.loanBeginTime
-                }
-
-                if(options.loanEndTime){
-                    params.loanEndTime = options.loanEndTime
-                }
+            if(options){                
 
                 if(options.receiveableMoneyBeginTime){
                     params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
@@ -319,14 +295,6 @@ export default {
 
                 if(options.receiveableMoneyEndTime){
                     params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
-                }
-
-                if(options.publishBeginTime){
-                    params.publishBeginTime = options.publishBeginTime
-                }
-
-                if(options.publishEndTime){
-                    params.publishEndTime = options.publishEndTime
                 }
 
                 if(options.submitBeginTime){
@@ -339,7 +307,6 @@ export default {
                 if(options.keyword){
                     params.keyword = options.keyword
                 }
-                params.status = options.status
             }
                 
             self.onHttp({
@@ -385,14 +352,7 @@ export default {
                 pageSize:self.pageSize
             }
 
-            if(options){
-                if(options.loanBeginTime){
-                    params.loanBeginTime = options.loanBeginTime
-                }
-
-                if(options.loanEndTime){
-                    params.loanEndTime = options.loanEndTime
-                }
+            if(options){                
 
                 if(options.receiveableMoneyBeginTime){
                     params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
@@ -400,14 +360,6 @@ export default {
 
                 if(options.receiveableMoneyEndTime){
                     params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
-                }
-
-                if(options.publishBeginTime){
-                    params.publishBeginTime = options.publishBeginTime
-                }
-
-                if(options.publishEndTime){
-                    params.publishEndTime = options.publishEndTime
                 }
 
                 if(options.submitBeginTime){
@@ -420,7 +372,6 @@ export default {
                 if(options.keyword){
                     params.keyword = options.keyword
                 }
-                params.status = options.status
             }
                 
             self.onHttp({
@@ -466,14 +417,7 @@ export default {
                 pageSize:self.pageSize
             }
 
-            if(options){
-                if(options.loanBeginTime){
-                    params.loanBeginTime = options.loanBeginTime
-                }
-
-                if(options.loanEndTime){
-                    params.loanEndTime = options.loanEndTime
-                }
+            if(options){               
 
                 if(options.receiveableMoneyBeginTime){
                     params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
@@ -481,15 +425,7 @@ export default {
 
                 if(options.receiveableMoneyEndTime){
                     params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
-                }
-
-                if(options.publishBeginTime){
-                    params.publishBeginTime = options.publishBeginTime
-                }
-
-                if(options.publishEndTime){
-                    params.publishEndTime = options.publishEndTime
-                }
+                }                
 
                 if(options.submitBeginTime){
                     params.submitBeginTime = options.submitBeginTime
@@ -501,7 +437,6 @@ export default {
                 if(options.keyword){
                     params.keyword = options.keyword
                 }
-                params.status = options.status
             }
                 
             self.onHttp({
@@ -548,29 +483,14 @@ export default {
             }
 
             if(options){
-                if(options.loanBeginTime){
-                    params.loanBeginTime = options.loanBeginTime
-                }
-
-                if(options.loanEndTime){
-                    params.loanEndTime = options.loanEndTime
-                }
-
+                
                 if(options.receiveableMoneyBeginTime){
                     params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
                 }
 
                 if(options.receiveableMoneyEndTime){
                     params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
-                }
-
-                if(options.publishBeginTime){
-                    params.publishBeginTime = options.publishBeginTime
-                }
-
-                if(options.publishEndTime){
-                    params.publishEndTime = options.publishEndTime
-                }
+                }              
 
                 if(options.submitBeginTime){
                     params.submitBeginTime = options.submitBeginTime
@@ -581,8 +501,7 @@ export default {
                 
                 if(options.keyword){
                     params.keyword = options.keyword
-                }
-                params.status = options.status
+                }                
             }
                 
             self.onHttp({
@@ -669,7 +588,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     self.$message.success('已通过审核');
-                    self.getStandingBookList({status:2});      
+                    self.factorMayVerifyAssetsList(self.params);      
                 }else{
                     self.$message({
                         message: response.msg,
@@ -702,7 +621,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     self.$message.success('已分配');
-                    self.getStandingBookList({status:3});      
+                    self.factorMayFenPeiAssetsList(self.params);    
                 }else{
                     self.$message({
                         message: response.msg,
@@ -735,7 +654,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     self.$message.success('已发行');
-                    self.getStandingBookList({status:4});      
+                    self.factorMayFaXingAssetsList(self.params);      
                 }else{
                     self.$message({
                         message: response.msg,
@@ -768,7 +687,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     self.$message.success('已通过审核');
-                    self.getStandingBookList({status:2});      
+                    self.factorMayVerifyAssetsList(self.params);     
                 }else{
                     self.$message({
                         message: response.msg,
@@ -801,7 +720,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     self.$message.success('已通过审核');
-                    self.getStandingBookList({status:2});      
+                    self.factorMayVerifyAssetsList(self.params);      
                 }else{
                     self.$message({
                         message: response.msg,
@@ -811,7 +730,7 @@ export default {
             });
         },
 
-        //确认放款 => 资金方
+        //确认放款 => 保理商
         capitalLoan(options){
             const self = this;
             self.$nprogress.start();
@@ -834,7 +753,8 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     self.$message.success('已放款成功');
-                    self.getStandingBookList({status:6});      
+                    // self.spvMayFangKuanAssetsList(self.params); 
+                    self.factorMayFenPeiAssetsList(self.params)     
                 }else{
                     self.$message({
                         message: response.msg,
@@ -867,7 +787,7 @@ export default {
                 if(response.code > 0){
                     const data = response.data;
                     self.$message.success('已放款成功');
-                    self.getStandingBookList({status:6});      
+                    self.spvMayFangKuanAssetsList(self.params);        
                 }else{
                     self.$message({
                         message: response.msg,

@@ -81,7 +81,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.getStandingBookList({status:3});
+                    self.factorMayFenPeiAssetsList();
                 }
             },
             handleSelectionChange(){
@@ -100,11 +100,11 @@
             pageSizeChange(e){
                 this.pageSize = e;
                 this.currentPage = 1;
-                this.getStandingBookList();
+                this.factorMayFenPeiAssetsList();
             },
             pageCurrentChange(e){
                 this.currentPage = e;
-                this.getStandingBookList();
+                this.factorMayFenPeiAssetsList();
             },
             dateChange(type,event){
                 const self = this;
@@ -112,18 +112,17 @@
 
                 let begin = event.split('至')[0];
                 let end = event.split('至')[1];
-                self.params.status = 3;
+                // self.params.status = 3;
                 if(type == 'receiveableMoneyTime'){                    
                     self.params.receiveableMoneyBeginTime = begin
                     self.params.receiveableMoneyEndTime = end;
                                                
                 }else if(type == 'submitTime'){
                     self.params.submitBeginTime = begin
-                    self.params.submitEndTime = end; 
-                        
+                    self.params.submitEndTime = end;                         
                 }
 
-                self.getStandingBookList(self.params)  
+                self.factorMayFenPeiAssetsList(self.params)  
             },
             tableSelect(selection,row){
                 const self = this;
@@ -163,12 +162,12 @@
             search(){
                 const self = this;
                 self.filter_name = self.filter_name.replace(/\s+/g,"");
-                console.log('filter_name:',self.filter_name)
+                self.params.keyword = self.filter_name;
                 if(self.filter_name == ''){
                     return;
                 }
                 self.params.keyword = self.filter_name;
-                self.getStandingBookList({status:3,keyword:self.filter_name});
+                self.factorMayFenPeiAssetsList(self.params);
             },
         },
         watch: {
@@ -178,7 +177,7 @@
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.factorMayFenPeiAssetsList({status:3});
+            self.factorMayFenPeiAssetsList();
         },
         computed: {
             

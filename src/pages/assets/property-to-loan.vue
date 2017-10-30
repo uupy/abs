@@ -94,7 +94,12 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.getStandingBookList({status:6});
+                    self.params.keyword = '';
+                    if (self.enterprise_type == 5) {
+                        self.spvMayFangKuanAssetsList(self.params);
+                    } else if (self.enterprise_type == 1) {
+                        self.factorMayFenPeiAssetsList(self.params);    
+                    } 
                 }
             },
             handleSelectionChange(){
@@ -113,11 +118,19 @@
             pageSizeChange(e){
                 this.pageSize = e;
                 this.currentPage = 1;
-                this.getStandingBookList();
+                if (self.enterprise_type == 5) {
+                    self.spvMayFangKuanAssetsList(self.params);
+                } else if (self.enterprise_type == 1) {
+                    self.factorMayFenPeiAssetsList(self.params);    
+                } 
             },
             pageCurrentChange(e){
                 this.currentPage = e;
-                this.getStandingBookList();
+                if (self.enterprise_type == 5) {
+                    self.spvMayFangKuanAssetsList(self.params);
+                } else if (self.enterprise_type == 1) {
+                    self.factorMayFenPeiAssetsList(self.params);    
+                } 
             },
             dateChange(type,event){
                 const self = this;
@@ -125,8 +138,6 @@
 
                 let begin = event.split('至')[0];
                 let end = event.split('至')[1];
-
-                self.params.status = 6;
 
                 if(type == 'receiveableMoneyTime'){                    
                     self.params.receiveableMoneyBeginTime = begin
@@ -138,7 +149,11 @@
                         
                 }
 
-                self.getStandingBookList(self.params)  
+                if (self.enterprise_type == 5) {
+                    self.spvMayFangKuanAssetsList(self.params);
+                } else if (self.enterprise_type == 1) {
+                    self.factorMayFenPeiAssetsList(self.params);    
+                } 
             },
             tableSelect(selection,row){
                 const self = this;
@@ -163,13 +178,6 @@
                 self.$confirm('确定放款吗？','提示',{
                     type:'warning'
                 }).then(()=>{
-                    // if(self.enterprise_type == 1){
-                    //     //保理商放款
-                    //     self.baoliLoan({assetsIds:ids});
-                    // }else{
-                    //     //资金方放款
-                    //     self.capitalLoan({assetsIds:ids});
-                    // }
                     if(self.enterprise_type == 1) {
                         self.capitalLoan({assetsIds:ids});
                     } else if (self.enterprise_type == 5) {
@@ -183,12 +191,16 @@
             search(){
                 const self = this;
                 self.filter_name = self.filter_name.replace(/\s+/g,"");
-                console.log('filter_name:',self.filter_name)
                 if(self.filter_name == ''){
                     return;
                 }
                 self.params.keyword = self.filter_name;
-                self.getStandingBookList({status:6,keyword:self.filter_name});
+                self.propertyStatus = ABS_STATUS.propertyStatus;
+                if (self.enterprise_type == 5) {
+                    self.spvMayFangKuanAssetsList(self.params);
+                } else if (self.enterprise_type == 1) {
+                    self.factorMayFenPeiAssetsList(self.params);    
+                }
             },
         },
         watch: {
@@ -201,7 +213,7 @@
             if (self.enterprise_type == 5) {
                 self.spvMayFangKuanAssetsList();
             } else if (self.enterprise_type == 1) {
-                self.factorMayFenPeiAssetsList({status:6});    
+                self.factorMayFenPeiAssetsList();    
             }
             
         },

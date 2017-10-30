@@ -81,7 +81,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '默认首页',
-        iconCls: 'im-icon-management',
+        iconCls: 'icon-home2',
         leaf:true,
         show:{
             1:true,     //保理商
@@ -112,7 +112,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '企业管理',
-        iconCls: 'im-icon-management',
+        iconCls: 'icon-qiye',
         show:{
             1:true,     //保理商
             2:true,     //核心企业
@@ -245,7 +245,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '协议管理',
-        iconCls: 'im-icon-management',
+        iconCls: 'icon-protocol',
         show:{
             1:true,     //保理商
             2:true,     //核心企业
@@ -313,7 +313,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '资产管理',
-        iconCls: 'im-icon-management',
+        iconCls: 'icon-money',
         show:{
             1:true,     //保理商
             2:true,     //核心企业
@@ -499,7 +499,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '结算管理',
-        iconCls: 'im-icon-management',
+        iconCls: 'icon-acounts',
         show:{
             1:true,     //保理商
             2:true,     //核心企业
@@ -638,7 +638,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '用户',
-        iconCls: 'im-icon-management',
+        iconCls: 'icon-user-manage',
         leaf:true,
         show:{
             1:true,     //保理商

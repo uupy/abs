@@ -13,7 +13,7 @@ import Toast from './assets/js/toast'
 import 'nprogress/nprogress.css'
 import './assets/css/flex.css'
 import './assets/css/optiscroll.css'
-import './assets/css/iconfont.css'
+import '@/assets/fonts/iconfont.css'
 import './assets/css/style.css'
 // Mock.bootstrap();
 

@@ -7,7 +7,7 @@
                         <el-input size="small" v-model="filter_name" placeholder="请输入关键字查询" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                         <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
                     </template>
-                    <el-button size="small" type="primary" @click='dialogDisable = true'><i class="el-icon-plus"></i> 新增</el-button>
+                    <el-button size="small" type="primary" @click='dialogDisable = true'><i class="iconfont icon-plus"></i> 新增</el-button>
                 </div>
             </el-row>
             <el-row>

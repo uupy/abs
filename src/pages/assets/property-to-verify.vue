@@ -80,7 +80,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.getStandingBookList({status:2}); 
+                    self.factorMayVerifyAssetsList();
                 }                    
             },
             handleSelectionChange(){
@@ -99,11 +99,11 @@
             pageSizeChange(e){
                 this.pageSize = e;
                 this.currentPage = 1;
-                this.getStandingBookList();
+                self.factorMayVerifyAssetsList();
             },
             pageCurrentChange(e){
                 this.currentPage = e;
-                this.getStandingBookList();
+                self.factorMayVerifyAssetsList();
             },
             dateChange(type,event){
                 const self = this;
@@ -112,7 +112,7 @@
                 let begin = event.split('至')[0];
                 let end = event.split('至')[1];
 
-                self.params.status = 2;
+                // self.params.status = 2;
                 if(type == 'receiveableMoneyTime'){                    
                     self.params.receiveableMoneyBeginTime = begin
                     self.params.receiveableMoneyEndTime = end;
@@ -123,7 +123,7 @@
                         
                 }
 
-                self.getStandingBookList(self.params)  
+                self.factorMayVerifyAssetsList(self.params);
             },
             verifyHandle(row){
                 const self = this;
@@ -169,11 +169,12 @@
                 const self = this;
                 console.log('filter_name:',self.filter_name)
                 self.filter_name = self.filter_name.replace(/\s+/g,"");
+                self.params.keyword = self.filter_name;
                 if(self.filter_name == ''){
                     return;
                 }
-                self.params.keyword = self.filter_name;
-                self.getStandingBookList({status:2,keyword:self.filter_name});
+                self.params.keyword = self.filter_name;                
+                self.factorMayVerifyAssetsList(self.params);
             },
         },
         watch: {
@@ -183,7 +184,7 @@
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.factorMayVerifyAssetsList({status:2});
+            self.factorMayVerifyAssetsList();
         },
         computed: {
             

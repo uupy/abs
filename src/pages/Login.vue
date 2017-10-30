@@ -9,7 +9,7 @@
                 <el-form-item prop="account" class="login-input">
                     <el-input id="login_account" type="text" v-model="loginForm.account" auto-complete="off">
                         <template slot="prepend">
-                            <i class="im-icon-username"></i>
+                            <i class="iconfont icon-zhanghu"></i>
                         </template>
                     </el-input>
                     <span class="placeholder-txt" @click="accountPlaceholder = false" v-if="accountPlaceholder">请输入账号</span>
@@ -17,7 +17,7 @@
                 <el-form-item prop="password" class="login-input">
                     <el-input id="login_password" type="password" v-model="loginForm.password" auto-complete="off">
                         <template slot="prepend">
-                            <i class="im-icon-password"></i>
+                            <i class="iconfont icon-mima"></i>
                         </template>
                     </el-input>
                     <span class="placeholder-txt" v-if="passworPlaceholder">请输入密码</span>

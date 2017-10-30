@@ -94,7 +94,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.getStandingBookList({status:4});
+                    self.factorMayFaXingAssetsList();
                 }
             },
             handleSelectionChange(){
@@ -113,11 +113,11 @@
             pageSizeChange(e){
                 this.pageSize = e;
                 this.currentPage = 1;
-                this.getStandingBookList();
+                this.factorMayFaXingAssetsList();
             },
             pageCurrentChange(e){
                 this.currentPage = e;
-                this.getStandingBookList();
+                this.factorMayFaXingAssetsList();
             },
             dateChange(type,event){
                 const self = this;
@@ -126,7 +126,7 @@
                 let begin = event.split('至')[0];
                 let end = event.split('至')[1];
 
-                self.params.status = 4;
+                // self.params.status = 4;
                 if(type == 'receiveableMoneyTime'){                    
                     self.params.receiveableMoneyBeginTime = begin
                     self.params.receiveableMoneyEndTime = end;
@@ -137,7 +137,7 @@
                         
                 }
 
-                self.getStandingBookList(self.params)  
+                self.factorMayFaXingAssetsList(self.params)  
             },
             tableSelect(selection,row){
                 const self = this;
@@ -172,12 +172,12 @@
             search(){
                 const self = this;
                 self.filter_name = self.filter_name.replace(/\s+/g,"");
-                console.log('filter_name:',self.filter_name)
+                self.params.keyword = self.filter_name;
                 if(self.filter_name == ''){
                     return;
                 }
                 self.params.keyword = self.filter_name;
-                self.getStandingBookList({status:4,keyword:self.filter_name});
+                self.factorMayFaXingAssetsList(self.params);
             },
         },
         watch: {
@@ -187,7 +187,7 @@
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.factorMayFaXingAssetsList({status:4});
+            self.factorMayFaXingAssetsList();
         },
         computed: {
             
