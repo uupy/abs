@@ -4,12 +4,11 @@
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-position="left" label-width="0px" class="loginform">
                 <el-form-item>
                     <h2 class="login-title">高银保理金信系统</h2>
-                    <!-- <div class="login-txt">Welcome to goldin</div> -->
                 </el-form-item>
                 <el-form-item prop="account" class="login-input">
                     <el-input id="login_account" type="text" v-model="loginForm.account" auto-complete="off">
                         <template slot="prepend">
-                            <i class="iconfont icon-zhanghu"></i>
+                            <i class="iconfont icon-zhanghu" style="margin-right:0; font-size:24px;color:#fff;"></i>
                         </template>
                     </el-input>
                     <span class="placeholder-txt" @click="accountPlaceholder = false" v-if="accountPlaceholder">请输入账号</span>
@@ -17,7 +16,7 @@
                 <el-form-item prop="password" class="login-input">
                     <el-input id="login_password" type="password" v-model="loginForm.password" auto-complete="off">
                         <template slot="prepend">
-                            <i class="iconfont icon-mima"></i>
+                            <i class="iconfont icon-mima" style="margin-right:0; font-size:24px;color:#fff;"></i>
                         </template>
                     </el-input>
                     <span class="placeholder-txt" v-if="passworPlaceholder">请输入密码</span>

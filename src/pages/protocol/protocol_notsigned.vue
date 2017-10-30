@@ -28,40 +28,28 @@
                 <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </div>
-
-        <el-dialog size="tiny" title="新增协议" v-model="dialog_add_client" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
-            <el-form :model="add_form" :rules="rules" ref="add_form" label-width="90px">
-                <el-form-item label="协议类型" prop="role">
-                    <el-select v-model="add_form.type" placeholder="请选择协议类型">
-                        <el-option v-for="(item,index) in protocolType" :label="item.label" :value="item.value" :key="index" v-if="item.value !== 0"></el-option>
-                    </el-select>
+        <el-dialog size="tiny" title="签约确认" v-model="dialogConfrimSigned" @close="cancelConfrimSigned('signedForm')" :close-on-click-modal="false" style="min-width:400px;">
+            <el-form :model="signedForm" :rules="rules" ref="signedForm" label-width="90px">
+                <el-form-item label="手机号码">
+                    <el-input v-model="userMobile" readonly="readonly"></el-input>
                 </el-form-item>
-                <el-form-item label="协议名称" prop="name">
-                    <el-input v-model="add_form.name" placeholder="请输入协议名称"></el-input>
+                <el-form-item label='验证码' prop="code">
+                    <el-row>
+                        <el-col :span="16">
+                            <el-input v-model="signedForm.code" placeholder="请输入验证码"></el-input>
+                        </el-col>
+                        <el-col :span="6" :offset="1">
+                            <el-button type="primary">获取验证码</el-button>
+                        </el-col>
+                    </el-row>
                 </el-form-item>
-                <el-form-item label='协议签署方' prop="principal">
-                    <el-input v-model="add_form.signatory" placeholder="请输入协议签署方"></el-input>
-                </el-form-item>
-                <el-form-item label="签约日期" prop="position">
-                    <el-date-picker
-                        v-model="signDate"
-                        type="date"
-                        placeholder="选择日期"
-                        :picker-options="pickerOptions0">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="合同到期日" prop="position">
-                    <el-date-picker
-                        v-model="deadline"
-                        type="date"
-                        placeholder="选择日期"
-                        :picker-options="pickerOptions1">
-                    </el-date-picker>
+                <el-form-item label='密码' prop="password">
+                    <el-input v-model="signedForm.password" placeholder="请输入密码"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary">确 认</el-button>
-                <el-button @click="cancelAddClient('add_form')">取 消</el-button>
+                <el-button type="primary" @click="confrimSigned">确 认</el-button>
+                <el-button @click="cancelConfrimSigned('signedForm')">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
         </el-dialog>
@@ -81,18 +69,21 @@
                 keyword:'',
                 currentType:0,
                 filter_name:'',
-                signDate:'',
                 protocolStatus:{},
-                deadline:'',
-                dialog_add_client:false,
                 list:[],
                 protocolType:[
                     {label:'全部',value:0},
                     {label:'主合同',value:1},
                     {label:'附件',value:2},
                 ],
-                add_form:{},
-                rules:{},
+                rules:{
+                    code:[
+                        {required:true,message:'请输入验证码',trigger:'change'}
+                    ],
+                    password:[
+                        {required:true,message:'请输入密码',trigger:'change'}
+                    ]
+                },
                 pickerOptions0: {
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
@@ -103,6 +94,11 @@
                         return time.getTime() < Date.now() - 8.64e7;
                     }
                 },
+                dialogConfrimSigned:false,
+                signedForm:{
+                    code:'',
+                    password:''
+                }
             }
         },
         methods: {
@@ -122,9 +118,6 @@
             clearFilter(type){
                 const self = this;
             },
-            cancelAddClient(){
-                this.dialog_add_client = false;
-            },
             search(){
                 const self = this;
                 if(self.filter_name.replace(/\s/g,"")==""){
@@ -135,8 +128,24 @@
             },
             check(row){   
                 const self = this;
-                self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
-            }
+                if(row.state == 1 || row.state == 3){
+                    self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
+                }else{
+                    self.dialogConfrimSigned = true;
+                }
+            },
+            confrimSigned(){
+                const self = this;
+                self.$refs['signedForm'].validate((valid)=>{
+                    if(valid){
+                        self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
+                    }
+                });
+            },
+            cancelConfrimSigned(formName){
+                this.$refs[formName].resetFields();
+                this.dialogConfrimSigned = false;
+            },
         },
         watch: {
             

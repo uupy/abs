@@ -37,13 +37,21 @@ export default {
                             const data = res.data;
                             // 保存登录信息
                             if(data){
+                                let authenticationStatus = 0;
+                                if(data.entMemberType === 1){
+                                    authenticationStatus = data.enterprise.status;
+                                }else{
+                                    authenticationStatus = data.entMember.status;
+                                }
                                 self.saveStorageState([
                                     {attr:'token',val:res.token},
                                     {attr:'username',val:self.loginForm.account},
+                                    {attr:'userMobile',val:data.mobile},
                                     {attr:'user_type',val:data.entMemberType,type:'number'},
                                     {attr:'enterprise_type',val:data.enterpriseType,type:'number'},
                                     {attr:'enterprise_id',val:data.enterpriseId,type:'number'},
-                                    {attr:'enterprise_name',val:data.enterprise.name}
+                                    {attr:'enterprise_name',val:data.enterprise.name},
+                                    {attr:'authenticationStatus',val:authenticationStatus,type:'number'},
                                 ]);
                                 // if(data.enterpriseType === 1){
                                 //     self.$router.push({ path: '/pages/all_enterprise' });
