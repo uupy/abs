@@ -125,8 +125,6 @@ export default {
                             message: row.name+'，已成功删除！',
                             type: 'success'
                         });
-
-                        console.log(self.enterpriseCurType + ',111');
                         self.getEnterpriseList({status:parseInt(self.enterprise_status),type:self.enterpriseCurType});
                     }else{
                         self.$message({
