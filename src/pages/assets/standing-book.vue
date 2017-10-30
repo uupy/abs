@@ -133,23 +133,7 @@
                 status:0,
                 assetsIds:[],
 
-                excelData:[
-                    // { 
-                    //     '资产编号':['123456'],
-                    //     '供应商':'',
-                    //     '项目公司':'',
-                    //     '所属区域':'',
-                    //     '应收账款金额':'',
-                    //     '转让折价':'',
-                    //     '提交日期':'',
-                    //     '放款日期':'',
-                    //     '资产发行日期':'',
-                    //     '应收账款到期日':'',
-                    //     '融资天数':'',
-                    //     '还款日期':'',
-                    //     '资产状态':''     
-                    // },
-                ],
+                excelData:[],
                 tmpDown:{},
                 wopts:{ bookType: 'xlsx', bookSST: false, type: 'binary' },
             }
@@ -165,12 +149,7 @@
             handleSelectionChange(){
  
             },
-            clientsSizeChange(){
- 
-            },
-            clientsCurrentChange(){
- 
-            },
+            
             checkView(row){
                 const self = this;
                 self.$router.push({path:'/pages/assets/standing-book/views'});
