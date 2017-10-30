@@ -135,7 +135,9 @@
                         self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
                     }).catch(() => {});
                 }else{
-                    console.log(self);
+                    if (self.user_type == 1) {
+                        self.selectEntAuthenInfo({enterpriseId: self.enterprise_id});
+                    }
                     self.dialogConfrimSigned = true;
                 }
             },
