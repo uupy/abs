@@ -7,8 +7,12 @@
 			<el-col class="rightbar">
 				<el-dropdown trigger="click">
 					<span class="el-dropdown-link">
-						<i class="iconfont icon-user"></i>
-						{{username || ''}}
+						<!-- <i class="iconfont icon-user"></i> -->
+						<i class="iconfont health icon-renzheng"></i>
+						<span>
+							{{username || ''}}
+							<!-- <i class="iconfont health icon-renzheng"></i> -->
+						</span>
 						<i class="el-icon-caret-bottom el-icon--right"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
@@ -154,3 +158,6 @@
         }
 	}
 </script>
+<style scoped>
+	.icon-renzheng{margin-right: 0;}
+</style>
