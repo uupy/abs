@@ -82,6 +82,12 @@ ul{
     border-color: rgba(255, 170, 104,.2);
     color: #FFAA68;
 }
+.default{
+	color: #a3a3a3;
+}
+.primary{
+	color: #1196db;
+}
 .health{
 	color:nth($fontColors, 1);
 }
@@ -94,10 +100,6 @@ ul{
 .danger{
 	color:nth($fontColors, 4);
 }
-.primary{
-	color: #1196db;
-}
-
 .toolbar{
 	line-height:30px;
 	padding:15px 0;
@@ -269,6 +271,9 @@ ul{
 }
 .el-message-box__headerbtn:focus .el-message-box__close, .el-message-box__headerbtn:hover .el-message-box__close{
 	color: $baseColorHover;
+}
+.el-dialog{
+	min-width:520px;
 }
 .el-dialog__close{
 	color: $baseColor;

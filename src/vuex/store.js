@@ -15,9 +15,12 @@ const state = {
     isTimeOut: false,
     isKickedOut:false,
     username: localStorage.getItem('username') || '',
+    userMobile: localStorage.getItem('userMobile') || '',
     token: localStorage.getItem('token') || '',
     styles:'min-height:'+(window.innerHeight-84)+'px',
 
+    // 认证状态 1>未认证 2>已认证
+    authenticationStatus:parseInt(localStorage.getItem('authenticationStatus') || '0'),
     // 用户角色 1>admin 2>企业法人 3>代理人1 4>代理人2 5>对接人  
     user_type:parseInt(localStorage.getItem('user_type') || '0'),
     

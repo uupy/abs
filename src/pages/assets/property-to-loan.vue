@@ -71,19 +71,7 @@
                 currentPage:1,
                 params:{},
                 propertyList:[
-                    {
-                        pno:'ZCA01171019001',
-                        supplier:'供应商1',
-                        project:'碧桂园',
-                        area:'深圳宝安',
-                        yszkje:'2,000,000',
-                        zrzj:'1,988,000',
-                        tjrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        rzts:'360',
-                        dclr:'保理商复核',
-                        status:'5',
-                    },
+                    
                 ],
                 propertyStatus:{},
                 assetsIds:[]
