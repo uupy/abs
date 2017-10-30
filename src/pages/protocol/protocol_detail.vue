@@ -127,7 +127,7 @@
                                         <div class="cell" :style="`width:${100/5}%;`">发票金额</div>
                                         <div class="cell" :style="`width:${100/5}%;`">发票日期</div>
                                         <div class="cell" :style="`width:${100/5}%;`">发票附件</div>
-                                        <div class="cell" :style="`width:${100/5}%;`">操作</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">附件上传</div>
                                     </li>
                                     <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                         <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
@@ -377,7 +377,22 @@
                     serverFile:'http://www.danielpeng.me/file/ABS资产管理.rar',
                     pdfFile:'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf'
                 },
-                list:[],  
+                list:[
+                    {
+                        orderReceiptsId:'123456',
+                        orderReceiptsType:'',
+                        money:'1000万',
+                        receiptsTime:'2017/10/31',
+                        invoiceTotalMoney:'1000万',
+                        fp_list:[
+                            {
+                                invoiceId:'2',
+                                money:'100万',
+                                invoiceTime:'2014/10/30',
+                            }
+                        ]
+                    }
+                ],  
             }
         },
         methods: {
@@ -478,7 +493,13 @@
         mixins:[Common],
         mounted() {
             const self = this;
-            console.log('protocolId:',self.$route.params.protocolId)            
+            console.log('protocolId:',self.$route.params.protocolId)  
+            self.$nextTick(()=>{
+                const expandTables = document.querySelectorAll('.table-expand');
+                expandTables.forEach((item)=>{
+                    item.querySelector('th.el-table__expand-column').innerHTML = '<div class="cell">展开</div>';
+                });
+            })          
         },
         computed: {
             
