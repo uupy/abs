@@ -20,7 +20,7 @@
         <el-row :span="24">
             <el-table :data="list" class="table-list">
                 <el-table-column type="index" label="序号" width="90"></el-table-column>
-                <el-table-column prop="id" label="企业编号"></el-table-column>
+                <el-table-column prop="code" label="企业编号"></el-table-column>
                 <el-table-column prop="name" label="企业名称"></el-table-column>
                 <el-table-column prop="role" label="合作方类型">
                     <template slot-scope="scope">

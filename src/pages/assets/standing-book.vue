@@ -101,18 +101,7 @@
                 publishEndTime:'',
                 propertyList:[
                     {
-                        pno:'ZCA01171019001',
-                        area:'碧桂园',
-                        supplier:'供应商1',
-                        yszkje:'100万',
-                        zrzj:'100万',
-                        tjrq:'2017-12-30',
-                        fkrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        zcfxrq:'2017-12-30',
-                        hkr:'2017-12-30',
-                        rzts:'360',
-                        status:'1',
+                        
                     }
                 ],
                 propertyStatus:ABS_STATUS.propertyStatus,
