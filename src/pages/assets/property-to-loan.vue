@@ -66,24 +66,12 @@
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:1,
-                pageTotal:0,
+                pageTotal:10,
                 pageSize:10,
                 currentPage:1,
                 params:{},
                 propertyList:[
-                    {
-                        pno:'ZCA01171019001',
-                        supplier:'供应商1',
-                        project:'碧桂园',
-                        area:'深圳宝安',
-                        yszkje:'2,000,000',
-                        zrzj:'1,988,000',
-                        tjrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        rzts:'360',
-                        dclr:'保理商复核',
-                        status:'5',
-                    },
+                    
                 ],
                 propertyStatus:{},
                 assetsIds:[]
@@ -116,8 +104,9 @@
                 self.$router.push({path:'/pages/assets/property-to-loan/views'});
             },
             pageSizeChange(e){
-                this.pageSize = e;
-                this.currentPage = 1;
+                const self = this;
+                self.pageSize = e;
+                self.currentPage = 1;
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
@@ -125,7 +114,8 @@
                 } 
             },
             pageCurrentChange(e){
-                this.currentPage = e;
+                const self = this;
+                self.currentPage = e;
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {

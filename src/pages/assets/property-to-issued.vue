@@ -113,11 +113,11 @@
             pageSizeChange(e){
                 this.pageSize = e;
                 this.currentPage = 1;
-                this.factorMayFaXingAssetsList();
+                this.factorMayFaXingAssetsList(this.params);
             },
             pageCurrentChange(e){
                 this.currentPage = e;
-                this.factorMayFaXingAssetsList();
+                this.factorMayFaXingAssetsList(this.params);
             },
             dateChange(type,event){
                 const self = this;
