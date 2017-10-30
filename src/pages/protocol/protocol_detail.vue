@@ -397,18 +397,20 @@
             }
         },
         methods: {
-           handlePreview(){
+            handlePreview(){
 
-           },
-           handleRemove(){
+            },
+            handleRemove(){
 
-           },
-           tabChange(){
-           },
-           handleChange(key){
-           },
-           cancelReset(){},
-           getFile(url){
+            },
+            tabChange(tab){
+                this.active_name = tab.name;
+                sessionStorage.setItem('assets_tname',tab.name);
+            },
+            handleChange(key){
+            },
+            cancelReset(){},
+            getFile(url){
                 const self = this;
                 self.fileType =  (url.substr((url.lastIndexOf('.'))+1)).toLowerCase();
                 
@@ -427,7 +429,9 @@
                     PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/1.10.93/pdf.worker.min.js';
                     var loadingTask = PDFJS.getDocument(url);
                     loadingTask.promise.then(function(pdf) {
-                      console.log('PDF loaded');
+                        self.dialogFormVisible = true;
+
+                        console.log('PDF loaded');
                       
                       // Fetch the first page
                       var pageNumber = 1;
@@ -450,27 +454,24 @@
                         };
                         var renderTask = page.render(renderContext);
                         renderTask.then(function () {
-                          console.log('Page rendered');
+                          // console.log('Page rendered');
+                            self.$nprogress.done();
+                            self.setState({
+                                attr:'onLoading',
+                                val:false
+                            });
                         });
                       });
                     }, function (reason) {
                       // PDF loading error
                       console.error(reason);
                     });
-                    setTimeout(function(){
-                        self.dialogFormVisible = true;
-                        self.$nprogress.done();
-                        self.setState({
-                            attr:'onLoading',
-                            val:false
-                        });
-                    },500)
                 }                    
-           },
-           imgError(){
-                alert('sb')
-           },
-           tableSelect(selection,row){
+            },
+            imgError(){
+                
+            },
+            tableSelect(selection,row){
                 const self = this;
                 // self.orderReceiptsIds = selection;
             },
@@ -487,6 +488,25 @@
                     }
                 }                    
             },
+            getData(active_name){
+                const self = this;
+                switch(active_name){
+                    case 'business-contract':
+                        //商务合同信息
+                        break;
+                    case 'property-info':
+                        //资产详情
+                        break;  
+                    case 'bills-info':
+                        //单据信息
+                        break; 
+                    case 'property-transfer-info':
+                        //资产转让信息
+                        break;   
+                    default:
+                        break;
+                }
+            }
         },
         watch: {
             
@@ -500,6 +520,10 @@
                 expandTables.forEach((item)=>{
                     item.querySelector('th.el-table__expand-column').innerHTML = '<div class="cell">展开</div>';
                 });
+                if(sessionStorage.getItem('assets_tname')){
+                    self.active_name = sessionStorage.getItem('assets_tname');
+                    self.getData(self.active_name); 
+                }
             })          
         },
         computed: {
