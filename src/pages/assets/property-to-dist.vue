@@ -140,16 +140,16 @@
                 let params = {}
 
                 if(row.assetsId){                    
-                    ids.push(row.assetsId)
+                    ids.push(row.id)
                     names.push(row.capitalName);
                 }else{
                     self.assetsIds.forEach(val=>{
-                        ids.push(val.assetsId);
+                        ids.push(val.id);
                         ids.push(val.capitalName)
                     });    
                 } 
 
-                params.assetsIds = ids.join(','); 
+                params.assetsId = ids.join(','); 
                 params.capitalName = names.join(',');
 
                 self.$confirm('确定分配资产吗？','提示',{
@@ -178,7 +178,7 @@
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.getStandingBookList({status:3});
+            self.factorMayFenPeiAssetsList({status:3});
         },
         computed: {
             

@@ -152,10 +152,10 @@
                 let ids = [];
 
                 if(row.assetsId){
-                    ids = row.assetsId;
+                    ids = row.id;
                 }else{
                     self.assetsIds.forEach(val=>{
-                        ids.push(val.assetsId)
+                        ids.push(val.id)
                     });
                 }
 
@@ -163,7 +163,7 @@
                     type:'warning'
                 }).then(()=>{
                     self.assetsPublish({
-                        assetsIds:ids
+                        assetsIds:ids,spvName:''
                     });
                 }).catch(()=>{
 
@@ -187,7 +187,7 @@
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.getStandingBookList({status:4});
+            self.factorMayFaXingAssetsList({status:4});
         },
         computed: {
             

@@ -153,23 +153,29 @@
                 let ids = [];
 
                 if(row.assetsId){
-                    ids = row.assetsId;
+                    ids = row.id;
                 }else{
                     self.assetsIds.forEach(val=>{
-                        ids.push(val.assetsId)
+                        ids.push(val.id)
                     });
                 }
 
                 self.$confirm('确定放款吗？','提示',{
                     type:'warning'
                 }).then(()=>{
-                    if(self.enterprise_type == 1){
-                        //保理商放款
-                        self.baoliLoan({assetsIds:ids});
-                    }else{
-                        //资金方放款
+                    // if(self.enterprise_type == 1){
+                    //     //保理商放款
+                    //     self.baoliLoan({assetsIds:ids});
+                    // }else{
+                    //     //资金方放款
+                    //     self.capitalLoan({assetsIds:ids});
+                    // }
+                    if(self.enterprise_type == 1) {
                         self.capitalLoan({assetsIds:ids});
+                    } else if (self.enterprise_type == 5) {
+                        self.spvLoan({assetsIds:ids});
                     }
+                    
                 }).catch(()=>{
 
                 }); 
@@ -192,7 +198,12 @@
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.getStandingBookList({status:6});
+            if (self.enterprise_type == 5) {
+                self.spvMayFangKuanAssetsList();
+            } else if (self.enterprise_type == 1) {
+                self.factorMayFenPeiAssetsList({status:6});    
+            }
+            
         },
         computed: {
             

@@ -208,6 +208,410 @@ export default {
                 }
             });
         },
+        //待审核资产列表
+        factorMayVerifyAssetsList(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize
+            }
+
+            if(options){
+                if(options.loanBeginTime){
+                    params.loanBeginTime = options.loanBeginTime
+                }
+
+                if(options.loanEndTime){
+                    params.loanEndTime = options.loanEndTime
+                }
+
+                if(options.receiveableMoneyBeginTime){
+                    params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
+                }
+
+                if(options.receiveableMoneyEndTime){
+                    params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
+                }
+
+                if(options.publishBeginTime){
+                    params.publishBeginTime = options.publishBeginTime
+                }
+
+                if(options.publishEndTime){
+                    params.publishEndTime = options.publishEndTime
+                }
+
+                if(options.submitBeginTime){
+                    params.submitBeginTime = options.submitBeginTime
+                }
+                if(options.submitEndTime){
+                    params.submitEndTime = options.submitEndTime
+                }
+                
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+                params.status = options.status
+            }
+                
+            self.onHttp({
+                method:'GET',
+                path:'/assets/factorMayVerifyAssetsList',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            self.propertyList = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }           
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //待分配资产列表
+        factorMayFenPeiAssetsList(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize
+            }
+
+            if(options){
+                if(options.loanBeginTime){
+                    params.loanBeginTime = options.loanBeginTime
+                }
+
+                if(options.loanEndTime){
+                    params.loanEndTime = options.loanEndTime
+                }
+
+                if(options.receiveableMoneyBeginTime){
+                    params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
+                }
+
+                if(options.receiveableMoneyEndTime){
+                    params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
+                }
+
+                if(options.publishBeginTime){
+                    params.publishBeginTime = options.publishBeginTime
+                }
+
+                if(options.publishEndTime){
+                    params.publishEndTime = options.publishEndTime
+                }
+
+                if(options.submitBeginTime){
+                    params.submitBeginTime = options.submitBeginTime
+                }
+                if(options.submitEndTime){
+                    params.submitEndTime = options.submitEndTime
+                }
+                
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+                params.status = options.status
+            }
+                
+            self.onHttp({
+                method:'GET',
+                path:'/assets/factorMayFenPeiAssetsList',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            self.propertyList = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }           
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //待放款资产列表
+        factorMayFenPeiAssetsList(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize
+            }
+
+            if(options){
+                if(options.loanBeginTime){
+                    params.loanBeginTime = options.loanBeginTime
+                }
+
+                if(options.loanEndTime){
+                    params.loanEndTime = options.loanEndTime
+                }
+
+                if(options.receiveableMoneyBeginTime){
+                    params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
+                }
+
+                if(options.receiveableMoneyEndTime){
+                    params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
+                }
+
+                if(options.publishBeginTime){
+                    params.publishBeginTime = options.publishBeginTime
+                }
+
+                if(options.publishEndTime){
+                    params.publishEndTime = options.publishEndTime
+                }
+
+                if(options.submitBeginTime){
+                    params.submitBeginTime = options.submitBeginTime
+                }
+                if(options.submitEndTime){
+                    params.submitEndTime = options.submitEndTime
+                }
+                
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+                params.status = options.status
+            }
+                
+            self.onHttp({
+                method:'GET',
+                path:'/assets/factorMayFangKuanAssetsList',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            self.propertyList = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }           
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //待发行资产列表
+        factorMayFaXingAssetsList(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize
+            }
+
+            if(options){
+                if(options.loanBeginTime){
+                    params.loanBeginTime = options.loanBeginTime
+                }
+
+                if(options.loanEndTime){
+                    params.loanEndTime = options.loanEndTime
+                }
+
+                if(options.receiveableMoneyBeginTime){
+                    params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
+                }
+
+                if(options.receiveableMoneyEndTime){
+                    params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
+                }
+
+                if(options.publishBeginTime){
+                    params.publishBeginTime = options.publishBeginTime
+                }
+
+                if(options.publishEndTime){
+                    params.publishEndTime = options.publishEndTime
+                }
+
+                if(options.submitBeginTime){
+                    params.submitBeginTime = options.submitBeginTime
+                }
+                if(options.submitEndTime){
+                    params.submitEndTime = options.submitEndTime
+                }
+                
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+                params.status = options.status
+            }
+                
+            self.onHttp({
+                method:'GET',
+                path:'/assets/factorMayFaXingAssetsList',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            self.propertyList = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }           
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
+        //待放款资产列表SPV
+        spvMayFangKuanAssetsList(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let params = {
+                curPage:self.currentPage,
+                pageSize:self.pageSize
+            }
+
+            if(options){
+                if(options.loanBeginTime){
+                    params.loanBeginTime = options.loanBeginTime
+                }
+
+                if(options.loanEndTime){
+                    params.loanEndTime = options.loanEndTime
+                }
+
+                if(options.receiveableMoneyBeginTime){
+                    params.receiveableMoneyBeginTime = options.receiveableMoneyBeginTime
+                }
+
+                if(options.receiveableMoneyEndTime){
+                    params.receiveableMoneyEndTime = options.receiveableMoneyEndTime
+                }
+
+                if(options.publishBeginTime){
+                    params.publishBeginTime = options.publishBeginTime
+                }
+
+                if(options.publishEndTime){
+                    params.publishEndTime = options.publishEndTime
+                }
+
+                if(options.submitBeginTime){
+                    params.submitBeginTime = options.submitBeginTime
+                }
+                if(options.submitEndTime){
+                    params.submitEndTime = options.submitEndTime
+                }
+                
+                if(options.keyword){
+                    params.keyword = options.keyword
+                }
+                params.status = options.status
+            }
+                
+            self.onHttp({
+                method:'GET',
+                path:'/assets/spvMayFangKuanAssetsList',
+                params:params
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    if(data){
+                        if(Util.isArray(data.list)){
+                            self.propertyList = data.list;
+                            self.pageTotal = data.total;
+                            self.pages = data.pages;
+                        }
+                    }           
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
 
         //应付单据确认
         orderReceiptsMakeSure(options){
@@ -341,6 +745,39 @@ export default {
             });
         },
 
+        //资产审核 => 保理商
+        factorCheckAssets(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'POST',
+                path:'/assets/factorCheckAssets',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已通过审核');
+                    self.getStandingBookList({status:2});      
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
+
         //资产审核 => spv
         spvCheckAssets(options){
             const self = this;
@@ -374,7 +811,7 @@ export default {
             });
         },
 
-        //确认放款 => spv 资金方
+        //确认放款 => 资金方
         capitalLoan(options){
             const self = this;
             self.$nprogress.start();
@@ -407,8 +844,8 @@ export default {
             });
         },
 
-        //确认放款 => 保理商
-        baoliLoan(options){
+        //确认放款 => SPV
+        spvLoan(options){
             const self = this;
             self.$nprogress.start();
 
@@ -419,7 +856,7 @@ export default {
                 
             self.onHttp({
                 method:'POST',
-                path:'/assets/baoliLoan',
+                path:'/assets/spvLoan',
                 params:options
             },(response)=>{
                 self.$nprogress.done();

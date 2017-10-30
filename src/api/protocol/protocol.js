@@ -141,6 +141,41 @@ export default {
                     });
                 }
             });
+        },
+
+        //签约
+        signProtocol(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+
+            let url = '/protocol/signProtocol';
+                
+            self.onHttp({
+                method:'POST',
+                path:url,
+                params:{protocolId:options.protocolId}
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('签约成功');
+                    self.getProtocolList({status:1});
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
         }
     }
 }

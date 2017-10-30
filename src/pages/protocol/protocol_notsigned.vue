@@ -20,8 +20,8 @@
                     <el-table-column prop="protocolAnotherEnterpriseName" label="协议签署对方"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
                         <span>
-                            <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
-                            <span class="table-btn danger" @click='check(row)'>签约</span>
+                            <span class="table-btn health" @click.stop="checkView(row)">预览</span>
+                            <span class="table-btn danger" @click='check(row)'>{{row.state == 1 || row.state == 3 ? '签约申请' : '签约'}}</span>
                         </span>
                     </el-table-column>
                 </el-table>
@@ -135,7 +135,7 @@
             },
             check(row){   
                 const self = this;
-                self.checkAssets({protocolId:row.id,enterprise_type:self.enterprise_type});
+                self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
             }
         },
         watch: {

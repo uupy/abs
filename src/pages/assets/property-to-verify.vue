@@ -129,26 +129,30 @@
                 const self = this;
                 let ids = [];
                 if(row.assetsId){
-                    ids = row.assetsId
+                    ids = row.id
                 }else{
                     self.assetsIds.forEach(val=>{
-                        ids.push(val.assetsId)
+                        ids.push(val.id)
                     });
                 }                  
 
                 self.$confirm('确定通过审核吗？','提示',{
                     type:'warning'
                 }).then(()=>{
-                    if(self.enterprise_type == '5'){
-                        //spv 审核
-                        self.spvCheckAssets({
-                            assetsIds:ids
-                        })     
-                    }else{
-                        self.assetsVerify({
-                            assetsIds:ids
-                        });
-                    }                        
+                    // if(self.enterprise_type == '5'){
+                    //     //spv 审核
+                    //     self.spvCheckAssets({
+                    //         assetsIds:ids
+                    //     })     
+                    // }else{
+                    //     self.assetsVerify({
+                    //         assetsIds:ids
+                    //     });
+                    // } 
+                    self.factorCheckAssets({
+                        assetsId:ids
+                    });
+
                 }).catch(()=>{
 
                 });
@@ -179,7 +183,7 @@
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            self.getStandingBookList({status:2});
+            self.factorMayVerifyAssetsList({status:2});
         },
         computed: {
             
