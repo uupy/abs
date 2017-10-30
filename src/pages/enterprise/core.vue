@@ -17,7 +17,7 @@
                         <div class="f-right">
                             <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
                             <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i> 查询</el-button>
-                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i> 新增</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="iconfont icon-plus"></i> 新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -57,7 +57,7 @@
                         <div class="f-right">
                             <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
                             <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
-                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="iconfont icon-plus"></i>新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -95,7 +95,7 @@
                         <div class="f-right">
                             <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
                             <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i> 查询</el-button>
-                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i> 新增</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="iconfont icon-plus"></i> 新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -136,7 +136,7 @@
                 <div class="f-right">
                     <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
                     <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i> 查询</el-button>
-                    <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 1 || enterprise_type === 2"><i class="el-icon-plus"></i> 新增</el-button>
+                    <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 1 || enterprise_type === 2"><i class="iconfont icon-plus"></i> 新增</el-button>
                 </div>
             </el-row>
             <el-row :span="24">

@@ -7,15 +7,15 @@
 			<el-col class="rightbar">
 				<el-dropdown trigger="click">
 					<span class="el-dropdown-link">
-						<i class="im-icon-user1"></i>
+						<i class="iconfont icon-user"></i>
 						{{username || ''}}
 						<i class="el-icon-caret-bottom el-icon--right"></i>
 					</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item @click.native="userCenter"><i class="im-icon-edit dropdown-icon"></i>认证中心</el-dropdown-item>	
-						<el-dropdown-item @click.native="dialogFormVisible = true"><i class="im-icon-edit dropdown-icon"></i>修改密码</el-dropdown-item>
+						<el-dropdown-item @click.native="userCenter"><i class="icon-dropdown iconfont icon-renzhengzhongxinweixuanzhong"></i>认证中心</el-dropdown-item>	
+						<el-dropdown-item @click.native="dialogFormVisible = true"><i class="icon-dropdown iconfont icon-xiugaimima"></i>修改密码</el-dropdown-item>
 
-						<el-dropdown-item @click.native="logout"><i class="im-icon-logout dropdown-icon"></i>退出登录</el-dropdown-item>
+						<el-dropdown-item @click.native="logout"><i class="icon-dropdown iconfont icon-tuichudenglu"></i>退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</el-col>
@@ -26,11 +26,11 @@
 					<el-menu :default-active="currentRoute" class="el-menu-vertical-demo" :unique-opened="false" router>
 						<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 							<el-submenu :ref='"menu_"+index' :id='"menu_"+index' :class='openMenu?"is-opened":""' :index="index+''" v-if="!item.leaf && item.show[enterprise_type]">
-								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
+								<template slot="title"><i :class="'iconfont '+item.iconCls"></i>{{item.name}}</template>
 								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[enterprise_type] && !child.hidden">{{child.name === '集团管理' ? (enterprise_type === 2 ? child.name : '集团客户管理') : (child.name === '融资客户管理' ? (enterprise_type !== 2 && enterprise_type !== 4 ? child.name : '供应商管理') : (child.name === '应付数据' ? (enterprise_type !== 3 ? child.name : '融资管理') : child.name))}}</el-menu-item>
 							</el-submenu>
 							<el-menu-item v-if="item.leaf && item.children.length > 0 && item.show[enterprise_type]" :index="item.children[0].path">
-								<i :class="item.iconCls"></i>{{item.children[0].name}}
+								<i :class="'iconfont '+item.iconCls"></i>{{item.children[0].name}}
 							</el-menu-item>							
 						</template>
 					</el-menu>
