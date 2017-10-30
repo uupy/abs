@@ -21,6 +21,7 @@ const AssetsList = resolve => require(['./pages/assets/list.vue'],resolve)
 const AssetsStatistics = resolve => require(['./pages/assets/statistics.vue'],resolve)
 const StandingBook = resolve => require(['./pages/assets/standing-book.vue'],resolve)
 const PropertyToBeVerify = resolve => require(['./pages/assets/property-to-verify.vue'],resolve)
+const PropertyToRegister = resolve => require(['./pages/assets/property-to-register.vue'],resolve)
 const PropertyToBeDist = resolve => require(['./pages/assets/property-to-dist.vue'],resolve)
 const PropertyToIssued = resolve => require(['./pages/assets/property-to-issued.vue'],resolve)
 const PropertyToBeLoan = resolve => require(['./pages/assets/property-to-loan.vue'],resolve)
@@ -362,6 +363,32 @@ let routes = [
                 ]
             },
             {
+                path: '/pages/assets/property-to-register',
+                component: {template:'<router-view></router-view>'},
+                name: '待中登网登记',
+                show:{
+                    1:true,     //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:false,     //合作方spv
+                    6:false      //合作方其他
+                },
+                children:[
+                    {
+                        path: '/pages/assets/property-to-register',
+                        component: PropertyToRegister,
+                        name: '待中登网登记列表',
+                    },
+                    {
+                        path: '/pages/assets/property-to-register/views',
+                        component: ProtocolDetail,
+                        name: '待中登网登记详情',
+                        hidden: true
+                    },
+                ]
+            },
+            {
                 path: '/pages/assets/property-to-dist',
                 component: {template:'<router-view></router-view>'},
                 name: '待分配资产',
@@ -383,6 +410,32 @@ let routes = [
                         path: '/pages/assets/property-to-dist/views',
                         component: ProtocolDetail,
                         name: '待分配资产详情',
+                        hidden: true
+                    },
+                ]
+            },
+            {
+                path: '/pages/assets/property-to-loan',
+                component: {template:'<router-view></router-view>'},
+                name: '待放款资产',
+                show:{
+                    1:true,     //保理商
+                    2:false,     //核心企业
+                    3:false,     //供应商
+                    4:false,     //项目公司及子公司
+                    5:true,     //合作方spv
+                    6:false      //合作方其他
+                },
+                children:[
+                    {
+                        path: '/pages/assets/property-to-loan',
+                        component: PropertyToBeLoan,
+                        name: '待放款资产列表',
+                    },
+                    {
+                        path: '/pages/assets/property-to-loan/views',
+                        component: ProtocolDetail,
+                        name: '待放款资产详情',
                         hidden: true
                     },
                 ]
@@ -412,33 +465,7 @@ let routes = [
                         hidden: true
                     },
                 ]
-            },           
-            {
-                path: '/pages/assets/property-to-loan',
-                component: {template:'<router-view></router-view>'},
-                name: '待放款资产',
-                show:{
-                    1:true,     //保理商
-                    2:false,     //核心企业
-                    3:false,     //供应商
-                    4:false,     //项目公司及子公司
-                    5:true,     //合作方spv
-                    6:false      //合作方其他
-                },
-                children:[
-                    {
-                        path: '/pages/assets/property-to-loan',
-                        component: PropertyToBeLoan,
-                        name: '待放款资产列表',
-                    },
-                    {
-                        path: '/pages/assets/property-to-loan/views',
-                        component: ProtocolDetail,
-                        name: '待放款资产详情',
-                        hidden: true
-                    },
-                ]
-            },
+            }, 
             {
                 path: '/pages/assets/standing-book',
                 component: {template:'<router-view></router-view>'},
