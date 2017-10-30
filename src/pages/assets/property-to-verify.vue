@@ -80,6 +80,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
+                    self.params.keyword = '';
                     self.factorMayVerifyAssetsList(self.params);
                 }                    
             },
