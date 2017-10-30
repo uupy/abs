@@ -66,7 +66,7 @@
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:1,
-                pageTotal:0,
+                pageTotal:10,
                 pageSize:10,
                 currentPage:1,
                 params:{},
@@ -104,8 +104,9 @@
                 self.$router.push({path:'/pages/assets/property-to-loan/views'});
             },
             pageSizeChange(e){
-                this.pageSize = e;
-                this.currentPage = 1;
+                const self = this;
+                self.pageSize = e;
+                self.currentPage = 1;
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
@@ -113,7 +114,8 @@
                 } 
             },
             pageCurrentChange(e){
-                this.currentPage = e;
+                const self = this;
+                self.currentPage = e;
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {

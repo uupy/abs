@@ -155,13 +155,15 @@
                 self.$router.push({path:'/pages/assets/standing-book/views'});
             },
             pageSizeChange(e){
-                this.pageSize = e;
-                this.currentPage = 1;
-                this.getStandingBookList(self.params);
+                const self = this;
+                self.pageSize = e;
+                self.currentPage = 1;
+                self.getStandingBookList(self.params);
             },
             pageCurrentChange(e){
-                this.currentPage = e;
-                this.getStandingBookList(self.params);
+                const self = this;
+                self.currentPage = e;
+                self.getStandingBookList(self.params);
             },
             dateChange(type,event){
                 const self = this;

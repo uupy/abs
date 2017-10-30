@@ -100,11 +100,11 @@
             pageSizeChange(e){
                 this.pageSize = e;
                 this.currentPage = 1;
-                this.factorMayFenPeiAssetsList();
+                this.factorMayFenPeiAssetsList(this.params);
             },
             pageCurrentChange(e){
                 this.currentPage = e;
-                this.factorMayFenPeiAssetsList();
+                this.factorMayFenPeiAssetsList(this.params);
             },
             dateChange(type,event){
                 const self = this;
