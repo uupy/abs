@@ -83,8 +83,8 @@
                             <el-table-column prop="providerName" label="供应商" align='center'></el-table-column>
                             <el-table-column prop="productCompanyName" label="项目公司" align='center'></el-table-column>
                             <el-table-column prop="productCompanyArea" label="所属区域" align='center'></el-table-column>       
-                            <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
-                            <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>         
+                            <!-- <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
+                            <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>  -->        
                             <el-table-column prop="contractNo" label="合同号" align='center'></el-table-column>         
                             <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
                             <el-table-column label="合同附件" align='center' width="110">
@@ -153,8 +153,8 @@
                     <el-table-column prop="providerName" label="供应商" align='center'></el-table-column>
                     <el-table-column prop="productCompanyName" label="项目公司" align='center'></el-table-column>
                     <el-table-column prop="productCompanyArea" label="所属区域" align='center'></el-table-column>       
-                    <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
-                    <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>         
+                    <!-- <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
+                    <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>    -->      
                     <el-table-column prop="contractNo" label="合同号" align='center'></el-table-column>         
                     <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
                     <el-table-column label="应付单附件" align='center' width="110">
@@ -193,7 +193,7 @@
     </section>
 </template>
 <script>
-    import Common from '../../mixins/common.js'
+    import Common from '@/mixins/common.js'
     import Assets from '@/api/assets/assets.js'
     export default {
         data() {
@@ -220,20 +220,20 @@
                 dialogDisable2:false,
                 rules:{},
                 orderReceiptsIds:[],
-                companyList:[
-                    {
-                        label:'深圳xx公司',
-                        value:'0',
-                    },
-                    {
-                        label:'深圳开胃公司',
-                        value:'1',
-                    }
-                ],
+                // companyList:[
+                //     {
+                //         label:'深圳xx公司',
+                //         value:'0',
+                //     },
+                //     {
+                //         label:'深圳开胃公司',
+                //         value:'1',
+                //     }
+                // ],
                 list:[],
-                list_pagenum:1,
-                list_pagesize:10,
-                list_total:10,
+                // list_pagenum:1,
+                // list_pagesize:10,
+                // list_total:10,
                 state:0,
             }
         },
