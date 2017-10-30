@@ -2,7 +2,7 @@
     <section class="panel-main" :style="styles">
         <el-tabs v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="商务合同信息" name="business-contract"> 
-                <el-table :data="businessContracts" border>
+                <el-table :data="businessContracts">
                     <el-table-column prop="index" label="序号" width="90"></el-table-column>
                     <el-table-column prop="supplier" label="供应商名称"></el-table-column>
                     <el-table-column prop="projectCompany" label="项目公司"></el-table-column>
@@ -20,7 +20,7 @@
                 </el-table>
             </el-tab-pane>
             <el-tab-pane label="资产详情" name="property-info" >
-                <el-table :data="propertyInfos" border>
+                <el-table :data="propertyInfos">
                     <el-table-column prop="no" label="资产编号" width="90"></el-table-column>
                     <el-table-column prop="status" label="资产状态">
                         <template slot-scope="scope">
@@ -36,7 +36,7 @@
                 </el-table>
             </el-tab-pane> 
             <el-tab-pane label="单据信息" name="bills-info" >
-                <el-table :data="billsTable" border>
+                <el-table :data="billsTable">
                 <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
                 <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
                 <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         

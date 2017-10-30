@@ -85,13 +85,15 @@
                 this.$router.push({path:'/pages/assets/property-to-register/views'});
             },
             pageSizeChange(e){
-                this.pageSize = e;
-                this.currentPage = 1;
-                this.factorMayDengJiAssetsList();
+                const self = this;
+                self.pageSize = e;
+                self.currentPage = 1;
+                self.factorMayDengJiAssetsList(self.params);
             },
             pageCurrentChange(e){
-                this.currentPage = e;
-                this.factorMayDengJiAssetsList();
+                const self = this;
+                self.currentPage = e;
+                self.factorMayDengJiAssetsList(self.params);
             },
             dateChange(type,event){
                 const self = this;

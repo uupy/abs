@@ -97,13 +97,15 @@
                 self.$router.push({path:'/pages/assets/property-to-verify/views'});
             },
             pageSizeChange(e){
-                this.pageSize = e;
-                this.currentPage = 1;
-                self.factorMayVerifyAssetsList();
+                const self = this;
+                self.pageSize = e;
+                self.currentPage = 1;
+                self.factorMayVerifyAssetsList(self.params);
             },
             pageCurrentChange(e){
-                this.currentPage = e;
-                self.factorMayVerifyAssetsList();
+                const self = this;
+                self.currentPage = e;
+                self.factorMayVerifyAssetsList(self.params);
             },
             dateChange(type,event){
                 const self = this;
