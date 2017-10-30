@@ -113,6 +113,8 @@ export default {
             'url',
             'isTimeOut',
             'username',
+            'userMobile',
+            'authenticationStatus',
             'token',
             'styles',
             'onLoading',
