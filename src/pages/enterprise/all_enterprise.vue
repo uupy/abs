@@ -2,7 +2,7 @@
     <section class="panel-main" :style="styles">
         <el-row class="toolbar toolbar-top">
             <div class="f-left">
-                <label>企业状态：</label>
+                <label>认证状态：</label>
                 <el-select size="small" v-model="enterprise_status" placeholder="请选择" @change="filterEnterprise">
                     <el-option v-for="(item,index) in enterprise_statuses" :label="item.label" :value="item.value" :key="index"></el-option>
                 </el-select>
@@ -13,8 +13,8 @@
             </div>
             <div class="f-right">
                 <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
-                <el-button size="small" type="primary" @click="dialogVisibleAddNew = true"><i class="el-icon-plus"></i>新增</el-button>
+                <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i> 查询</el-button>
+                <el-button size="small" type="primary" @click="dialogVisibleAddNew = true"><i class="el-icon-plus"></i> 新增</el-button>
             </div>
         </el-row>
         <el-row :span="24">
@@ -24,7 +24,7 @@
                 <el-table-column prop="name" label="企业名称"></el-table-column>
                 <el-table-column prop="type" label="企业角色">
                     <template slot-scope="scope">
-                        <span>{{enterpriseType[scope.row.type] ? enterpriseType[scope.row.type] : '未知'}}</span>
+                        <span>{{entType[scope.row.type] ? entType[scope.row.type] : '未知'}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="area" label="所属区域"></el-table-column>
@@ -79,7 +79,7 @@
                     {label:'创建中',value:1},
                     {label:'已认证',value:2},
                 ],
-                enterpriseType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
+                entType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
                 enterpriseStatus:ABS_STATUS['enterprise'] ? ABS_STATUS['enterprise'] : {},
                 enterpriseCurType:'2,3,4,5,6',
                 enterpriseTypes:[
@@ -142,6 +142,8 @@
                 this.saveStorageState([
                     {attr:'set_menu_type',val:true,type:'boolean'},
                     {attr:'enterpriseId',val:row.id,type:'number'},
+                    {attr:'enterpriseType',val:row.type,type:'number'},
+                    {attr:'enterpriseName',val:row.name,type:'string'},
                     {attr:'enterpriseIdChange',val:true,type:'boolean'}
                 ]);
                 this.$router.push({ path: '/pages/all_enterprise/views'});

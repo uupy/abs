@@ -61,38 +61,36 @@ export default {
                 config.body = params_arr.join('&');
             }
             self.$http(config).then((response) => {
-                const res = response.body;
-                if(res.code > 0){
-                    if(res.token && res.token !== ''){
-                        self.saveStorageState({
-                            attr:'token',
-                            val:res.token
-                        });
-                    }
-                    Util.isFunction(successCallback) ? successCallback(res) : '';
-                }else{
-                    self.$nprogress.done();
-                    self.setState([
-                        {attr:'onLoading',val:false},
-                        {attr:'innerLoading',val:false}
-                    ]);
-                    self.$message({
-                        message: `${res.msg}`,
-                        type: 'error'
-                    });
-                }
-            }, (response) => {
-                if(response.status === 401){
-                    self.unauthorized();
-                }else{
-                    if(Util.isFunction(errorCallback)){
-                        errorCallback(response)
+                if(!options.fileFlow){
+                    const res = response.body;
+                    if(res.code > 0){
+                        Util.isFunction(successCallback) ? successCallback(res) : '';
                     }else{
                         self.$nprogress.done();
                         self.setState([
                             {attr:'onLoading',val:false},
                             {attr:'innerLoading',val:false}
                         ]);
+                        self.$message({
+                            message: `${res.msg}`,
+                            type: 'error'
+                        });
+                    }
+                }else{
+                    Util.isFunction(successCallback) ? successCallback(response) : '';
+                }
+            }, (response) => {
+                self.$nprogress.done();
+                self.setState([
+                    {attr:'onLoading',val:false},
+                    {attr:'innerLoading',val:false}
+                ]);
+                if(response.status === 401){
+                    self.unauthorized();
+                }else{
+                    if(Util.isFunction(errorCallback)){
+                        errorCallback(response)
+                    }else{
                         self.$message({
                             message: `请求结果：${response.ok}`,
                             type: 'error'
@@ -127,6 +125,9 @@ export default {
             'operate_authority',
             'enterpriseIdChange',
             'enterpriseId',//列表=》详情时传
+            'enterpriseType',//列表=》详情时传
+            'enterprise_name',
+            'enterpriseName',//列表=》详情时传
         ])
     },
     destroyed(){

@@ -1,0 +1,72 @@
+@font-face {
+	font-family: 'iconfont';
+	src: url('../fonts/iconfont.eot?8lkktj');
+	src: url('../fonts/iconfont.eot?8lkktj#iefix') format('embedded-opentype'),
+	  	 url('../fonts/iconfont.ttf?8lkktj') format('truetype'),
+	     url('../fonts/iconfont.woff?8lkktj') format('woff'),
+	     url('../fonts/iconfont.svg?8lkktj#iconfont') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="im-icon-"]:after,
+[class*=" im-icon-"]:after {
+	/* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'iconfont' !important;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+i[class*=" im-icon-"]:after {
+	margin-left: 3px;
+	display: inline-block;
+}
+
+.im-icon-management:after{
+	content: "\e919";
+}
+.im-icon-manager:after{
+	content: "\e91a";
+}
+.im-icon-user1:after{
+	content: "\e91c";
+}
+.im-icon-username:after{
+	content: "\e90b";
+}
+.im-icon-password:after{
+	content: "\e907";
+}
+
+.im-icon-wraning:after{
+	content: "\e918";
+}
+
+.im-icon-close1:after{
+	content: "\e904";
+}
+.im-icon-close2:after{
+	content: "\e905";
+}
+.im-icon-del:after{
+	content: "\e908";
+}
+.im-icon-addbtn:after{
+	content: "\e922";
+}
+
+.im-icon-logout:after{
+	content: "\e92e";
+}
+.im-icon-edit:after{
+	content: "\e92f";
+}
+.im-icon-manage:after{
+	content: "\e932";
+}

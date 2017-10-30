@@ -16,8 +16,8 @@
                         </div>
                         <div class="f-right">
                             <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
-                            <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
-                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
+                            <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i> 查询</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i> 新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -27,7 +27,7 @@
                             <el-table-column prop="name" label="企业名称"></el-table-column>
                             <el-table-column prop="type" label="企业角色">
                                 <template slot-scope="scope">
-                                    <span>{{enterpriseType[scope.row.type] ? enterpriseType[scope.row.type] : '未知'}}</span>
+                                    <span>{{entType[scope.row.type] ? entType[scope.row.type] : '未知'}}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="area" label="所属区域"></el-table-column>
@@ -94,8 +94,8 @@
                         </div>
                         <div class="f-right">
                             <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
-                            <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
-                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
+                            <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i> 查询</el-button>
+                            <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 2"><i class="el-icon-plus"></i> 新增</el-button>
                         </div>
                     </el-row>
                     <el-row :span="24">
@@ -135,8 +135,8 @@
                 </div>
                 <div class="f-right">
                     <el-input size="small" v-model="filterKeyword" placeholder="请输入关键字" icon="circle-cross" @focus="filterOnfocus = true" @blur="filterOnfocus = false" @click="clearFilter"></el-input>
-                    <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i>查询</el-button>
-                    <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 1 || enterprise_type === 2"><i class="el-icon-plus"></i>新增</el-button>
+                    <el-button size="small" type="primary" @click="filterEnterprise"><i class="el-icon-search"></i> 查询</el-button>
+                    <el-button size="small" type="primary" @click="openAddEnterpriseDialog" v-if="enterprise_type === 1 || enterprise_type === 2"><i class="el-icon-plus"></i> 新增</el-button>
                 </div>
             </el-row>
             <el-row :span="24">
@@ -146,7 +146,7 @@
                     <el-table-column prop="name" label="企业名称"></el-table-column>
                     <el-table-column prop="type" label="企业角色">
                         <template slot-scope="scope">
-                            <span>{{enterpriseType[scope.row.type] ? enterpriseType[scope.row.type] : '未知'}}</span>
+                            <span>{{entType[scope.row.type] ? entType[scope.row.type] : '未知'}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="area" label="所属区域"></el-table-column>
@@ -197,7 +197,7 @@
                 filterOnfocus:false,
                 filterKeyword:'',
                 active_name:'overviews',
-                enterpriseType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
+                entType:ABS_TYPE['enterprise'] ? ABS_TYPE['enterprise'] : {},
                 enterpriseStatus:ABS_STATUS['enterprise'] ? ABS_STATUS['enterprise'] : {},
                 enterprise_status:0,
                 enterprise_statuses:[
@@ -296,6 +296,8 @@
                 this.saveStorageState([
                     {attr:'set_menu_type',val:true,type:'boolean'},
                     {attr:'enterpriseId',val:row.id,type:'number'},
+                    {attr:'enterpriseType',val:row.type,type:'number'},
+                    {attr:'enterpriseName',val:row.name,type:'string'},
                     {attr:'enterpriseIdChange',val:true,type:'boolean'}
                 ]);
                 this.$router.push({ path: '/pages/core/views'});

@@ -2,7 +2,7 @@
 	<el-row class="panel">
 		<el-col :span="24" class="panel-top">
 			<el-col class="leftbar">
-				<span class="logo-txt"><i>LO</i>GO</span>
+				<span class="logo-txt">L<i>O</i>G<i>O</i></span>
 			</el-col>
 			<el-col class="rightbar">
 				<el-dropdown trigger="click">
@@ -23,15 +23,15 @@
 		<el-col :span="24" class="panel-center">
 			<aside class="panel-aside">
 				<div id="panel-aside" class="optiscroll">
-					<el-menu :default-active="$route.path" class="el-menu-vertical-demo" :unique-opened="false" router>
+					<el-menu :default-active="currentRoute" class="el-menu-vertical-demo" :unique-opened="false" router>
 						<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
-							<el-submenu :index="index+''" v-if="!item.leaf && item.show[enterprise_type]">
+							<el-submenu :ref='"menu_"+index' :id='"menu_"+index' :class='openMenu?"is-opened":""' :index="index+''" v-if="!item.leaf && item.show[enterprise_type]">
 								<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
 								<el-menu-item :class="[{'is-active':$route.path.indexOf(child.path) !== -1 && $route.path !== child.path}]" v-for="(child,idx) in item.children" :index="child.path" :key="idx" v-if="child.show[enterprise_type] && !child.hidden">{{child.name === '集团管理' ? (enterprise_type === 2 ? child.name : '集团客户管理') : (child.name === '融资客户管理' ? (enterprise_type !== 2 && enterprise_type !== 4 ? child.name : '供应商管理') : (child.name === '应付数据' ? (enterprise_type !== 3 ? child.name : '融资管理') : child.name))}}</el-menu-item>
 							</el-submenu>
-							<el-menu-item v-if="item.leaf && item.children.length > 0" :index="item.children[0].path">
+							<el-menu-item v-if="item.leaf && item.children.length > 0 && item.show[enterprise_type]" :index="item.children[0].path">
 								<i :class="item.iconCls"></i>{{item.children[0].name}}
-							</el-menu-item>
+							</el-menu-item>							
 						</template>
 					</el-menu>
 				</div>
@@ -76,6 +76,9 @@
 	export default {
 		data() {
 			return {
+				openMenu:false,
+				menuItemStyle:{},
+				currentRoute:'',
 				dialogFormVisible:false,
 				resetPwdForm:{
 					oldPassword:'',
@@ -120,6 +123,10 @@
 		},
 		mounted() {
 			const self = this;
+			self.currentRoute = self.$route.path;
+			if(self.$route.matched.length>=3){
+				self.currentRoute = self.$route.matched[1].path;
+			}
 			self.$nextTick(()=>{
 				self.updateOperateAuthority();
 				self.$router.beforeEach((to,from,next)=>{

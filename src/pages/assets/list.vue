@@ -7,11 +7,11 @@
                         <div class="f-right">
                            <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
                             <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>           
-                            <el-button size="small" type='primary' @click='supply("first")'>签 约</el-button>
+                            <el-button size="small" type='primary'  :disabled='orderReceiptsIds.length<=0?true:false'  @click='finacing'>融 资</el-button>
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="list" class='table-list table-expand'>
+                        <el-table @select='tableSelect' :data="list" class='table-list table-expand' @select-all='tableSelectAll'  @expand='tableExpand'>
                             <el-table-column type="selection" width="40"></el-table-column>
                             <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
                             <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>         
@@ -19,8 +19,8 @@
                             <el-table-column prop="providerName" label="供应商" align='center'></el-table-column>
                             <el-table-column prop="productCompanyName" label="项目公司" align='center'></el-table-column>
                             <el-table-column prop="productCompanyArea" label="所属区域" align='center'></el-table-column>       
-                            <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>       
-                            <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>         
+                            <!-- <el-table-column prop="productName" label="项目名称" align='center'></el-table-column>        -->
+                            <!-- <el-table-column prop="contractName" label="合同名称" align='center'></el-table-column>          -->
                             <el-table-column prop="contractNo" label="合同号" align='center'></el-table-column>         
                             <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
                             <el-table-column label="合同附件" align='center' width="110">
@@ -46,7 +46,7 @@
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -76,7 +76,7 @@
                         </div>
                     </el-row>
                     <el-row>
-                        <el-table :data="list" class='table-list table-expand'>
+                        <el-table @select='tableSelect' :data="list" class='table-list table-expand'  @select-all='tableSelectAll'  @expand='tableExpand'>
                             <el-table-column prop="orderReceiptsId" label="应付单号" align='center' width="100"></el-table-column>
                             <el-table-column prop="receiptsTime" label="单据日期" align='center' width="110"></el-table-column>
                             <el-table-column prop="money" label="应付金额（元）" align='center' width="130"></el-table-column>
@@ -110,7 +110,7 @@
                                         <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
-                                            <div class="cell" :style="`width:${100/5}%;`">{{item.createTime}}</div>
+                                            <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceTime}}</div>
                                             <div class="cell" :style="`width:${100/5}%;`">
                                                 <el-button size='small'>下载</el-button>
                                             </div>
@@ -139,9 +139,9 @@
                 <div class="f-right">
                     <template v-if="enterprise_type !== 4">
                         <el-input size="small" v-model="filter_name" placeholder="请输入项目公司名称" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>  
-                        <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i>查询</el-button>
+                        <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search"></i> 查询</el-button>
                     </template>
-                    <el-button size="small" type='primary' @click='supply("second")' v-if="enterprise_type === 2">确 认</el-button>
+                    <el-button size="small" :disabled='orderReceiptsIds.length<=0?true:false' type='primary' @click='supply' v-if="enterprise_type === 2">确 认</el-button>
                 </div>
             </el-row>
             <el-row>
@@ -173,7 +173,7 @@
                                 <li v-for="(item,idx) in props.row.fp_list" :key="idx">
                                     <div class="cell" :style="`width:${100/3}%;`">{{item.invoiceId}}</div>
                                     <div class="cell" :style="`width:${100/3}%;`">{{item.money}}</div>
-                                    <div class="cell" :style="`width:${100/3}%;`">{{item.createTime}}</div>
+                                    <div class="cell" :style="`width:${100/3}%;`">{{item.invoiceTime}}</div>
                                 </li>
                                 <li>
                                     <div class="cell" :style="`width:${100/3}%;`">合计</div>
@@ -187,23 +187,6 @@
                  <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
             </el-row>
         </template>
-        <el-dialog size="tiny" title="协议列表" v-model="dialogDisable" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
-            <el-form :model="add_form" :rules="rules" ref="add_form" label-width="120px">
-                <el-form-item label='1.付款确认书'>
-                    <el-button size='small' type='primary' @click.native='filePreview("1")'>查看</el-button>
-                    <el-button size='small' type='primary'>签订</el-button>
-                </el-form-item>
-                <el-form-item label='2.付款确认书'>
-                    <el-button size='small' type='primary' @click.native='filePreview("2")'>查看</el-button>
-                    <el-button size='small' type='primary'>签订</el-button>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click.native='confirm'>确认融资</el-button>
-                <el-button @click="cancelAddClient('add_form')">取 消</el-button>
-            </div>
-        </el-dialog>
-
         <el-dialog size="full" title="付款确认书" v-model="dialogDisable2" @close="cancelAddClient('add_form')" :close-on-click-modal="false">
             <img :src='fileImgUrl'/>
         </el-dialog>
@@ -247,71 +230,11 @@
                         value:'1',
                     }
                 ],
-                list:[
-                    // {
-                    //     orderReceiptsId:'1',
-                    //     supplier:'大疆集团',
-                    //     company:'深圳宝宝公司',
-                    //     area:'深圳宝安',
-                    //     project_name:'项目1',
-                    //     contract_name:'合同1',
-                    //     contract_no:'ht001',
-                    //     yfsum:'4000',
-                    //     djdate:'2017-10-17',
-                    //     fpsum:'4000',
-                    //     fp_list:[
-                    //         {
-                    //            index:'1' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'2' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'3' ,
-                    //            money:'2000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //     ],
-                    //     fp_sum:'4000'
-                    // },
-                    // {
-                    //     orderReceiptsId:'2',
-                    //     supplier:'大疆集团',
-                    //     company:'深圳宝宝公司',
-                    //     area:'深圳宝安',
-                    //     project_name:'项目1',
-                    //     contract_name:'合同1',
-                    //     contract_no:'ht001',
-                    //     yfsum:'4000',
-                    //     djdate:'2017-10-17',
-                    //     fpsum:'4000',
-                    //     fp_list:[
-                    //         {
-                    //            index:'1' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'2' ,
-                    //            money:'1000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //         {
-                    //            index:'3' ,
-                    //            money:'2000' ,
-                    //            date:'2017-10-17' 
-                    //         },
-                    //     ],
-                    //     fp_sum:'4000'
-                    // },
-                ],
+                list:[],
                 list_pagenum:1,
                 list_pagesize:10,
                 list_total:10,
+                state:0,
             }
         },
         mixins:[Common,Assets],
@@ -322,11 +245,25 @@
                 this.filter_name = '';
                 this.getAssetsList()
             },
-            supply(type){
-                 if(this.orderReceiptsIds.length<=0){
-                    this.$message.warning('请勾选数据')
-                    return;
-                }
+            supply(){      
+                const self = this; 
+                //确认     
+                self.$confirm('是否确认？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    //确认
+                    let ids = [];
+
+                    self.orderReceiptsIds.forEach(val=>{
+                        ids.push(val.id)
+                    });
+                    self.orderReceiptsMakeSure({
+                        orderReceiptsIds:ids
+                    });
+                }).catch(()=>{
+
+                });
+                    
                 this.dialogDisable = true;
             },
             cancelAddClient(){
@@ -352,14 +289,13 @@
                 this.getAssetsList();
             },
             tableExpand(row,expanded){
-                console.log('id:',row.orderReceiptsId)
+                console.log('id:',row.id)
                 if(expanded){
                     const self = this;
                     if(row.orderReceiptsId&&row.orderReceiptsId!=''){
-                        self.getReceipts({orderReceiptsId:row.orderReceiptsId});
+                        self.getReceipts({orderReceiptsId:row.id});
                     }
-                }
-                    
+                }                    
             },
             search(){
                 const self = this;
@@ -382,19 +318,14 @@
                 let ids = [];
                
                 self.orderReceiptsIds.forEach(val=>{
-                    ids.push(val.orderReceiptsId)
+                    ids.push(val.id)
                 });
                 
-                self.confirmFinancing({orderReceiptsIds:ids.join(',')});
+                // self.confirmFinancing({orderReceiptsIds:ids.join(',')});
             },
             getData(active_name){
                 const self = this;
                 self.getAssetsList()
-                // if(active_name == 'first'){
-                   
-                // }else{
-                    
-                // }
             },
             loadEnterpriseContent(tname){
                 switch(tname){
@@ -411,17 +342,40 @@
             },
             //选项卡切换
             tabChange(tab, event){
-                this.active_name = tab.name;
+                const self = this;
+                self.active_name = tab.name;               
+                self.state = tab.name=='first'?2:3;
+
                 sessionStorage.setItem('assets_tname',tab.name);
-                this.loadEnterpriseContent(tab.name);
-                this.getData(this.active_name)
+                self.loadEnterpriseContent(tab.name);
+                self.getData(self.active_name)
             },
+            finacing(){
+                //融资
+                const self = this;
+                
+                let ids = [];
+               
+                self.orderReceiptsIds.forEach(val=>{
+                    ids.push(val.id)
+                });
+                self.$confirm('确定融资吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    self.confirmFinancing({
+                        orderReceiptsIds:ids
+                    });
+                }).catch(()=>{
+
+                });
+            }
         },
         watch: {
             
         },
         mounted() {
             const self = this;
+            self.state = self.enterprise_type==2?1:0
             self.$nextTick(()=>{
                 const expandTables = document.querySelectorAll('.table-expand');
                 expandTables.forEach((item)=>{
@@ -436,7 +390,7 @@
                 }
                 self.loadEnterpriseContent(self.active_name);
             });
-            self.getAssetsList()
+            //self.getAssetsList()
         },
         computed: {
             

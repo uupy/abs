@@ -2,52 +2,55 @@
     <section class="panel-main" :style="styles">
         <el-tabs v-if='user_type !== 1' v-model="active_name" @tab-click="presonTabChange">
             <el-tab-pane label="个人认证" name="contact_information">
-                <el-col>
-                	<el-form label-width='100px' class='user-form'>
-                		<el-form-item label='姓名'>
-                			<el-input v-model='user.name' placeholder='请输入您的姓名'></el-input>
-                		</el-form-item>
-                		<el-form-item label='手机号码'>
-                			<el-input v-model='user.mobile' placeholder='请输入您的手机号码'></el-input>
-                		</el-form-item>
-                		<el-form-item v-model='user.id_number' label='身份证号'>
-                			<el-input placeholder='请输入您的身份证号码'></el-input>
-                		</el-form-item>
-                		<el-form-item label='上传身份证' prop="path">
-                            <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback1">
-                                <el-input v-model='user.path' placeholder='点击上传证件' readonly="readonly"></el-input>
-                            </el-upload>
-                		</el-form-item>
-                        <el-form-item>
-                            <el-button type="primary">认 证</el-button>
-                        </el-form-item>
-                	</el-form>
-                </el-col>
+            	<el-form label-width='100px' class='user-form' :rules="user_rules" :model="user" ref="user">
+            		<el-form-item label='姓名' prop='name'>
+            			<el-input v-model='user.name' placeholder='请输入您的姓名'></el-input>
+            		</el-form-item>
+            		<el-form-item label='手机号码' prop='mobile'>
+            			<el-input v-model='user.mobile' placeholder='请输入您的手机号码'></el-input>
+            		</el-form-item>
+            		<el-form-item label='身份证号' prop='id_number'>
+            			<el-input v-model='user.id_number' placeholder='请输入您的身份证号码'></el-input>
+            		</el-form-item>
+            		<el-form-item label='身份证正面' prop="front_path">
+                        <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback1">
+                            <el-input v-model='user.front_path' placeholder='点击上传证件正面' readonly="readonly"></el-input>
+                        </el-upload>
+            		</el-form-item>
+                    <el-form-item label='身份证反面' prop="back_path">
+                        <el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback2">
+                            <el-input v-model='user.back_path' placeholder='点击上传证件反面' readonly="readonly"></el-input>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="addUserAuthentication('user', user)">认 证</el-button>
+                    </el-form-item>
+            	</el-form>
             </el-tab-pane>
             <el-tab-pane label="资料详情" name="base_information" >
-                <el-form label-width='100px' class='user-form'>
-                		<el-form-item label='姓名'>
-                			<el-input v-model='profile.name' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='角色'>
-                			<el-input v-model='profile.role' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='系统权限'>
-                			<el-input v-model='profile.author' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='职位'>
-                			<el-input v-model='profile.position' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='手机号码'>
-                			<el-input v-model='profile.phone' readonly="readonly"></el-input>
-                		</el-form-item>
-                		<el-form-item label='邮箱地址'>
-                			<el-input v-model='profile.email'></el-input>
-                		</el-form-item>
-                		<el-form-item>
-                			<el-button type='primary'>修改</el-button>
-                		</el-form-item>
-                	</el-form>
+                <el-form label-width='100px' class='user-form' :model="profile" ref="profile">
+            		<el-form-item label='姓名'>
+            			<el-input v-model='profile.name' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='角色'>
+            			<el-input v-model='profile.role' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='系统权限'>
+            			<el-input v-model='profile.author' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='职位'>
+            			<el-input v-model='profile.position' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='手机号码'>
+            			<el-input v-model='profile.phone' readonly="readonly"></el-input>
+            		</el-form-item>
+            		<el-form-item label='邮箱地址'>
+            			<el-input v-model='profile.email'></el-input>
+            		</el-form-item>
+            		<el-form-item>
+            			<el-button type='primary' @click="updateUserEmail('profile', profile)">修改</el-button>
+            		</el-form-item>
+            	</el-form>
             </el-tab-pane>           
         </el-tabs>
 
@@ -63,6 +66,9 @@
                 	<el-form-item label='法人代表姓名' prop="corporation_name">
                 		<el-input v-model='enterprise.corporation_name' placeholder='请填写法人代表姓名'></el-input>
                 	</el-form-item>
+                    <el-form-item label='法人手机号码' prop='mobile'>
+                        <el-input v-model='enterprise.mobile' placeholder='请输入法人的手机号码'></el-input>
+                    </el-form-item>
                 	<el-form-item label='法人代表身份号' prop="corporation_id_number">
                 		<el-input v-model='enterprise.corporation_id_number' placeholder='请填写法人代表身份证号'></el-input>
                 	</el-form-item>
@@ -92,12 +98,12 @@
                     </el-table-column>
                 	<el-table-column label='认证状态' prop='status' align='center'>
                         <template slot-scope="scope">
-                            <el-tag :type="scope.row.status ? 'success' : 'danger'" close-transition>{{scope.row.status ? '已认证' : '未认证'}}</el-tag>
+                            <el-tag :type="scope.row.status == 2 ? 'success' : 'danger'" close-transition>{{scope.row.status == 2 ? '已认证' : '未认证'}}</el-tag>
                         </template>   
                     </el-table-column>
                 	<el-table-column label='操作' align='center'>
                 		<template slot-scope='scope'>
-                            <el-button :type="scope.row.status ? 'primary' : 'default'" size='small' :disabled="!scope.row.status" >授权</el-button>
+                            <el-button :type="scope.row.status == 2 ? 'primary' : 'default'" size='small' :disabled="!(scope.row.status == 2)" >授权</el-button>
                 		</template>
                 	</el-table-column>
                 </el-table>
@@ -117,12 +123,12 @@
             	active_name2:"tab-enterprise",
             	profile:{
                     index:1,
-            		name:'王大锤',
-            		role:'个人用户',
-            		author:'xxx',
-            		position:'CEO',
-            		phone:'13430887445',
-            		email:'12345678@qq.com'
+            		name:'',
+            		role:'',
+            		author:'',
+            		position:'',
+            		phone:'',
+            		email:''
             	},
                 roleType:ABS_ROLE['user'] ? ABS_ROLE['user'] : {},
                 auditType:ABS_ROLE['audit'] ? ABS_ROLE['audit'] : {},
@@ -131,20 +137,25 @@
                     name:'',
                     mobile:'',
                     id_number:'',
-                    path:''
+                    front_path:'',
+                    back_path:''
                 },
                 enterprise:{
                     code:'',
                     enterprise_name:'',
                     corporation_name:'',
                     corporation_id_number:'',
-                    path:''
+                    path:'',
+                    mobile:''
                 },
                 rules:{
                     code:[
                         { required: true,message: '该选项不能为空', trigger: 'change' }
                     ],
                     enterprise_name:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    mobile:[
                         { required: true, message: '该选项不能为空', trigger: 'change' }
                     ],
                     corporation_name:[
@@ -154,6 +165,23 @@
                         { required: true, message: '该选项不能为空', trigger: 'change' }
                     ],
                     path:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ]
+                },
+                user_rules:{
+                    name:[
+                        { required: true,message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    mobile:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    id_number:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    front_path:[
+                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                    ],
+                    back_path:[
                         { required: true, message: '该选项不能为空', trigger: 'change' }
                     ]
                 },
@@ -184,7 +212,7 @@
                             message: response.msg,
                             type: 'success'
                         });
-                        this.enterprise.path = response.data.url;
+                        this.enterprise.path = response.data.fileUrl;
                     }
                 }
            },
@@ -195,7 +223,18 @@
                             message: response.msg,
                             type: 'success'
                         });
-                        this.user.path = response.data.url;
+                        this.user.front_path = response.data.fileUrl;
+                    }
+                }
+           },
+           uploadSuccessCallback2(response){
+                if(response.code > 0){
+                    if(response.data){
+                        this.$message({
+                            message: response.msg,
+                            type: 'success'
+                        });
+                        this.user.back_path = response.data.fileUrl;
                     }
                 }
            },

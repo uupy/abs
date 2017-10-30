@@ -7,35 +7,37 @@
                     v-model="dateRange"
                     type="daterange"
                     range-separator=' 至 '
-                    placeholder="选择日期范围">
+                    placeholder="选择日期范围"
+                    @change='dateChange("receiveableMoneyTime",$event)'>
                 </el-date-picker>
                 <label style="padding-left:10px;">提交日期：</label>
                 <el-date-picker size="small" class='date-picker'
                     v-model="dateRange2"
                     type="daterange"
                     range-separator=' 至 '
-                    placeholder="选择日期范围">
+                    placeholder="选择日期范围"
+                    @change='dateChange("submitTime",$event)'>
                 </el-date-picker>
             </div>  
             <div class="f-right">
-                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" icon="circle-cross" @click="clearFilter"></el-input>
-                <el-button size="small" type="primary" ><i class="el-icon-search"></i> 查询</el-button>
-                <el-button size="small" type='primary'>确认放款</el-button>
+                <el-input size="small" v-model="filter_name" placeholder="请输入关键字" @keyup.native.enter='search' icon="circle-cross" @click="clearFilter"></el-input>
+                <el-button size="small" type="primary" @click.native='search'><i class="el-icon-search" ></i> 查询</el-button>
+                <el-button size="small" type='primary' :disabled='assetsIds.length<=0?true:false' @click.native='loanHandle'>确认放款</el-button>
             </div>       
         </el-row>
 
         <el-row>
-            <el-table ref="multipleTable" :data="propertyList" border @selection-change="handleSelectionChange">
+            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column prop='pno'  align='center'  label='资产编号'></el-table-column>
-                <el-table-column prop='supplier'  align='center'  label='供应商'></el-table-column>
-                <el-table-column prop='project'  align='center' label='项目公司'></el-table-column>
+                <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
+                <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
+                <el-table-column prop='productCompanyName'  align='center' label='项目公司'></el-table-column>
                 <el-table-column prop='area'  align='center' label='所属区域'></el-table-column>
-                <el-table-column prop='yszkje' align='center'  label='应收账款金额'></el-table-column>
-                <el-table-column prop='zrzj' align='center'  label='转让折价'></el-table-column>
-                <el-table-column prop='tjrq' align='center' label='提交日期' width="120"></el-table-column>
-                <el-table-column prop='yszkdqr'  align='center' label='应收账款到期日' width="130"></el-table-column>
-                <el-table-column prop='rzts'  align='center' label='融资天数' width="100"></el-table-column>
+                <el-table-column prop='receiveableMoney' align='center'  label='应收账款金额'></el-table-column>
+                <el-table-column prop='transferPrice' align='center'  label='转让折价'></el-table-column>
+                <el-table-column prop='submitTime' align='center' label='提交日期' width="120"></el-table-column>
+                <el-table-column prop='receiveableMoneyEndTime'  align='center' label='应收账款到期日' width="130"></el-table-column>
+                <el-table-column prop='financingDays'  align='center' label='融资天数' width="100"></el-table-column>
                 <el-table-column prop='dclr'  align='center' label='待处理人' width="100"></el-table-column>
                 <el-table-column align='center' label='资产状态' width="100">
                     <template slot-scope='scope'>
@@ -44,17 +46,18 @@
                 </el-table-column>
                 <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
-                        <span class="table-btn health" @click.stop="checkView(row)">资产详情</span>
-                        <span class="table-btn danger">确认放款</span>
+                        <span class="table-btn health" @click.stop="checkView(scope.row)">资产详情</span>
+                        <span class="table-btn danger" @click='loanHandle(scope.row)'>确认放款</span>
                     </template>
                 </el-table-column>                
             </el-table>
-            <el-pagination class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="clientsSizeChange" @current-change="clientsCurrentChange" :page-size="clients_pagesize" :total="clients_total"></el-pagination>
+            <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
         </el-row>
     </section>
 </template>
 <script>
     import Common from '@/mixins/common.js'
+    import Assets from '@/api/assets/assets'
     export default {
         data() {
             return {
@@ -63,6 +66,10 @@
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:1,
+                pageTotal:0,
+                pageSize:10,
+                currentPage:1,
+                params:{},
                 propertyList:[
                     {
                         pno:'ZCA01171019001',
@@ -79,11 +86,16 @@
                     },
                 ],
                 propertyStatus:{},
+                assetsIds:[]
             }
         },
         methods: {
             clearFilter(){
- 
+                const self = this;
+                if(self.filter_name!=''){
+                    self.filter_name = '';
+                    self.getStandingBookList({status:6});
+                }
             },
             handleSelectionChange(){
  
@@ -98,15 +110,89 @@
                 const self = this;
                 self.$router.push({path:'/pages/assets/property-to-loan/views'});
             },
+            pageSizeChange(e){
+                this.pageSize = e;
+                this.currentPage = 1;
+                this.getStandingBookList();
+            },
+            pageCurrentChange(e){
+                this.currentPage = e;
+                this.getStandingBookList();
+            },
+            dateChange(type,event){
+                const self = this;
+                event = event.replace(/\s+/g,"");                
+
+                let begin = event.split('至')[0];
+                let end = event.split('至')[1];
+
+                self.params.status = 6;
+
+                if(type == 'receiveableMoneyTime'){                    
+                    self.params.receiveableMoneyBeginTime = begin
+                    self.params.receiveableMoneyEndTime = end;
+                                               
+                }else if(type == 'submitTime'){
+                    self.params.submitBeginTime = begin
+                    self.params.submitEndTime = end; 
+                        
+                }
+
+                self.getStandingBookList(self.params)  
+            },
+            tableSelect(selection,row){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                self.assetsIds = selection;
+            },
+            loanHandle(row){
+                const self = this;
+                let ids = [];
+
+                if(row.assetsId){
+                    ids = row.assetsId;
+                }else{
+                    self.assetsIds.forEach(val=>{
+                        ids.push(val.assetsId)
+                    });
+                }
+
+                self.$confirm('确定放款吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    if(self.enterprise_type == 1){
+                        //保理商放款
+                        self.baoliLoan({assetsIds:ids});
+                    }else{
+                        //资金方放款
+                        self.capitalLoan({assetsIds:ids});
+                    }
+                }).catch(()=>{
+
+                }); 
+            },
+            search(){
+                const self = this;
+                self.filter_name = self.filter_name.replace(/\s+/g,"");
+                console.log('filter_name:',self.filter_name)
+                if(self.filter_name == ''){
+                    return;
+                }
+                self.params.keyword = self.filter_name;
+                self.getStandingBookList({status:6,keyword:self.filter_name});
+            },
         },
         watch: {
             
         },
-        mixins:[Common],
+        mixins:[Common,Assets],
         mounted() {
             const self = this;
             self.propertyStatus = ABS_STATUS.propertyStatus;
-            console.log(self.protocolStatus)
+            self.getStandingBookList({status:6});
         },
         computed: {
             

@@ -1,30 +1,33 @@
 <template>
     <section class="login-wrap">
         <div class="login-center">
-            <h3 class="login-title">
-                <span class="login-title-con"><i>ABS</i>系统</span>
-            </h3>
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-position="left" label-width="0px" class="loginform">
-                <p class="login-txt">Welcome to ABS</p>
-                <el-form-item prop="account">
-                    <el-input id="login_account" type="text" v-model="loginForm.account" auto-complete="off" placeholder="请输入账号">
+                <el-form-item>
+                    <h2 class="login-title">高银保理金信系统</h2>
+                    <!-- <div class="login-txt">Welcome to goldin</div> -->
+                </el-form-item>
+                <el-form-item prop="account" class="login-input">
+                    <el-input id="login_account" type="text" v-model="loginForm.account" auto-complete="off">
                         <template slot="prepend">
                             <i class="im-icon-username"></i>
                         </template>
                     </el-input>
+                    <span class="placeholder-txt" @click="accountPlaceholder = false" v-if="accountPlaceholder">请输入账号</span>
                 </el-form-item>
-                <el-form-item prop="password">
-                    <el-input id="login_password" type="password" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码">
+                <el-form-item prop="password" class="login-input">
+                    <el-input id="login_password" type="password" v-model="loginForm.password" auto-complete="off">
                         <template slot="prepend">
                             <i class="im-icon-password"></i>
                         </template>
                     </el-input>
+                    <span class="placeholder-txt" v-if="passworPlaceholder">请输入密码</span>
                 </el-form-item>
-                <el-form-item style="width:17%;">
-                    <el-button id="login_submit" type="primary" style="width:100%;" @click.native.prevent="handleSubmit('loginForm')" :loading="innerLoading">登录</el-button>
+                <el-form-item>
+                    <el-button id="login_submit" type="primary" style="width:100%;" @click.native.prevent="handleSubmit('loginForm')" :loading="innerLoading">登 录</el-button>
                 </el-form-item>
             </el-form>
         </div>
+        <div class="login-bg"></div>
     </section>
 </template>
 <script>
@@ -41,7 +44,9 @@
                     password: [
                         { required: true, message: '请输入密码', trigger: 'change' }
                     ]
-                }
+                },
+                accountPlaceholder:true,
+                passworPlaceholder:true
             }
         },
         mixins:[Common,Login],
@@ -59,6 +64,23 @@
         mounted() {
             const self = this;
             document.addEventListener("keyup", self.enterKeyup, false);
+        },
+        watch:{
+            loginForm:{
+                handler:function(newval){
+                    if(newval.account !== ''){
+                        this.accountPlaceholder = false;
+                    }else{
+                        this.accountPlaceholder = true;
+                    }
+                    if(newval.password !== ''){
+                        this.passworPlaceholder = false;
+                    }else{
+                        this.passworPlaceholder = true;
+                    }
+                },
+                deep:true
+            }
         },
         destroyed() {
             const self = this;
