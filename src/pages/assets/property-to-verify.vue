@@ -80,7 +80,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.factorMayVerifyAssetsList();
+                    self.factorMayVerifyAssetsList(self.params);
                 }                    
             },
             handleSelectionChange(){

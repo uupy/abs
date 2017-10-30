@@ -78,7 +78,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.factorMayDengJiAssetsList(); 
+                    self.factorMayDengJiAssetsList(self.params); 
                 }                    
             },
             checkView(row){

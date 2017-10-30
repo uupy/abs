@@ -81,7 +81,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.factorMayFenPeiAssetsList();
+                    self.factorMayFenPeiAssetsList(self.params);
                 }
             },
             handleSelectionChange(){

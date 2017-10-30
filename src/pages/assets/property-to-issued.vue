@@ -94,7 +94,7 @@
                 const self = this;
                 if(self.filter_name!=''){
                     self.filter_name = '';
-                    self.factorMayFaXingAssetsList();
+                    self.factorMayFaXingAssetsList(self.params);
                 }
             },
             handleSelectionChange(){
