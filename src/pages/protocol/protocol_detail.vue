@@ -36,61 +36,123 @@
                 </el-table>
             </el-tab-pane> 
             <el-tab-pane label="单据信息" name="bills-info" >
-                <el-table :data="billsTable">
-                <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
-                <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
-                <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         
-                <el-table-column label="单据附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>         
-                <el-table-column prop="fangkuanri" label="单据号" align='center'></el-table-column>  
-                <el-table-column label="附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>        
-                <el-table-column prop="book" label="ERP审批表/支付申请书" align='center'></el-table-column> 
-                <el-table-column label="附件" align='center'>
-                    <template slot-scope='scope'>
-                        <el-button size='small'>预览</el-button>
-                    </template>                        
-                </el-table-column>         
-                <el-table-column label="附件上传" align='center'>
-                    <template slot-scope='scope'>
-                        <el-upload
-                            class="upload-demo"
-                            action="https://jsonplaceholder.typicode.com/posts/"
-                            :on-preview="handlePreview"
-                            :on-remove="handleRemove">
-                            <el-button size="small" type="primary">上传</el-button>
-                        </el-upload>
-                    </template>
-                </el-table-column>        
-            </el-table>
+                <!-- <el-table :data="billsTable">
+                    <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
+                    <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
+                    <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         
+                    <el-table-column label="单据附件" align='center'>
+                        <template slot-scope='scope'>
+                            <el-button size='small'>预览</el-button>
+                        </template>                        
+                    </el-table-column>         
+                    <el-table-column label="附件上传" align='center'>
+                        <template slot-scope='scope'>
+                            <el-upload
+                                class="upload-demo"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-preview="handlePreview"
+                                :on-remove="handleRemove">
+                                <el-button size="small" type="primary">上传</el-button>
+                            </el-upload>
+                        </template>
+                    </el-table-column>         
+                    <el-table-column prop="fangkuanri" label="单据号" align='center'></el-table-column>  
+                    <el-table-column label="附件" align='center'>
+                        <template slot-scope='scope'>
+                            <el-button size='small'>预览</el-button>
+                        </template>                        
+                    </el-table-column>         
+                    <el-table-column label="附件上传" align='center'>
+                        <template slot-scope='scope'>
+                            <el-upload
+                                class="upload-demo"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-preview="handlePreview"
+                                :on-remove="handleRemove">
+                                <el-button size="small" type="primary">上传</el-button>
+                            </el-upload>
+                        </template>
+                    </el-table-column>        
+                    <el-table-column prop="book" label="ERP审批表/支付申请书" align='center'></el-table-column> 
+                    <el-table-column label="附件" align='center'>
+                        <template slot-scope='scope'>
+                            <el-button size='small'>预览</el-button>
+                        </template>                        
+                    </el-table-column>         
+                    <el-table-column label="附件上传" align='center'>
+                        <template slot-scope='scope'>
+                            <el-upload
+                                class="upload-demo"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-preview="handlePreview"
+                                :on-remove="handleRemove">
+                                <el-button size="small" type="primary">上传</el-button>
+                            </el-upload>
+                        </template>
+                    </el-table-column>        
+                </el-table> -->
+
+                <el-row>
+                    <el-table @select='tableSelect' :data="list" class='table-list table-expand' @select-all='tableSelectAll'  @expand='tableExpand'>                        
+                        <el-table-column prop="orderReceiptsId" label="应付单号" align='center'></el-table-column>
+                        <el-table-column prop="orderReceiptsType" label="应付类型" align='center'></el-table-column>
+                        <el-table-column prop="money" label="应付金额（元）" align='center' ></el-table-column>
+                        <el-table-column prop="receiptsTime" label="单据日期" align='center' ></el-table-column>         
+                        <el-table-column prop="invoiceTotalMoney" label="发票总金额（元）" align='center'></el-table-column> 
+                        <el-table-column label="应付单附件" align='center'>
+                            <template slot-scope='scope'>
+                                <el-button size='small'>下载</el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="附件上传" align='center'>
+                            <template slot-scope='scope'>
+                                <el-button size='small' type='primary'>上传</el-button>
+                            </template>
+                        </el-table-column> 
+                        <el-table-column label="进度款申请支付表附件" align='center' width='200'>
+                            <template slot-scope='scope'>
+                                <el-button size='small'>下载</el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="附件上传" align='center'>
+                            <template slot-scope='scope'>
+                                <el-button size='small' type='primary'>上传</el-button>
+                            </template>
+                        </el-table-column> 
+                        <el-table-column label="展开" type="expand">
+                            <template slot-scope="props">
+                                <ul class="abs-table">
+                                    <li class="abs-table-header">
+                                        <div class="cell" :style="`width:${100/5}%;`">发票号</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">发票金额</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">发票日期</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">发票附件</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">操作</div>
+                                    </li>
+                                    <li v-for="(item,idx) in props.row.fp_list" :key="idx">
+                                        <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceId}}</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">{{item.money}}</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">{{item.invoiceTime}}</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">
+                                            <el-button size='small'>下载</el-button>
+                                        </div>
+                                        <div class="cell" :style="`width:${100/5}%;`">
+                                            <el-button size='small'>上传</el-button>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="cell" :style="`width:${100/5}%;`">合计</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">{{props.row.fp_sum}}</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                        <div class="cell" :style="`width:${100/5}%;`">-</div>
+                                    </li>
+                                </ul>
+                            </template>
+                        </el-table-column>     
+                    </el-table>
+                    <el-pagination v-if='pageTotal > 0' class="toolbar" layout="total, sizes, prev, pager, next, jumper" @size-change="pageSizeChange" @current-change="pageCurrentChange" :page-sizes="[10, 20,50,100]" :page-size="pageSize" :total="pageTotal"></el-pagination>
+                </el-row>
             </el-tab-pane>
             <el-tab-pane label="资产转让信息" name="property-transfer-info" >
                 <el-form :model='propertyTransferInfo' label-width='180px' class='item-list'>
@@ -98,29 +160,10 @@
                         <div class="float-left info">
                             <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.pdfFile)'>点击查看</el-button>
                         </div>
-                        <div class="float-left">
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove"
-                                :on-change='handleChange()'>
-                                <el-button size="small" type="warning">点击上传</el-button>
-                            </el-upload>
-                        </div>
                     </el-form-item>
                     <el-form-item label='应收账款债权转让协议' class='item-inner'>
                         <div class="float-left info">
                             <el-button size="small" type="primary" @click.native='getFile(propertyTransferInfo.transferFile)'>点击查看</el-button>
-                        </div>
-                        <div class="float-left">
-                            <el-upload
-                              class="upload-demo"
-                              action="https://jsonplaceholder.typicode.com/posts/"
-                              :on-preview="handlePreview"
-                              :on-remove="handleRemove">
-                              <el-button size="small" type="warning">点击上传</el-button>
-                            </el-upload>
                         </div>
                     </el-form-item>
 
@@ -219,6 +262,7 @@
                 dialogFormVisible:false,
                 fileType:'',
                 filePath:'',
+                pageTotal:0,
                 tableData5: [{
                   id: '12987122',
                   name: '好滋好味鸡蛋仔',
@@ -332,7 +376,8 @@
                     baseFile:'http://img01.tooopen.com/Downs/images/2010/4/8/sy_20100408112256193519.jpg',
                     serverFile:'http://www.danielpeng.me/file/ABS资产管理.rar',
                     pdfFile:'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf'
-                }   
+                },
+                list:[],  
             }
         },
         methods: {
@@ -408,7 +453,24 @@
            },
            imgError(){
                 alert('sb')
-           }
+           },
+           tableSelect(selection,row){
+                const self = this;
+                // self.orderReceiptsIds = selection;
+            },
+            tableSelectAll(selection){
+                const self = this;
+                // self.orderReceiptsIds = selection;
+            },
+            tableExpand(row,expanded){
+                console.log('id:',row.id)
+                if(expanded){
+                    const self = this;
+                    if(row.orderReceiptsId&&row.orderReceiptsId!=''){
+                        // self.getReceipts({orderReceiptsId:row.id});
+                    }
+                }                    
+            },
         },
         watch: {
             
@@ -416,9 +478,7 @@
         mixins:[Common],
         mounted() {
             const self = this;
-            console.log('protocolId:',self.$route.params.protocolId)
-
-            
+            console.log('protocolId:',self.$route.params.protocolId)            
         },
         computed: {
             
