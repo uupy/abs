@@ -131,6 +131,7 @@
                 if(row.state == 1 || row.state == 3){
                     self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
                 }else{
+                    console.log(self);
                     self.dialogConfrimSigned = true;
                 }
             },
