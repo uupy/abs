@@ -255,7 +255,8 @@
     </section>
 </template>
 <script>
-    import Common from '@/mixins/common.js'         
+    import Common from '@/mixins/common.js'  
+    import workerSrc from '../../../static/js/pdf.worker.js' 
     export default {
         data() {
             return {
@@ -415,15 +416,15 @@
                 if(self.fileType == 'jpg' || self.fileType == 'jpeg' || self.fileType == 'png' || self.fileType == 'gif' ){
                     self.dialogFormVisible = true;
                     self.filePath = url;
-                }else if(self.fileType=='pdf' || self.fileType=='docx'){
+                }else if(self.fileType=='pdf'){
                     self.$nprogress.start();
                     self.setState({
                         attr:'onLoading',
                         val:true
                     });
                     var url = url;
-                    PDFJS.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
-                    
+                    // PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/1.10.93/pdf.worker.min.js';
+                    PDFJS.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/1.10.93/pdf.worker.min.js';
                     var loadingTask = PDFJS.getDocument(url);
                     loadingTask.promise.then(function(pdf) {
                       console.log('PDF loaded');
