@@ -129,7 +129,11 @@
             check(row){   
                 const self = this;
                 if(row.state == 1 || row.state == 3){
-                    self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
+                    self.$confirm('确认签约申请吗?', '提示', {
+                        type: 'warning'
+                    }).then(() => {
+                        self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
+                    }).catch(() => {});
                 }else{
                     console.log(self);
                     self.dialogConfrimSigned = true;
