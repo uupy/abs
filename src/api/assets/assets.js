@@ -797,5 +797,37 @@ export default {
             });
         },
 
+        //资产详情
+        getAssetsDetail(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });            
+                
+            self.onHttp({
+                method:'GET',
+                path:'/assets/detail',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                       
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        }
+
     }
 }

@@ -36,62 +36,6 @@
                 </el-table>
             </el-tab-pane> 
             <el-tab-pane label="单据信息" name="bills-info" >
-                <!-- <el-table :data="billsTable">
-                    <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
-                    <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
-                    <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         
-                    <el-table-column label="单据附件" align='center'>
-                        <template slot-scope='scope'>
-                            <el-button size='small'>预览</el-button>
-                        </template>                        
-                    </el-table-column>         
-                    <el-table-column label="附件上传" align='center'>
-                        <template slot-scope='scope'>
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                        </template>
-                    </el-table-column>         
-                    <el-table-column prop="fangkuanri" label="单据号" align='center'></el-table-column>  
-                    <el-table-column label="附件" align='center'>
-                        <template slot-scope='scope'>
-                            <el-button size='small'>预览</el-button>
-                        </template>                        
-                    </el-table-column>         
-                    <el-table-column label="附件上传" align='center'>
-                        <template slot-scope='scope'>
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                        </template>
-                    </el-table-column>        
-                    <el-table-column prop="book" label="ERP审批表/支付申请书" align='center'></el-table-column> 
-                    <el-table-column label="附件" align='center'>
-                        <template slot-scope='scope'>
-                            <el-button size='small'>预览</el-button>
-                        </template>                        
-                    </el-table-column>         
-                    <el-table-column label="附件上传" align='center'>
-                        <template slot-scope='scope'>
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                        </template>
-                    </el-table-column>        
-                </el-table> -->
-
                 <el-row>
                     <el-table @select='tableSelect' :data="list" class='table-list table-expand' @select-all='tableSelectAll'  @expand='tableExpand'>                        
                         <el-table-column prop="orderReceiptsId" label="应付单号" align='center'></el-table-column>
@@ -264,6 +208,7 @@
                 fileType:'',
                 filePath:'',
                 pageTotal:0,
+                assetsId:'',
                 tableData5: [{
                   id: '12987122',
                   name: '好滋好味鸡蛋仔',
@@ -514,7 +459,6 @@
         mixins:[Common],
         mounted() {
             const self = this;
-            console.log('protocolId:',self.$route.params.protocolId)  
             self.$nextTick(()=>{
                 const expandTables = document.querySelectorAll('.table-expand');
                 expandTables.forEach((item)=>{
@@ -523,6 +467,11 @@
                 if(sessionStorage.getItem('assets_tname')){
                     self.active_name = sessionStorage.getItem('assets_tname');
                     self.getData(self.active_name); 
+                }
+
+                if(sessionStorage.getItem('assetsId')){
+                    self.assetsId = sessionStorage.getItem('assetsId');
+                    self.getAssetsDetail({assetsId:self.assetsId})
                 }
             })          
         },

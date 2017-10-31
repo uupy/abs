@@ -96,7 +96,9 @@
             },
             checkView(row){
                 const self = this;
+                sessionStorage.setItem('assetId',row.id);
                 self.$router.push({path:'/pages/assets/property-to-dist/views'});
+
             },
             pageSizeChange(e){
                 this.pageSize = e;
