@@ -2,13 +2,15 @@
     <section class="panel-main" :style="styles">
         <el-tabs v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="商务合同信息" name="business-contract"> 
-                <el-table :data="businessContracts">
-                    <el-table-column prop="index" label="序号" width="90"></el-table-column>
-                    <el-table-column prop="supplier" label="供应商名称"></el-table-column>
-                    <el-table-column prop="projectCompany" label="项目公司"></el-table-column>
-                    <el-table-column prop="area" label="所属区域"></el-table-column>
+                <el-table :data="list">
+                    <el-table-column prop="index" label="序号" width="90">
+                        <template slot-scope='scope'>{{scope.$index+1}}</template>
+                    </el-table-column>
+                    <el-table-column prop="providerName" label="供应商名称"></el-table-column>
+                    <el-table-column prop="productCompanyName" label="项目公司"></el-table-column>
+                    <el-table-column prop="productCompanyArea" label="所属区域"></el-table-column>
                     <el-table-column prop="contractType" label="合同类别"></el-table-column>
-                    <el-table-column prop="projectName" label="项目名称"></el-table-column>
+                    <el-table-column prop="productName" label="项目名称"></el-table-column>
                     <el-table-column prop="contractName" label="商务合同名称"></el-table-column>
                     <el-table-column prop="contractNo" label="商务合同编号"></el-table-column>
                     <el-table-column inline-template :context="_self" label="附件" width="140">
@@ -20,78 +22,22 @@
                 </el-table>
             </el-tab-pane>
             <el-tab-pane label="资产详情" name="property-info" >
-                <el-table :data="propertyInfos">
-                    <el-table-column prop="no" label="资产编号" width="90"></el-table-column>
+                <el-table :data="list">
+                    <el-table-column label="资产编号" prop='assetsId'></el-table-column>
                     <el-table-column prop="status" label="资产状态">
                         <template slot-scope="scope">
-                            <el-tag :type="(scope.row.status == '已匹配' || scope.row.status == '已还款' || scope.row.status == '已结算') ? 'success' : 'warning'" close-transition>{{scope.row.status}}</el-tag>
+                            <el-tag :type="(scope.row.status == '已匹配' || scope.row.status == '已还款' || scope.row.status == '已结算') ? 'success' : 'warning'" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="yszk" label="应收账款金额"></el-table-column>
-                    <el-table-column prop="zrzj" label="转让折价"></el-table-column>
-                    <el-table-column prop="submitDate" label="提交日期"></el-table-column>
-                    <el-table-column prop="loanDate" label="放款日期"></el-table-column>
-                    <el-table-column prop="fxdate" label="资产发行日期"></el-table-column>
-                    <el-table-column prop="zkdeadline" label="应收账款到期日"></el-table-column>
+                    <el-table-column prop="receiveableMoney" label="应收账款金额"></el-table-column>
+                    <el-table-column prop="transferPrice" label="转让折价"></el-table-column>
+                    <el-table-column prop="submitTime" label="提交日期"></el-table-column>
+                    <el-table-column prop="loanTime" label="放款日期"></el-table-column>
+                    <el-table-column prop="publishTime" label="资产发行日期"></el-table-column>
+                    <el-table-column prop="receiveableMoneyEndTime" label="应收账款到期日"></el-table-column>
                 </el-table>
             </el-tab-pane> 
             <el-tab-pane label="单据信息" name="bills-info" >
-                <!-- <el-table :data="billsTable">
-                    <el-table-column prop="id" label="发票号"  align='center'></el-table-column>
-                    <el-table-column prop="sum" label="发票金额" align='center'></el-table-column>
-                    <el-table-column prop="date" label="发票日期" align='center'></el-table-column>         
-                    <el-table-column label="单据附件" align='center'>
-                        <template slot-scope='scope'>
-                            <el-button size='small'>预览</el-button>
-                        </template>                        
-                    </el-table-column>         
-                    <el-table-column label="附件上传" align='center'>
-                        <template slot-scope='scope'>
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                        </template>
-                    </el-table-column>         
-                    <el-table-column prop="fangkuanri" label="单据号" align='center'></el-table-column>  
-                    <el-table-column label="附件" align='center'>
-                        <template slot-scope='scope'>
-                            <el-button size='small'>预览</el-button>
-                        </template>                        
-                    </el-table-column>         
-                    <el-table-column label="附件上传" align='center'>
-                        <template slot-scope='scope'>
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                        </template>
-                    </el-table-column>        
-                    <el-table-column prop="book" label="ERP审批表/支付申请书" align='center'></el-table-column> 
-                    <el-table-column label="附件" align='center'>
-                        <template slot-scope='scope'>
-                            <el-button size='small'>预览</el-button>
-                        </template>                        
-                    </el-table-column>         
-                    <el-table-column label="附件上传" align='center'>
-                        <template slot-scope='scope'>
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                        </template>
-                    </el-table-column>        
-                </el-table> -->
-
                 <el-row>
                     <el-table @select='tableSelect' :data="list" class='table-list table-expand' @select-all='tableSelectAll'  @expand='tableExpand'>                        
                         <el-table-column prop="orderReceiptsId" label="应付单号" align='center'></el-table-column>
@@ -257,13 +203,16 @@
 <script>
     import Common from '@/mixins/common.js'  
     import workerSrc from '../../../static/js/pdf.worker.js' 
+    import Assets from '@/api/assets/assets' 
     export default {
         data() {
             return {
                 dialogFormVisible:false,
                 fileType:'',
+                params:{},
                 filePath:'',
                 pageTotal:0,
+                assetsId:'',
                 tableData5: [{
                   id: '12987122',
                   name: '好滋好味鸡蛋仔',
@@ -288,6 +237,7 @@
                   ]
                 },
                 ],
+                propertyStatus:ABS_STATUS.propertyStatus,
                 active_name:'business-contract',
                 protocolId:'',
                 protocol:{
@@ -379,21 +329,21 @@
                     pdfFile:'https://cdn.mozilla.net/pdfjs/tracemonkey.pdf'
                 },
                 list:[
-                    {
-                        orderReceiptsId:'123456',
-                        orderReceiptsType:'',
-                        money:'1000万',
-                        receiptsTime:'2017/10/31',
-                        invoiceTotalMoney:'1000万',
-                        fp_list:[
-                            {
-                                invoiceId:'2',
-                                money:'100万',
-                                invoiceTime:'2014/10/30',
-                            }
-                        ]
-                    }
-                ],  
+                    // {
+                    //     orderReceiptsId:'123456',
+                    //     orderReceiptsType:'',
+                    //     money:'1000万',
+                    //     receiptsTime:'2017/10/31',
+                    //     invoiceTotalMoney:'1000万',
+                    //     fp_list:[
+                    //         {
+                    //             invoiceId:'2',
+                    //             money:'100万',
+                    //             invoiceTime:'2014/10/30',
+                    //         }
+                    //     ]
+                    // }
+                ] 
             }
         },
         methods: {
@@ -404,8 +354,10 @@
 
             },
             tabChange(tab){
-                this.active_name = tab.name;
+                const self = this;
+                self.active_name = tab.name;
                 sessionStorage.setItem('assets_tname',tab.name);
+                self.getData(tab.name)
             },
             handleChange(key){
             },
@@ -484,46 +436,68 @@
                 if(expanded){
                     const self = this;
                     if(row.orderReceiptsId&&row.orderReceiptsId!=''){
-                        // self.getReceipts({orderReceiptsId:row.id});
+                        self.getReceipts({orderReceiptsId:row.id});
                     }
                 }                    
             },
             getData(active_name){
                 const self = this;
+                self.params.assetsId = self.assetsId
                 switch(active_name){
                     case 'business-contract':
                         //商务合同信息
+                        self.params.type = 1;
+                        self.getAssetsDetail(self.params);
                         break;
                     case 'property-info':
                         //资产详情
+                        self.params.type = 2;
+                        self.getAssetsDetail(self.params);
                         break;  
                     case 'bills-info':
                         //单据信息
+                        self.params.type = 3;
+                        self.getAssetsDetail(self.params);
                         break; 
                     case 'property-transfer-info':
                         //资产转让信息
+                        self.params.type = 4;
+                        self.getAssetsDetail(self.params);
                         break;   
                     default:
                         break;
                 }
-            }
+            },
+            
         },
         watch: {
             
         },
-        mixins:[Common],
+        destroyed() {
+            document.removeEventListener("keyup", self.enterKeyup, false);
+            sessionStorage.removeItem('assets_tname');                
+        },
+        mixins:[Common,Assets],
         mounted() {
-            const self = this;
-            console.log('protocolId:',self.$route.params.protocolId)  
+            const self = this;            
             self.$nextTick(()=>{
                 const expandTables = document.querySelectorAll('.table-expand');
                 expandTables.forEach((item)=>{
                     item.querySelector('th.el-table__expand-column').innerHTML = '<div class="cell">展开</div>';
                 });
+
+                if(sessionStorage.getItem('assetsId')){
+                    self.assetsId = sessionStorage.getItem('assetsId');                    
+                }   
+
                 if(sessionStorage.getItem('assets_tname')){
                     self.active_name = sessionStorage.getItem('assets_tname');
-                    self.getData(self.active_name); 
+                    self.getData(self.active_name);   
+                    console.log('assetsId:',self.assetsId)                  
+                }else{
+                    self.getData('business-contract')
                 }
+                
             })          
         },
         computed: {

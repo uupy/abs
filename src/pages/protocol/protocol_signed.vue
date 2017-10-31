@@ -142,6 +142,7 @@
             },
             checkView(row){
                 const self = this;
+                sessionStorage.setItem('assetsId',row.assetsId);
                 self.$router.push({path:'/pages/protocol_signed/views'});
             },
             clearFilter(type){

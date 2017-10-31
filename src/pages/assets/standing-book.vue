@@ -142,6 +142,7 @@
             
             checkView(row){
                 const self = this;
+                sessionStorage.setItem('assetsId',row.id);
                 self.$router.push({path:'/pages/assets/standing-book/views'});
             },
             pageSizeChange(e){

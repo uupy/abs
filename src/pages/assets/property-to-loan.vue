@@ -66,7 +66,7 @@
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:1,
-                pageTotal:10,
+                pageTotal:0,
                 pageSize:10,
                 currentPage:1,
                 params:{},
@@ -101,6 +101,7 @@
             },
             checkView(row){
                 const self = this;
+                sessionStorage.setItem('assetsId',row.id);
                 self.$router.push({path:'/pages/assets/property-to-loan/views'});
             },
             pageSizeChange(e){
