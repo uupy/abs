@@ -176,41 +176,6 @@ export default {
                     });
                 }
             });
-        },
-        //签约
-        selectEntAuthenInfo(options){
-            const self = this;
-            self.$nprogress.start();
-
-            self.setState({
-                attr:'onLoading',
-                val:true
-            });
-
-            let url = '/protocol/selectEntAuthentication';
-                
-            self.onHttp({
-                method:'POST',
-                path:url,
-                params:options
-            },(response)=>{
-                self.$nprogress.done();
-                self.setState({
-                    attr:'onLoading',
-                    val:false
-                });
-                if(response.code > 0){
-                    this.saveStorageState([
-                        {attr:'userMobile',val:response.data}
-                    ]);
-                }else{
-                    self.$message({
-                        message: response.msg,
-                        type: 'error'
-                    });
-                }
-            });
         }
-
     }
 }

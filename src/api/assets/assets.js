@@ -308,7 +308,6 @@ export default {
                     params.keyword = options.keyword
                 }
             }
-                
             self.onHttp({
                 method:'GET',
                 path:'/assets/factorMayFenPeiAssetsList',
@@ -338,7 +337,7 @@ export default {
         },
 
         //待放款资产列表
-        factorMayFenPeiAssetsList(options){
+        factorMayFangKuanAssetsList(options){
             const self = this;
             self.$nprogress.start();
 
