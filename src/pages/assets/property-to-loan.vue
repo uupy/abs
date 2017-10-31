@@ -101,7 +101,7 @@
             },
             checkView(row){
                 const self = this;
-                sessionStorage.setItem('assetId',row.id);
+                sessionStorage.setItem('assetsId',row.id);
                 self.$router.push({path:'/pages/assets/property-to-loan/views'});
             },
             pageSizeChange(e){

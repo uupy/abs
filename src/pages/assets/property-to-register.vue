@@ -83,7 +83,7 @@
                 }                    
             },
             checkView(row){
-                sessionStorage.setItem('assetId',row.id);
+                sessionStorage.setItem('assetsId',row.id);
                 this.$router.push({path:'/pages/assets/property-to-register/views'});
             },
             pageSizeChange(e){

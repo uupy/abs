@@ -805,7 +805,7 @@ export default {
             self.setState({
                 attr:'onLoading',
                 val:true
-            });            
+            });          
                 
             self.onHttp({
                 method:'GET',
@@ -819,7 +819,45 @@ export default {
                 });
                 if(response.code > 0){
                     const data = response.data;
-                       
+                   
+
+                    switch(options.type){
+                        case 1:
+                            self.list = [];
+                            self.list.push(data.orderReceipts);
+                            break;
+                        case 2:
+                            self.list = [];
+                            self.list.push(data.assets)  
+
+                            self.list.forEach(val=>{
+                                let date1 = new Date(val.receiveableMoneyEndTime)
+                                let date2 = new Date(val.submitTime)
+                                let date3 = new Date(val.loanTime)
+                                let date4 = new Date(val.publishTime)
+                                val.receiveableMoneyEndTime = date1.Format('yyyy-MM-dd hh:mm:ss');     
+                                val.submitTime = date2.Format('yyyy-MM-dd hh:mm:ss'); 
+                                val.loanTime = date3.Format('yyyy-MM-dd hh:mm:ss'); 
+                                val.publishTime = date4.Format('yyyy-MM-dd hh:mm:ss'); 
+                            })                                 
+
+                            break;
+                        case 3:
+                            self.list = data.orderReceiptsList;
+                            break;
+                        case 4:
+                            let obj = {};
+                            let list = [];
+                            list = data.protocolList;
+                            list.forEach((val,index)=>{
+                                obj[val.protocolName] = val;
+                            })
+                            console.log(obj)
+                            break;
+                        default:
+                            break;
+                    }
+
                 }else{
                     self.$message({
                         message: response.msg,
