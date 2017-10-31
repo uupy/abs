@@ -365,7 +365,7 @@ let routes = [
             {
                 path: '/pages/assets/property-to-register',
                 component: {template:'<router-view></router-view>'},
-                name: '待中登网登记',
+                name: '中登网登记',
                 show:{
                     1:true,     //保理商
                     2:false,     //核心企业

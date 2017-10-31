@@ -43,7 +43,7 @@
                 </el-table-column>
                 <el-table-column align='center' label='中登网附件' width="110">
                     <template slot-scope='scope'>
-                        <span class="table-btn health" @click.stop="checkView(scope.row)">上传</span>
+                        <span class="table-btn health" @click.stop="dengji(scope.row)">上传</span>
                     </template>
                 </el-table-column>
                 <el-table-column align='center' label='操作' width="80">
@@ -83,7 +83,7 @@
                 }                    
             },
             checkView(row){
-                sessionStorage.setItem('assetId',row.id);
+                sessionStorage.setItem('assetsId',row.id);
                 this.$router.push({path:'/pages/assets/property-to-register/views'});
             },
             pageSizeChange(e){
@@ -122,6 +122,27 @@
                 }
                 self.params.keyword = self.filter_name;
                 self.factorMayDengJiAssetsList({keyword:self.filter_name});
+            },
+            dengji(row){
+                const self = this;
+                let ids = [];
+
+                if(row.assetsId){
+                    ids = row.id;
+                }else{
+                    self.assetsIds.forEach(val=>{
+                        ids.push(val.id)
+                    });
+                }
+
+                self.$confirm('确定上传吗？','提示',{
+                    type:'warning'
+                }).then(()=>{
+                    self.factorUploadRegistrationInfo({assetsId:ids});
+                    
+                }).catch(()=>{
+
+                }); 
             },
         },
         watch: {
