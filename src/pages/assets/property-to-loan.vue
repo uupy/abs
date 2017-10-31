@@ -66,7 +66,7 @@
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:1,
-                pageTotal:10,
+                pageTotal:0,
                 pageSize:10,
                 currentPage:1,
                 params:{},
