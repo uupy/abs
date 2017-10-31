@@ -27,7 +27,7 @@
                     </el-form-item>
             	</el-form>
             </el-tab-pane>
-            <el-tab-pane label="资料详情" name="base_information" >
+            <!-- <el-tab-pane label="资料详情" name="base_information" >
                 <el-form label-width='100px' class='user-form' :model="profile" ref="profile">
             		<el-form-item label='姓名'>
             			<el-input v-model='profile.name' readonly="readonly"></el-input>
@@ -51,7 +51,7 @@
             			<el-button type='primary' @click="updateUserEmail('profile', profile)">修改</el-button>
             		</el-form-item>
             	</el-form>
-            </el-tab-pane>           
+            </el-tab-pane>  -->          
         </el-tabs>
 
         <el-tabs v-else  class='user-form' v-model="active_name2" @tab-click="enterpriseTabChange">            
@@ -73,8 +73,8 @@
                 		<el-input v-model='enterprise.corporation_id_number' placeholder='请填写法人代表身份证号'></el-input>
                 	</el-form-item>
                 	<el-form-item label='营业执照上传' prop="path">
-                		<el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-remove="handleRemove" :on-success="uploadSuccessCallback">
-                            <el-input v-model='enterprise.path' placeholder='点击上传证件' readonly="readonly"></el-input>
+                		<el-upload :headers="{'x-auth-token':token}" class="upload-demo" :action="`${url}/file/upload`" :on-success="uploadSuccessCallback" :before-upload="beforeUpload" ref="enterpriseUpload" :limit="1" :multiple="false" :show-file-list="false">
+                            <el-input v-model='enterprise.fileName' placeholder='点击上传证件' readonly="readonly"></el-input>
                         </el-upload>
                 	</el-form-item>
                     <el-form-item>
@@ -82,7 +82,7 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane label="授权" name="tab-author" >
+            <el-tab-pane label="授权" name="tab-author">
                 <el-table border :data='company'>
                     <el-table-column label='序号' type="index" width="90"></el-table-column>
                 	<el-table-column label='姓名' prop='name' align='center'></el-table-column>
@@ -104,6 +104,9 @@
                 	<el-table-column label='操作' align='center'>
                 		<template slot-scope='scope'>
                             <el-button :type="scope.row.status == 2 ? 'primary' : 'default'" size='small' :disabled="!(scope.row.status == 2)" >授权</el-button>
+                            <el-button :type="scope.row.status == 2 ? 'primary' : 'default'" size='small' :disabled="!(scope.row.status == 2)" >下载</el-button>
+                            <el-button :type="scope.row.status == 2 ? 'primary' : 'default'" size='small' :disabled="!(scope.row.status == 2)" >上传</el-button>
+                            <el-button :type="scope.row.status == 2 ? 'primary' : 'default'" size='small' :disabled="!(scope.row.status == 2)" >预览</el-button>
                 		</template>
                 	</el-table-column>
                 </el-table>
@@ -146,6 +149,7 @@
                     corporation_name:'',
                     corporation_id_number:'',
                     path:'',
+                    fileName:'',
                     mobile:''
                 },
                 rules:{
@@ -199,21 +203,42 @@
            },
            enterpriseTabChange(type) {
                 sessionStorage.setItem('enterpriseTabName',this.active_name2);
+                this.$refs['enterprise'].resetFields();
+                this.$refs['enterpriseUpload'].clearFiles();
+                this.enterprise.fileName = '';
                 if (this.active_name2 == 'tab-enterprise') {
                     this.getEnterpriseInfo();
                 } else if (this.active_name2 == 'tab-author') {
                     this.getUserList();
                 }
            },
+           beforeUpload(){
+                this.setState({
+                    attr:'onLoading',
+                    val:true
+                });
+           },
            uploadSuccessCallback(response){
+                this.setState({
+                    attr:'onLoading',
+                    val:false
+                });
                 if(response.code > 0){
                     if(response.data){
-                        this.$message({
-                            message: response.msg,
-                            type: 'success'
-                        });
                         this.enterprise.path = response.data.fileUrl;
+                        if(response.data.fileUrl){
+                            if(response.data.fileUrl.indexOf(',') !== -1){
+                                if(response.data.fileUrl.split(',')[0].indexOf('=') !== -1){
+                                    this.enterprise.fileName = response.data.fileUrl.split(',')[0].split('=')[1];
+                                }
+                            }
+                        }
                     }
+                }else{
+                    this.$message({
+                        message: response.msg,
+                        type: 'success'
+                    });
                 }
            },
            uploadSuccessCallback1(response){
@@ -294,6 +319,6 @@
 </script>
 <style>
 	.user-form .el-input{width: 300px;}
-	.enterprise-form .el-input{width: 400px;}
+	.enterprise-form .el-input,.enterprise-form .el-upload-list{width: 400px;}
 </style>
 

@@ -565,6 +565,14 @@ a{
 	padding-top: 8%;
 	z-index: 100;
 }
+.login-footer{
+	position:relative;
+	margin-top:-30px;
+	text-align:center;
+	font-size:14px;
+	color:#fff;
+	z-index:100;
+}
 .loginform {
 	
 	padding: 40px;
@@ -939,4 +947,4 @@ a{
 		}
 	}
 }
-.el-button--primary .icon-plus{color:#fff;margin-right: 0;}
+.el-button--primary .icon-plus{font-size:12px; color:#fff;margin-right: 0;}

@@ -215,7 +215,8 @@
                                 <el-table-column label="操作" align="center" width="160">
                                     <template slot-scope='scope'>
                                         <el-button size="small" :disabled="scope.row.fileUrl == '' || scope.row.fileUrl == null">
-                                            <a :href="`${url}/file/downloadAuthenFile?fileUrl=${scope.row.fileUrl}&token=${token}`">下载</a>
+                                            <a :href="`${url}/file/downloadAuthenFile?fileUrl=${scope.row.fileUrl}&token=${token}`" v-if="!(scope.row.fileUrl == '' || scope.row.fileUrl == null)">下载</a>
+                                            <a v-else>下载</a>
                                         </el-button>
                                     </template>
                                 </el-table-column>
