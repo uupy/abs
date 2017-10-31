@@ -110,7 +110,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 } 
             },
             pageCurrentChange(e){
@@ -119,7 +119,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 } 
             },
             dateChange(type,event){
@@ -142,7 +142,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 } 
             },
             tableSelect(selection,row){
@@ -189,7 +189,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 }
             },
         },
@@ -203,7 +203,7 @@
             if (self.enterprise_type == 5) {
                 self.spvMayFangKuanAssetsList();
             } else if (self.enterprise_type == 1) {
-                self.factorMayFenPeiAssetsList();    
+                self.factorMayFangKuanAssetsList();    
             }
             
         },
