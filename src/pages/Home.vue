@@ -50,21 +50,38 @@
 			</div>
 		</el-col>
 		<!-- 对话框 -->
-        <el-dialog size="tiny" title="修改密码" v-model="dialogFormVisible" @close="cancelReset('resetPwdForm')">
-            <el-form :model="resetPwdForm" :rules="rules" ref="resetPwdForm">
-                <el-form-item label="旧密码" prop="oldPassword">
-                    <el-input type="password" v-model="resetPwdForm.oldPassword" auto-complete="off" placeholder="请输入旧密码"></el-input>
-                </el-form-item>
-                <el-form-item label="新密码" prop="newPassword">
-                    <el-input type="password" v-model="resetPwdForm.newPassword" auto-complete="off" placeholder="请输入新密码"></el-input>
-                </el-form-item>
-                <el-form-item label="确认密码" prop="confirmPassword">
-					<el-input type="password" v-model="resetPwdForm.confirmPassword" auto-complete="off" placeholder="请再次输入新密码"  @keyup.13="resetPassword('resetPwdForm',resetPwdForm)"></el-input>
-                </el-form-item>
-            </el-form>
+        <el-dialog size="tiny" title="修改密码" v-model="dialogFormVisible" @close="cancelReset">
+        	<el-tabs v-model="pasewordActiveName" @tab-click="handleClickTab">
+        	    <el-tab-pane label="登录密码管理" name="resetLoginPwdForm">
+		            <el-form :model="resetLoginPwdForm" :rules="rules" ref="resetLoginPwdForm">
+		                <el-form-item label="旧登录密码" prop="oldPassword">
+		                    <el-input type="password" v-model="resetLoginPwdForm.oldPassword" auto-complete="off" placeholder="请输入旧密码"></el-input>
+		                </el-form-item>
+		                <el-form-item label="新登录密码" prop="newPassword">
+		                    <el-input type="password" v-model="resetLoginPwdForm.newPassword" auto-complete="off" placeholder="请输入新密码"></el-input>
+		                </el-form-item>
+		                <el-form-item label="确认登录密码" prop="confirmPassword">
+							<el-input type="password" v-model="resetLoginPwdForm.confirmPassword" auto-complete="off" placeholder="请再次输入新密码"></el-input>
+		                </el-form-item>
+		            </el-form>
+        	    </el-tab-pane>
+        	    <el-tab-pane label="签约密码管理" name="resetSignPwdForm">
+        	    	<el-form :model="resetSignPwdForm" :rules="rules" ref="resetSignPwdForm">
+		                <el-form-item label="旧签约密码" prop="oldPassword">
+		                    <el-input type="password" v-model="resetSignPwdForm.oldPassword" auto-complete="off" placeholder="请输入旧密码"></el-input>
+		                </el-form-item>
+		                <el-form-item label="新签约密码" prop="newPassword">
+		                    <el-input type="password" v-model="resetSignPwdForm.newPassword" auto-complete="off" placeholder="请输入新密码"></el-input>
+		                </el-form-item>
+		                <el-form-item label="确认签约密码" prop="confirmPassword">
+							<el-input type="password" v-model="resetSignPwdForm.confirmPassword" auto-complete="off" placeholder="请再次输入新密码"></el-input>
+		                </el-form-item>
+		            </el-form>
+        	    </el-tab-pane>
+        	</el-tabs>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="resetPassword('resetPwdForm',resetPwdForm)">确 定</el-button>
-                <el-button @click="cancelReset('resetPwdForm')">取 消</el-button>
+                <el-button type="primary" @click="resetPassword">确 定</el-button>
+                <el-button @click="cancelReset">取 消</el-button>
             </div>
             <vs-loading :isShow="innerLoading" className="vs-inner-loading"></vs-loading>
         </el-dialog>
@@ -82,7 +99,12 @@
 				menuItemStyle:{},
 				currentRoute:'',
 				dialogFormVisible:false,
-				resetPwdForm:{
+				resetLoginPwdForm:{
+					oldPassword:'',
+					newPassword:'',
+					confirmPassword:''
+				},
+				resetSignPwdForm:{
 					oldPassword:'',
 					newPassword:'',
 					confirmPassword:''
@@ -99,23 +121,40 @@
 					]
 				},
 				panelSideScroll:null,
-				panelCenterScroll:null
+				panelCenterScroll:null,
+				pasewordActiveName:'resetLoginPwdForm'
 			}
 		},
 		mixins:[Common,Home],
 		methods: {
 			//取消修改密码
-			cancelReset(formName){
+			cancelReset(){
 				const self = this;
-				self.$refs[formName].resetFields();
+				self.$refs[self.pasewordActiveName].resetFields();
 				self.dialogFormVisible = false;
+			},
+			handleClickTab(){
+				const self = this;
+				self.$refs[self.pasewordActiveName].resetFields();
+			},
+			resetPassword(){
+				const self = this;
+				self.$refs[self.pasewordActiveName].validate((valid)=>{
+				    if(valid){
+				    	if(self.pasewordActiveName == 'resetLoginPwdForm'){
+				    		self.resetLoginPassword();
+				    	}else{
+				    		self.resetSignPassword();
+				    	}
+				    }
+				});
 			},
 			enterKeyup(e){
                 const self = this;
                 const ev = e || window.event;
                 if(ev.keyCode == 13){
                 	if(self.dialogFormVisible && !self.innerLoading){
-                		self.resetPassword('resetPwdForm',self.resetPwdForm);
+                		self.resetPassword();
                 	}
                 }
             },

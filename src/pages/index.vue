@@ -4,11 +4,18 @@
 			<el-card class="box-card">
 			  	<div slot="header" class="clearfix">
 			    	<span>代办</span>
-			    	<el-button style="float: right; padding: 3px 0" type="text">更多 >></el-button>
+			    	<el-button style="float: right; padding: 3px 0" type="text" v-if="todoList.length > 0">更多 >></el-button>
 			  	</div>
-			  	<div v-for="(item,index) in todoList" :key="index" class="item-list text item" @click='todoDetail("/pages/index/todo-list",item.id)'>
-			    	{{item.name}}
-			  	</div>
+			  	<template v-if="todoList.length > 0">
+				  	<div v-for="(item,index) in todoList" :key="index" class="item-list text item" @click='todoDetail("/pages/index/todo-list",item.id)'>
+				    	{{item.name}}
+				  	</div>
+			  	</template>
+			  	<template v-else>
+				  	<div class="item-list text item">
+				    	<p style="text-align:center;">待开发...</p>
+				  	</div>
+			  	</template>
 			</el-card>
 		</el-col>
 		<el-col :span='12' class='card-list'>
@@ -16,29 +23,36 @@
 			  	<div slot="header" class="clearfix">
 			    	<span>公告</span>
 			  	</div>
-			  	<div v-for="(item,index) in noticeList" :key="index" class="item-list text item" @click='todoDetail("/pages/index/todo-list",item.id)'>
+			  	<template v-if="noticeList.length > 0">
+				  	<div v-for="(item,index) in noticeList" :key="index" class="item-list text item" @click='todoDetail("/pages/index/todo-list",item.id)'>
 			    	{{item.name}}
 			  	</div>
+			  	</template>
+			  	<template v-else>
+				  	<div class="item-list text item">
+				    	<p style="text-align:center;">待开发...</p>
+				  	</div>
+			  	</template>
 			</el-card>
 		</el-col>
 
 		<el-col :span='12' class='card-list'>
 			<el-card class="box-card">
 			  	<div slot="header" class="clearfix">
-			    	<span>xxx统计</span>			    	
+			    	<span>统计表</span>			    	
 			  	</div>
 			  	<div class="echarts-wrap echarts-wrap1" id='echarts-wrap1'>
-			  		
+			  		<p style="text-align:center;">待开发...</p>
 			  	</div>			  	
 			</el-card>
 		</el-col>
 		<el-col :span='12' class='card-list'>
 			<el-card class="box-card">
 			  	<div slot="header" class="clearfix">
-			    	<span>xxx统计</span>			    	
+			    	<span>统计表</span>			    	
 			  	</div>	
 			  	<div class="echarts-wrap echarts-wrap2" id='echarts-wrap2'>
-			  		
+			  		<p style="text-align:center;">待开发...</p>
 			  	</div>		  	
 			</el-card>
 		</el-col>
@@ -51,54 +65,12 @@
     export default {
         data() {
             return {
-                todoList:[
-                	{
-                		name:'代办事件1',
-                		id:'1'
-                	},
-                	{
-                		name:'代办事件2',
-                		id:'2'
-                	},
-                	{
-                		name:'代办事件3',
-                		id:'3'
-                	},
-                	{
-                		name:'代办事件4',
-                		id:'4'
-                	},
-                	{
-                		name:'代办事件5',
-                		id:'5'
-                	},
-                ],
-                noticeList:[
-                	{
-                		name:'通知公告1',
-                		id:'1'
-                	},
-                	{
-                		name:'通知公告2',
-                		id:'2'
-                	},
-                	{
-                		name:'通知公告3',
-                		id:'3'
-                	},
-                	{
-                		name:'通知公告4',
-                		id:'4'
-                	},
-                	{
-                		name:'通知公告5',
-                		id:'5'
-                	},
-                ],
+                todoList:[],
+                noticeList:[],
                 option1:{
 				    title : {
-				        text: 'xxx统计',
-				        subtext: '纯属虚构',
+				        text: '统计表',
+				        subtext: '',
 				        x:'center'
 				    },
 				    tooltip : {
@@ -108,36 +80,36 @@
 				    legend: {
 				        orient: 'vertical',
 				        left: 'left',
-				        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+				        data: []
 				    },
 				    series : [
-				        {
-				            name: '访问来源',
-				            type: 'pie',
-				            radius : '55%',
-				            center: ['50%', '60%'],
-				            data:[
-				                {value:335, name:'直接访问'},
-				                {value:310, name:'邮件营销'},
-				                {value:234, name:'联盟广告'},
-				                {value:135, name:'视频广告'},
-				                {value:1548, name:'搜索引擎'}
-				            ],
-				            itemStyle: {
-				                emphasis: {
-				                    shadowBlur: 10,
-				                    shadowOffsetX: 0,
-				                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-				                }
-				            }
-				        }
+				        // {
+				        //     name: '访问来源',
+				        //     type: 'pie',
+				        //     radius : '55%',
+				        //     center: ['50%', '60%'],
+				        //     data:[
+				        //         {value:335, name:'直接访问'},
+				        //         {value:310, name:'邮件营销'},
+				        //         {value:234, name:'联盟广告'},
+				        //         {value:135, name:'视频广告'},
+				        //         {value:1548, name:'搜索引擎'}
+				        //     ],
+				        //     itemStyle: {
+				        //         emphasis: {
+				        //             shadowBlur: 10,
+				        //             shadowOffsetX: 0,
+				        //             shadowColor: 'rgba(0, 0, 0, 0.5)'
+				        //         }
+				        //     }
+				        // }
 				    ]
 				},
 				option2:{
 				    color: ['#3398DB'],
 				    title : {
-				        text: 'xxx统计',
-				        subtext: '纯属虚构',
+				        text: '统计表',
+				        subtext: '',
 				        x:'center'
 				    },
 				    tooltip : {
@@ -155,7 +127,7 @@
 				    xAxis : [
 				        {
 				            type : 'category',
-				            data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				            data : [],
 				            axisTick: {
 				                alignWithLabel: true
 				            }
@@ -167,12 +139,12 @@
 				        }
 				    ],
 				    series : [
-				        {
-				            name:'直接访问',
-				            type:'bar',
-				            barWidth: '60%',
-				            data:[10, 52, 200, 334, 390, 330, 220]
-				        }
+				        // {
+				        //     name:'直接访问',
+				        //     type:'bar',
+				        //     barWidth: '60%',
+				        //     data:[10, 52, 200, 334, 390, 330, 220]
+				        // }
 				    ]
 				},
             }
@@ -196,8 +168,8 @@
         mounted() {
             const self = this;   
             self.$nextTick(()=>{
-            	self.echartsInit('echarts-wrap1',self.option1);
-            	self.echartsInit('echarts-wrap2',self.option2);
+            	// self.echartsInit('echarts-wrap1',self.option1);
+            	// self.echartsInit('echarts-wrap2',self.option2);
             });        
         },
         computed: {
@@ -219,6 +191,6 @@
 	.item-list:hover{color: #8383dc;}
 
 	.card-list:nth-child(1) .el-card .el-card__body,.card-list:nth-child(2) .el-card .el-card__body{height: 150px;height: 150px;overflow: hidden;}
-	.card-list:nth-child(3) .el-card .el-card__body,.card-list:nth-child(4) .el-card .el-card__body{min-height: 300px;width: 300px;}
-	.index-panel .echarts-wrap{min-height: 300px;width: 600px;}
+	.card-list:nth-child(3) .el-card .el-card__body,.card-list:nth-child(4) .el-card .el-card__body{min-height: 300px;/*width: 300px;*/}
+	.index-panel .echarts-wrap{min-height: 300px;/*width: 600px;*/}
 </style>

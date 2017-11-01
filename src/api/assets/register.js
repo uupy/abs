@@ -67,6 +67,37 @@ export default {
                     });
                 }
             });
-        }
+        },
+        //中登网登记 => 保理商
+        factorUploadRegistrationInfo(options){
+            const self = this;
+            self.$nprogress.start();
+
+            self.setState({
+                attr:'onLoading',
+                val:true
+            });
+            self.onHttp({
+                method:'POST',
+                path:'/assets/factorUploadRegistrationInfo',
+                params:options
+            },(response)=>{
+                self.$nprogress.done();
+                self.setState({
+                    attr:'onLoading',
+                    val:false
+                });
+                if(response.code > 0){
+                    const data = response.data;
+                    self.$message.success('已登记');
+                    self.factorMayDengJiAssetsList(self.params);     
+                }else{
+                    self.$message({
+                        message: response.msg,
+                        type: 'error'
+                    });
+                }
+            });
+        },
     }
 }

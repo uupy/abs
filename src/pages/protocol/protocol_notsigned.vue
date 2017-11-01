@@ -98,7 +98,8 @@
                 signedForm:{
                     code:'',
                     password:''
-                }
+                },
+                rowId:''
             }
         },
         methods: {
@@ -113,6 +114,7 @@
             },
             checkView(row){
                 const self = this;
+                sessionStorage.setItem('assetsId',row.assetsId);
                 self.$router.push({path:'/pages/protocol_notsigned/views'});
             },
             clearFilter(type){
@@ -136,16 +138,18 @@
                     }).catch(() => {});
                 }else{
                     if (self.user_type == 1) {
-                        self.selectEntAuthenInfo({enterpriseId: self.enterprise_id});
+                        //self.selectEntAuthenInfo({enterpriseId: self.enterprise_id, protocolId: row.id});
                     }
                     self.dialogConfrimSigned = true;
                 }
+                self.rowId = row.id;
             },
             confrimSigned(){
                 const self = this;
                 self.$refs['signedForm'].validate((valid)=>{
                     if(valid){
-                        self.signProtocol({protocolId:row.id,enterprise_type:self.enterprise_type});
+                        self.signProtocol({protocolId:self.rowId,enterprise_type:self.enterprise_type});
+                        self.dialogConfrimSigned = false;
                     }
                 });
             },

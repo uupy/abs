@@ -127,6 +127,7 @@ export default {
                         self.enterprise.corporation_id_number = response.data.corporationIdNumber || '';
                         self.enterprise.corporation_name = response.data.corporationName || '';
                         self.enterprise.path = response.data.path || '';
+                        self.enterprise.mobile = response.data.corporation_mobile || '';
                     }
                 } else{
                     self.$message({
@@ -165,7 +166,7 @@ export default {
                     });
                     if(response.code > 0){
                         self.$message({
-                            message: response.msg,
+                            message: `认证成功！`,
                             type: 'success'
                         });
                     }else{

@@ -39,11 +39,11 @@
                 <el-table-column prop='receiveableMoneyEndTime'  align='center' label='应收账款到期日' width="130"></el-table-column>
                 <el-table-column prop='financingDays'  align='center' label='融资天数' width="100"></el-table-column>
                 <el-table-column prop='dclr'  align='center' label='待处理人' width="100"></el-table-column>
-                <el-table-column align='center' label='资产状态' width="100">
+               <!--  <el-table-column align='center' label='资产状态' width="100">
                     <template slot-scope='scope'>
                         <el-tag :type="(scope.row.status == '6' || scope.row.status == '7' || scope.row.status == '8') ? 'success' : 'warning'" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
                         <span class="table-btn health" @click.stop="checkView(scope.row)">资产详情</span>
@@ -66,7 +66,7 @@
                 filter_name:'',
                 clients_pagesize:10,
                 clients_total:1,
-                pageTotal:10,
+                pageTotal:0,
                 pageSize:10,
                 currentPage:1,
                 params:{},
@@ -101,7 +101,7 @@
             },
             checkView(row){
                 const self = this;
-                sessionStorage.setItem('assetId',row.id);
+                sessionStorage.setItem('assetsId',row.id);
                 self.$router.push({path:'/pages/assets/property-to-loan/views'});
             },
             pageSizeChange(e){
@@ -111,7 +111,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 } 
             },
             pageCurrentChange(e){
@@ -120,7 +120,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 } 
             },
             dateChange(type,event){
@@ -143,7 +143,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 } 
             },
             tableSelect(selection,row){
@@ -190,7 +190,7 @@
                 if (self.enterprise_type == 5) {
                     self.spvMayFangKuanAssetsList(self.params);
                 } else if (self.enterprise_type == 1) {
-                    self.factorMayFenPeiAssetsList(self.params);    
+                    self.factorMayFangKuanAssetsList(self.params);    
                 }
             },
         },
@@ -204,7 +204,7 @@
             if (self.enterprise_type == 5) {
                 self.spvMayFangKuanAssetsList();
             } else if (self.enterprise_type == 1) {
-                self.factorMayFenPeiAssetsList();    
+                self.factorMayFangKuanAssetsList();    
             }
             
         },

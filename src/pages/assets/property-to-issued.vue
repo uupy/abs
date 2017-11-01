@@ -39,11 +39,11 @@
                 <el-table-column prop='receiveableMoneyEndTime'  align='center' label='应收账款到期日' width="130"></el-table-column>
                 <el-table-column prop='financingDays'  align='center' label='融资天数' width="100"></el-table-column>
                 <el-table-column prop='dclr'  align='center' label='待处理人' width="100"></el-table-column>
-                <el-table-column align='center' label='资产状态' width="100">
+                <!-- <el-table-column align='center' label='资产状态' width="100">
                     <template slot-scope='scope'>
                         <el-tag :type="(scope.row.status == '6' || scope.row.status == '7' || scope.row.status == '8') ? 'success' : 'warning'" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column align='center' label='操作' width="170">
                     <template slot-scope='scope'>
                         <span class="table-btn health" @click.stop="checkView(scope.row)">资产详情</span>
@@ -64,27 +64,11 @@
                 dateRange:'',
                 dateRange2:'',
                 filter_name:'',
-                clients_pagesize:10,
-                clients_total:1,
                 pageTotal:0,
                 pageSize:10,
                 currentPage:1,
                 params:{},
-                propertyList:[
-                    {
-                        pno:'ZCA01171019001',
-                        supplier:'供应商1',
-                        project:'碧桂园',
-                        area:'深圳宝安',
-                        yszkje:'2,000,000',
-                        zrzj:'1,988,000',
-                        tjrq:'2017-12-30',
-                        yszkdqr:'2017-12-30',
-                        rzts:'360',
-                        dclr:'复核',
-                        status:'4',
-                    },
-                ],
+                propertyList:[],
                 assetsIds:[],
                 propertyStatus:ABS_STATUS.propertyStatus?ABS_STATUS.propertyStatus:{},
             }
@@ -109,7 +93,7 @@
             },
             checkView(row){
                 const self = this;
-                sessionStorage.setItem('assetId',row.id);
+                sessionStorage.setItem('assetsId',row.id);
                 self.$router.push({path:'/pages/assets/property-to-issued/views'});
             },
             pageSizeChange(e){

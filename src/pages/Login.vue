@@ -26,6 +26,9 @@
                 </el-form-item>
             </el-form>
         </div>
+        <div class="login-footer">
+            <p>Copyright © 2017 本系统最终解释权归高银保理（中国）有限公司所有</p>
+        </div>
         <div class="login-bg"></div>
     </section>
 </template>
