@@ -672,6 +672,14 @@ let routes = [
         redirect: {
             path: '/404'
         }
+    },
+    {
+        path: '*',
+        leaf:true,
+        hidden: true,
+        redirect: {
+            path: '/tips'
+        }
     }
 ];
 

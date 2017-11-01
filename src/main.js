@@ -81,7 +81,7 @@ router.beforeEach((to, from, next) => {
     }
     let user = localStorage.getItem('username');
     let enterprise_type = parseInt(localStorage.getItem('enterprise_type') || '0');
-    if (!user && to.path != '/login') {
+    if (!user && to.path != '/login' && from.path !='/tips') {
         next({
             path: '/login'
         })

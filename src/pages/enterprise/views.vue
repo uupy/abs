@@ -8,7 +8,7 @@
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">企业联系方式</span>
-                        <span class="subtxt" @click="dialogEditContact = true" v-if="operate_authority"><i class="im-icon-edit health"></i>编辑</span>
+                        <span class="subtxt" @click="dialogEditContact = true" v-if="operate_authority"><i class="iconfont icon-edit health"></i>编辑</span>
                     </el-col>
                     <el-col class="info-box" style="margin-top:-8px;">
                         <p>
@@ -36,7 +36,7 @@
                 <el-row>
                     <el-col class="toolbar toolbar-top">
                         <span class="title">联系人列表</span>
-                        <span class="subtxt" @click="dialogAddContact=true" v-if="operate_authority"><i class="im-icon-addbtn"></i>新增联系人</span>
+                        <span class="subtxt" @click="dialogAddContact=true" v-if="operate_authority"><i class="iconfont icon-plus2"></i>新增联系人</span>
                     </el-col>
                     <el-col :span="24">
                         <el-table :data="contact_persons" class="table-list">
