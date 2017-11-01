@@ -180,8 +180,15 @@
 					oSide ? self.panelSideScroll = new Optiscroll(oSide) : '';
 	                oPanelCenter ? self.panelCenterScroll = new Optiscroll(oPanelCenter) : '';
 				},10);
+
+				self.$router.afterEach(()=>{
+					console.log('table',document.querySelector('.el-table.el-table--fit.el-table--enable-row-hover').querySelector('.el-table__empty-block'));
+				});
+				// console.log('table',document.querySelector('.el-table__empty-block'));
+				// document.querySelector('.el-table').setAttribut()
 			});
 			document.addEventListener("keyup", self.enterKeyup, false);
+
 		},
 		destroyed() {
             const self = this;
