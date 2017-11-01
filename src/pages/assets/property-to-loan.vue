@@ -27,7 +27,7 @@
         </el-row>
 
         <el-row>
-            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange">
+            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange" border :class="[{'empty-table':propertyList.length == 0}]">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>

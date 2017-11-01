@@ -26,7 +26,7 @@
             </div>       
         </el-row>
         <el-row>
-            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange" >
+            <el-table @select='tableSelect' @select-all='tableSelectAll' ref="multipleTable" :data="propertyList" @selection-change="handleSelectionChange" border :class="[{'empty-table':propertyList.length == 0}]">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
@@ -34,8 +34,16 @@
                 <el-table-column prop='area'  align='center' label='所属区域'></el-table-column>
                 <el-table-column prop='receiveableMoney' align='center'  label='应收账款金额'></el-table-column>
                 <el-table-column prop='transferPrice' align='center'  label='转让折价'></el-table-column>
-                <el-table-column prop='submitTime' align='center' label='提交日期' width="120"></el-table-column>
-                <el-table-column prop='receiveableMoneyEndTime'  align='center' label='应收账款到期日' width="130"></el-table-column>
+                <el-table-column prop='submitTime' align='center' label='提交日期' width="120">
+                    <template slot-scope='scope'>
+                        <span>{{new Date(scope.row.submitTime).Format('yyyy-MM-dd')}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop='receiveableMoneyEndTime' align='center' label='应收账款到期日' width="130">
+                    <template slot-scope='scope'>
+                        <span>{{scope.row.receiveableMoneyEndTime ? (new Date(scope.row.receiveableMoneyEndTime).Format('yyyy-MM-dd')) : ''}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop='financingDays'  align='center' label='融资天数' width="100"></el-table-column>
                 <el-table-column prop='dclr'  align='center' label='待处理人' width="100"></el-table-column>
                 <!-- <el-table-column align='center' label='资产状态' width="100">
@@ -171,7 +179,6 @@
             },
             search(){
                 const self = this;
-                console.log('filter_name:',self.filter_name)
                 self.filter_name = self.filter_name.replace(/\s+/g,"");
                 self.params.keyword = self.filter_name;
                 if(self.filter_name == ''){

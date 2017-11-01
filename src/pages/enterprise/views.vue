@@ -100,7 +100,7 @@
                         <span class="title">股东信息</span>
                     </el-col>
                     <el-col :span="18">
-                        <el-table :data="shareholder_infos" border>
+                        <el-table :data="shareholder_infos" border :class="[{'empty-table':shareholder_infos.length == 0}]">
                             <el-table-column prop="shareholder_type" label="股东类型"></el-table-column>
                             <el-table-column prop="shareholder" label="股东"></el-table-column>
                             <el-table-column prop="subscribe_for_funding" label="认缴出资（万元人民币）"></el-table-column>
@@ -114,7 +114,7 @@
                         <span class="title">主要人员</span>
                     </el-col>
                     <el-col :span="18">
-                        <el-table :data="main_staffs" border>
+                        <el-table :data="main_staffs" border :class="[{'empty-table':main_staffs.length == 0}]">
                             <el-table-column prop="name" label="姓名"></el-table-column>
                             <el-table-column prop="position" label="职务"></el-table-column>
                         </el-table>
@@ -125,7 +125,7 @@
                         <span class="title">分支机构</span>
                     </el-col>
                     <el-col :span="18">
-                        <el-table :data="branch_offices" border>
+                        <el-table :data="branch_offices" border :class="[{'empty-table':branch_offices.length == 0}]">
                             <el-table-column prop="name" label="公司名称"></el-table-column>
                             <el-table-column prop="person_in_charge" label="负责人"></el-table-column>
                         </el-table>
@@ -136,7 +136,7 @@
                         <span class="title">对外投资</span>
                     </el-col>
                     <el-col :span="18">
-                        <el-table :data="investment" border>
+                        <el-table :data="investment" border :class="[{'empty-table':investment.length == 0}]">
                             <el-table-column prop="company_name" label="公司名称"></el-table-column>
                             <el-table-column prop="legal_representative" label="法定代表人"></el-table-column>
                             <el-table-column prop="establish_period" label="成立年限"></el-table-column>
@@ -172,7 +172,7 @@
                         <span class="title">风险信息</span>
                     </el-col>
                     <el-col :span="18">
-                        <el-table :data="risk_infos" border>
+                        <el-table :data="risk_infos" border :class="[{'empty-table':risk_infos.length == 0}]">
                             <el-table-column prop="risk_info" label="风险信息"></el-table-column>
                             <el-table-column prop="cumulative_quantity" label="累积数量"></el-table-column>
                             <el-table-column prop="verification_content" label="核查内容"></el-table-column>
@@ -184,7 +184,7 @@
                         <span class="title">中登网登记信息</span>
                     </el-col>
                     <el-col :span="18">
-                        <el-table :data="registers" border>
+                        <el-table :data="registers" border :class="[{'empty-table':registers.length == 0}]">
                             <el-table-column prop="registered_institution_name" label="登记机构名称"></el-table-column>
                             <el-table-column prop="registy_time" label="登记时间"></el-table-column>
                             <el-table-column prop="overdue_time" label="到期时间"></el-table-column>
@@ -217,6 +217,10 @@
                                         <el-button size="small" :disabled="scope.row.fileUrl == '' || scope.row.fileUrl == null">
                                             <a :href="`${url}/file/downloadAuthenFile?fileUrl=${scope.row.fileUrl}&token=${token}`" v-if="!(scope.row.fileUrl == '' || scope.row.fileUrl == null)">下载</a>
                                             <a v-else>下载</a>
+                                        </el-button>
+                                        <el-button size="small" :disabled="scope.row.fileUrl == '' || scope.row.fileUrl == null">
+                                            <a @click="checkViews(scope.row)" v-if="!(scope.row.fileUrl == '' || scope.row.fileUrl == null)">预览</a>
+                                            <a v-else>预览</a>
                                         </el-button>
                                     </template>
                                 </el-table-column>
@@ -593,6 +597,10 @@
                         });
                     }
                 });
+            },
+            checkViews(row){
+                // window.open(`${this.url}/file/downloadAuthenFile?fileUrl=${row.fileUrl}&token=${this.token}`)
+                // window.open(`${this.url}${row.fileUrl}`)
             }
         },
         mounted() {

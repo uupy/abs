@@ -2,7 +2,7 @@
     <section class="panel-main" :style="styles">
         <el-tabs v-model="active_name" @tab-click="tabChange">
             <el-tab-pane label="商务合同信息" name="business-contract"> 
-                <el-table :data="list">
+                <el-table :data="list" border :class="[{'empty-table':list.length == 0}]">
                     <el-table-column prop="index" label="序号" width="90">
                         <template slot-scope='scope'>{{scope.$index+1}}</template>
                     </el-table-column>
@@ -22,7 +22,7 @@
                 </el-table>
             </el-tab-pane>
             <el-tab-pane label="资产详情" name="property-info" >
-                <el-table :data="list">
+                <el-table :data="list" border :class="[{'empty-table':list.length == 0}]">
                     <el-table-column label="资产编号" prop='assetsId'></el-table-column>
                     <el-table-column prop="status" label="资产状态">
                         <template slot-scope="scope">

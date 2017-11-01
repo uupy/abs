@@ -13,7 +13,7 @@
             </div>
         </el-row>
         <el-row :span="24">
-            <el-table :data="list" border ref="multipleTable">
+            <el-table :data="list" border ref="multipleTable" :class="[{'empty-table':list.length == 0}]">
                 <!-- <el-table-column type="index" label="序号" width="90"></el-table-column> -->
                 <el-table-column prop="code" label="回款编号"></el-table-column>
                 <el-table-column prop="supplierName" label="供应商名称"></el-table-column>

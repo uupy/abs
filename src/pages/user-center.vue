@@ -83,7 +83,7 @@
                 </el-form>
             </el-tab-pane>
             <el-tab-pane label="授权" name="tab-author">
-                <el-table border :data='company'>
+                <el-table :data='company' class="table-list">
                     <el-table-column label='序号' type="index" width="90"></el-table-column>
                 	<el-table-column label='姓名' prop='name' align='center'></el-table-column>
                 	<el-table-column label='角色' prop='roleType' align='center'>
@@ -93,7 +93,7 @@
                     </el-table-column>
                 	<el-table-column label='权限' prop='auditType' align='center'>
                         <template slot-scope="scope">
-                            <span>{{auditType[scope.row.auditType]}}</span>
+                            <span>{{auditType[scope.row.auditType] ? auditType[scope.row.auditType] : auditType['0']}}</span>
                         </template>
                     </el-table-column>
                 	<el-table-column label='认证状态' prop='status' align='center'>

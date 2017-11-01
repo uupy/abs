@@ -25,7 +25,7 @@
             </div>       
         </el-row>
         <el-row>
-            <el-table ref="multipleTable" :data="list">
+            <el-table ref="multipleTable" :data="list" border :class="[{'empty-table':list.length == 0}]">
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName'  align='center'  label='供应商'></el-table-column>
                 <el-table-column prop='productCompanyName'  align='center' label='项目公司'></el-table-column>

@@ -220,27 +220,12 @@
                 dialogDisable2:false,
                 rules:{},
                 orderReceiptsIds:[],
-                // companyList:[
-                //     {
-                //         label:'深圳xx公司',
-                //         value:'0',
-                //     },
-                //     {
-                //         label:'深圳开胃公司',
-                //         value:'1',
-                //     }
-                // ],
                 list:[],
-                // list_pagenum:1,
-                // list_pagesize:10,
-                // list_total:10,
                 state:0,
             }
         },
         mixins:[Common,Assets],
         methods: {
-            listSizeChange(){},
-            listCurrentChange(){},
             clearFilter(){
                 this.filter_name = '';
                 this.getAssetsList()
@@ -269,15 +254,6 @@
             cancelAddClient(){
                 this.dialogDisable = false;
             },
-            handleClick(){
-
-            },
-            clientsSizeChange(){
-
-            },
-            clientsCurrentChange(){
-
-            },
             pageSizeChange(e){
                 this.pageNum = e;
                 this.currentPage = 1;                
@@ -289,7 +265,6 @@
                 this.getAssetsList();
             },
             tableExpand(row,expanded){
-                console.log('id:',row.id)
                 if(expanded){
                     const self = this;
                     if(row.orderReceiptsId&&row.orderReceiptsId!=''){
@@ -343,6 +318,10 @@
             //选项卡切换
             tabChange(tab, event){
                 const self = this;
+                const expandTables = document.querySelectorAll('.table-expand');
+                expandTables.forEach((item)=>{
+                    item.querySelector('th.el-table__expand-column').innerHTML = '<div class="cell">展开</div>';
+                });
                 self.active_name = tab.name;               
                 self.state = tab.name=='first'?2:3;
 

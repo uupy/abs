@@ -16,7 +16,7 @@
             </div>
         </el-row>
         <el-row :span="24">
-            <el-table :data="list" border ref="multipleTable">
+            <el-table :data="list" border ref="multipleTable" :class="[{'empty-table':list.length == 0}]">
                 <el-table-column prop="code" label="资产编号" width="150"></el-table-column>
                 <el-table-column prop="supplierName" label="供应商"></el-table-column>
                 <el-table-column prop="projectName" label="项目公司"></el-table-column>

@@ -61,40 +61,6 @@ export default {
                 }
             });
         },
-        
-        //未完
-        getProtocolDetail(options){
-            const self = this;
-            self.$nprogress.start();
-
-            self.setState({
-                attr:'onLoading',
-                val:true
-            });
-            self.onHttp({
-                method:'GET',
-                path:'/protocol/list',
-                params:{
-                    curPage:self.currentPage,
-                    pageSize:self.pageNum
-                }
-            },(response)=>{
-                self.$nprogress.done();
-                self.setState({
-                    attr:'onLoading',
-                    val:false
-                });
-
-                if(response.code > 0){
-                    self.list = response.list;
-                }else{
-                    self.$message({
-                        message: response.msg,
-                        type: 'error'
-                    });
-                }
-            });
-        },
 
         //供应商复核（签约）
         checkAssets(options){

@@ -178,7 +178,11 @@ export default {
                 if(options.keyword){
                     params.keyword = options.keyword
                 }
-                params.status = options.status
+                if(options.status === ''){
+                    params.status = 0
+                }else{
+                    params.status = options.status
+                }
             }
                 
             self.onHttp({

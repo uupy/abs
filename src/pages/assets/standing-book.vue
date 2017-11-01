@@ -4,7 +4,7 @@
             <el-col :span="17">
                 <el-col>
                     <label style="display:inline-block;min-width:115px; padding-left:10px;text-align:right;">资产状态：</label>
-                    <el-select @change='statusChange' :clearable='true' size="small" v-model="currentStatus" placeholder="请选择" style="width:230px;">
+                    <el-select @change='statusChange' :clearable='true' size="small" v-model="currentStatus" placeholder="请选择" style="width:220px;" class="toolbar-select">
                         <el-option v-for="(item,index) in propertyStatus" :label="item" :value="index" :key="index"></el-option>
                     </el-select>
                     <label style="display:inline-block;min-width:115px; padding-left:10px;text-align:right;">放款日期：</label>
@@ -44,11 +44,7 @@
         </el-row>
 
         <el-row>
-            <el-table
-                ref="multipleTable"
-                :data="propertyList"                
-                tooltip-effect="dark"                
-                @selection-change="handleSelectionChange" @select='tableSelect' @select-all='tableSelectAll'>
+            <el-table ref="multipleTable" :data="propertyList" tooltip-effect="dark" @selection-change="handleSelectionChange" @select='tableSelect' @select-all='tableSelectAll' border :class="[{'empty-table':propertyList.length == 0}]">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop='assetsId'  align='center'  label='资产编号'></el-table-column>
                 <el-table-column prop='providerName' align='center' label='供应商'></el-table-column>
@@ -268,5 +264,6 @@
 </script>
 <style>
     /*.property-to-confirm .date-picker input{width: 400px;font-size: 13px;color: #666;}*/
-    .property-to-confirm .toolbar-top .date-picker.el-input{width: 230px;font-size: 13px;color: #666;text-align: center;}
+    .property-to-confirm .toolbar-top .date-picker.el-input{width: 220px;font-size: 13px;color: #666;text-align: center;}
+    .toolbar-top .toolbar-select .el-input{width: 220px;}
 </style>

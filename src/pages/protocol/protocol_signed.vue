@@ -83,37 +83,17 @@
         data() {
             return {
                 currentStatus:'',
-                clients_pagesize:10,
-                clients_total:2,
                 pageTotal:0,
                 pages:0,
                 currentType:0,
                 currentPage:1,
-                pageNum:10,
                 pageSize:10,
                 filter_name:'',
                 signDate:'',
                 protocolStatus:{},
                 deadline:'',
                 dialog_add_client:false,
-                list:[
-                    {
-                        index:'1',
-                        id:'ZCA01171019001',
-                        name:'应收帐款债权转让协议',
-                        signatory:'工程公司',
-                        signatoryOtherSide:'佛山项目公司',
-                        date:'2017-10-19'
-                    },
-                    {
-                        index:'2',
-                        id:'ZCA01171019002',
-                        name:'应收帐款债权转让通知函',
-                        signatory:'工程公司',
-                        signatoryOtherSide:'佛山项目公司',
-                        date:'2017-10-19'
-                    }
-                ],
+                list:[],
                 protocolType:[
                     {label:'全部',value:0},
                     {label:'主合同',value:1},
