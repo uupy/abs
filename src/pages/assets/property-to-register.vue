@@ -36,14 +36,20 @@
                 <el-table-column prop='receiveableMoneyEndTime'  align='center' label='应收账款到期日' width="130"></el-table-column>
                 <el-table-column prop='financingDays'  align='center' label='融资天数' width="100"></el-table-column>
                 <el-table-column prop='dclr'  align='center' label='待处理人' width="100"></el-table-column>
-                <el-table-column align='center' label='资产状态' width="100">
+                <!-- <el-table-column align='center' label='资产状态' width="100">
                     <template slot-scope='scope'>
                         <el-tag :type="(scope.row.status == '6' || scope.row.status == '7' || scope.row.status == '8') ? 'success' : 'warning'" close-transition>{{propertyStatus[scope.row.status]}}</el-tag>
                     </template>
-                </el-table-column>
-                <el-table-column align='center' label='中登网附件' width="110">
+                </el-table-column> -->
+                <el-table-column align='center' label='登记文件' width="110">
                     <template slot-scope='scope'>
-                        <span class="table-btn health" @click.stop="dengji(scope.row)">上传</span>
+                        <span class="table-btn" @click.stop="dengji(scope.row)">下载</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align='center' label='登记状态' width="110">
+                    <template slot-scope='scope'>
+                        <!-- <span class="table-btn health" @click.stop="dengji(scope.row)">上传</span> -->
+                        <el-tag :type="(scope.row.status == '1') ? 'success' : 'warning'" close-transition>{{registerStatus[scope.row.status]}}</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column align='center' label='操作' width="80">
@@ -70,6 +76,7 @@
                 currentPage:1,
                 list:[],
                 propertyStatus:{},
+                registerStatus:ABS_STATUS.registerStatus,
                 params:{}
             }
         },

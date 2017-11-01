@@ -110,7 +110,6 @@
                         {
                             text: '今天',
                             onClick(picker) {
-                                console.log('sb:',picker)
                                 picker.$emit('pick', new Date());
                             }
                         }

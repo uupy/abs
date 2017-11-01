@@ -74,6 +74,10 @@ var ABS_STATUS = {
 	overdue:{
 		1:'已逾期',
 		2:'已结清'
+	},
+	registerStatus:{
+		1:'已登记',
+		2:'未登记'
 	}
 }
 
