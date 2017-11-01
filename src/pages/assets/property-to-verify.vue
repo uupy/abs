@@ -85,7 +85,7 @@
                 }                    
             },
             handleSelectionChange(){
- 
+                
             },
             clientsSizeChange(){
                 
