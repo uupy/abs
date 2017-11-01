@@ -260,7 +260,7 @@
         </el-tabs>
         <!-- 对话框 -->
         <el-dialog size="tiny" title="编辑联系方式" v-model="dialogEditContact" @close="cancelEditContact('contact_form')" class="dialogForm" :close-on-click-modal="false">
-            <el-form :model="contact_form" ref="contact_form" label-width="80px">
+            <el-form :model="contact_form" :rules="contactRules" ref="contact_form" label-width="80px">
                 <el-form-item label="固定电话" prop="telephone">
                     <el-input v-model="contact_form.telephone" placeholder="请输入固定电话"></el-input>
                 </el-form-item>
@@ -355,6 +355,23 @@
                     website:'',
                     registerAddress:'',
                     contactAddress:'',
+                },
+                contactRules:{
+                    telephone:[
+                        {required:true,message:'固定电话不能为空',trigger: 'change'}
+                    ],
+                    fax:[
+                        {required:true,message:'传真号码不能为空',trigger: 'change'}
+                    ],
+                    website:[
+                        {required:true,message:'官方网站不能为空',trigger: 'change'}
+                    ],
+                    registerAddress:[
+                        {required:true,message:'注册地址不能为空',trigger: 'change'}
+                    ],
+                    contactAddress:[
+                        {required:true,message:'联系地址不能为空',trigger: 'change'}
+                    ]
                 },
                 rules:{
                     name:[
@@ -495,6 +512,7 @@
             },
             // 取消编辑企业联系方式
             cancelEditContact(){
+                this.$refs['contact_form'].resetFields();
                 this.dialogEditContact = false;
                 this.getEnterpriseMembers({enterpriseId:(this.enterpriseIdChange?this.enterpriseId:this.enterprise_id)});
             },
@@ -562,13 +580,17 @@
             // 保存编辑企业联系方式
             saveContact(){
                 const self = this;
-                self.updateEnterpriseBasicInfo({
-                    id:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id),
-                    telephone:self.contact_form.telephone,
-                    fax:self.contact_form.fax,
-                    website:self.contact_form.website,
-                    registerAddress:self.contact_form.registerAddress,
-                    contactAddress:self.contact_form.contactAddress,
+                self.$refs['contact_form'].validate((valid)=>{
+                    if(valid){
+                        self.updateEnterpriseBasicInfo({
+                            id:(self.enterpriseIdChange?self.enterpriseId:self.enterprise_id),
+                            telephone:self.contact_form.telephone,
+                            fax:self.contact_form.fax,
+                            website:self.contact_form.website,
+                            registerAddress:self.contact_form.registerAddress,
+                            contactAddress:self.contact_form.contactAddress,
+                        });
+                    }
                 });
             }
         },

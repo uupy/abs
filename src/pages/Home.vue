@@ -2,7 +2,7 @@
 	<el-row class="panel">
 		<el-col :span="24" class="panel-top">
 			<el-col class="leftbar">
-				<span class="logo-txt">L<i>O</i>G<i>O</i></span>
+				<img style="display:block;" :src="logoUrl">
 			</el-col>
 			<el-col class="rightbar">
 				<el-dropdown trigger="click">
@@ -91,7 +91,9 @@
 <script>
 	import Optiscroll from 'optiscroll'
 	import Common from '@/mixins/common.js'
+	import Test from '@/mixins/test/index.js'
 	import Home from '@/api/home.js'
+	import logoUrl from '@/assets/images/logo.png'
 	export default {
 		data() {
 			return {
@@ -114,18 +116,19 @@
 						{ required: true,message:'旧密码不能为空', trigger: 'change' }
 					],
 					newPassword:[
-						{ required: true, message:'新密码不能为空',trigger: 'change' }
+						{ required: true,validator:this.testPassword('密码'),trigger: 'change' }
 					],
 					confirmPassword:[
-						{ required: true, message:'确认密码不能为空', trigger: 'change' }
+						{ required: true,validator:this.testPassword('密码'), trigger: 'change' }
 					]
 				},
 				panelSideScroll:null,
 				panelCenterScroll:null,
-				pasewordActiveName:'resetLoginPwdForm'
+				pasewordActiveName:'resetLoginPwdForm',
+				logoUrl:logoUrl
 			}
 		},
-		mixins:[Common,Home],
+		mixins:[Common,Home,Test],
 		methods: {
 			//取消修改密码
 			cancelReset(){

@@ -549,20 +549,27 @@ a{
         -ms-filter: blur(15px);    
             filter: blur(15px);    
 }
-.login-title{
+.login-top{
 	position: relative;
 	margin: 0;
-	font-size: 36px;
+	padding-top:8%;
+	font-size: 30px;
 	color: nth($bgColors, 1);
 	font-weight: normal;
 	text-shadow: 1px 2px 2px #222;
+	text-align:center;
+	z-index:100;
+	img{
+		display:inline-block;
+		width:120px;
+		vertical-align:middle;
+	}
 }
 .login-center{
 	position:relative;
 	width: 28%;
 	min-width:380px;
 	margin: 0 auto;
-	padding-top: 8%;
 	z-index: 100;
 }
 .login-footer{
