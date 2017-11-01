@@ -62,7 +62,8 @@
     </section>
 </template>
 <script>
-    import Common from '../../mixins/common.js'
+    import Common from '@/mixins/common.js'
+    import Test from '@/mixins/test/index.js'
     import Users from '@/api/userMangement/user'
     export default {
         data() {
@@ -107,10 +108,10 @@
                         {required:true,message:'姓名不能为空',trigger: 'change'}
                     ],
                     mobile:[
-                        {required:true,message:'手机号码不能为空',trigger: 'change'}
+                        {required:true,validator:this.testMobile(),trigger: 'change'}
                     ],
                     password:[
-                        {required:true,message:'密码不能为空',trigger: 'change'}
+                        {required:true,validator:this.testPassword('密码'),trigger: 'change'}
                     ]
                 },
                 genderList:[
@@ -133,7 +134,7 @@
                 list_total:10,
             }
         },
-        mixins:[Common,Users],
+        mixins:[Common,Test,Users],
         methods: {            
             clearFilter(){
                 const self = this;

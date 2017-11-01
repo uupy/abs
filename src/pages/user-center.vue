@@ -117,6 +117,7 @@
 
 <script>
     import Common from '@/mixins/common.js'
+    import Test from '@/mixins/test/index.js'
 	import UserCenter from '@/api/user-center.js'
     export default {
         data() {
@@ -160,7 +161,7 @@
                         { required: true, message: '该选项不能为空', trigger: 'change' }
                     ],
                     mobile:[
-                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                        { required: true,validator:this.testMobile(), trigger: 'change' }
                     ],
                     corporation_name:[
                         { required: true, message: '该选项不能为空', trigger: 'change' }
@@ -177,7 +178,7 @@
                         { required: true,message: '该选项不能为空', trigger: 'change' }
                     ],
                     mobile:[
-                        { required: true, message: '该选项不能为空', trigger: 'change' }
+                        { required: true, validator:this.testMobile(), trigger: 'change' }
                     ],
                     id_number:[
                         { required: true, message: '该选项不能为空', trigger: 'change' }
@@ -191,7 +192,7 @@
                 },
             }
         },
-        mixins:[Common,UserCenter],
+        mixins:[Common,Test,UserCenter],
         methods: {
            presonTabChange(type){
                 sessionStorage.setItem('presonTabName',this.active_name);

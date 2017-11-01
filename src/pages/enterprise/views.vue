@@ -316,7 +316,8 @@
     </section>
 </template>
 <script>
-    import Common from '../../mixins/common.js'
+    import Common from '@/mixins/common.js'
+    import Test from '@/mixins/test/index.js'
     import EnterpriseDetail from '@/api/enterprise/enterprise_detail.js'
     export default {
         data() {
@@ -381,10 +382,10 @@
                         {required:true,message:'联系人职位不能为空',trigger: 'change'}
                     ],
                     mobile:[
-                        {required:true,message:'联系人手机号码不能为空',trigger: 'change'}
+                        {required:true,validator:this.testMobile(),trigger: 'change'}
                     ],
                     email:[
-                        {required:true,message:'联系人邮箱不能为空',trigger: 'change'}
+                        {required:true,validator:this.testEmail(),trigger: 'change'}
                     ]
                 },
                 data_list:[],
@@ -465,7 +466,7 @@
                 ]
             } 
         },
-        mixins:[Common,EnterpriseDetail],
+        mixins:[Common,Test,EnterpriseDetail],
         methods: {
             // 选项卡切换
             tabChange(tab, event){
