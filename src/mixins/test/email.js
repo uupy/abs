@@ -1,7 +1,7 @@
 export default {
 	methods:{
 		testEmail(s){
-            let checkEmail = (rule, value, callback)=>{
+            return (rule, value, callback)=>{
                 if(!value){
                     return callback(new Error('邮箱不能为空'));
                 }else{
@@ -13,7 +13,6 @@ export default {
                     }
                 }
             };
-            return checkEmail
         }
 	}
 }

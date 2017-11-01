@@ -1,10 +1,10 @@
 <template>
     <section class="login-wrap">
+        <div class="login-top">
+            <img :src="logoUrl">高银保理金信系统
+        </div>
         <div class="login-center">
             <el-form :model="loginForm" :rules="rules" ref="loginForm" label-position="left" label-width="0px" class="loginform">
-                <el-form-item>
-                    <h2 class="login-title">高银保理金信系统</h2>
-                </el-form-item>
                 <el-form-item prop="account" class="login-input">
                     <el-input id="login_account" type="text" v-model="loginForm.account" auto-complete="off">
                         <template slot="prepend">
@@ -27,7 +27,7 @@
             </el-form>
         </div>
         <div class="login-footer">
-            <p>Copyright © 2017 本系统最终解释权归高银保理（中国）有限公司所有</p>
+            <p>Copyright © 2017 by 最终解释权归 高银保理（中国）有限公司 所有</p>
         </div>
         <div class="login-bg"></div>
     </section>
@@ -35,6 +35,7 @@
 <script>
     import Common from '@/mixins/common.js'
     import Login from '@/api/login.js'
+    import logoUrl from '@/assets/images/logo.png'
     export default {
         data() {
             return {
@@ -48,7 +49,8 @@
                     ]
                 },
                 accountPlaceholder:true,
-                passworPlaceholder:true
+                passworPlaceholder:true,
+                logoUrl:logoUrl
             }
         },
         mixins:[Common,Login],
