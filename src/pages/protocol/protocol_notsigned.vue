@@ -18,6 +18,7 @@
                     <el-table-column prop="protocolName" label="协议名称"></el-table-column>
                     <el-table-column prop="protocolEnterpriseName" label="协议签署方"></el-table-column>
                     <el-table-column prop="protocolAnotherEnterpriseName" label="协议签署对方"></el-table-column>
+                    <el-table-column prop="" label="协议接收方"></el-table-column>
                     <el-table-column inline-template :context="_self" label="操作" width="140" align='center'>
                         <span>
                             <span class="table-btn health" @click.stop="checkView(row)">预览</span>
